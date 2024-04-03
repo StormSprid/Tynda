@@ -17,7 +17,7 @@ public class Controller {
     @FXML
     protected void play() {
         // Ваш код для воспроизведения музыки
-        MusicPlayer.play("C:\\Users\\Эмиль\\Desktop\\java\\MusicPlayer03\\src\\roses [music].wav","C:\\Users\\Эмиль\\Desktop\\java\\MusicPlayer03\\src\\roses [vocals].wav");
+        MusicPlayer.play("src/Music/roses [music].wav","src/Music/roses [vocals].wav");
     }
 
     // Метод, который будет вызываться при нажатии на кнопку Stop
