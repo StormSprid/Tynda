@@ -76,6 +76,7 @@
             <Button fx:id="playButton" layoutX="348.0" layoutY="4.0" mnemonicParsing="false" onAction="#play" text="play" />
             <Button layoutX="402.0" layoutY="4.0" mnemonicParsing="false" onAction="#stop" text="stop" />
             <RadioButton layoutX="465.0" layoutY="8.0" mnemonicParsing="false" onAction="#Karaoke" text="Karaoke mode" textFill="WHITE" />
+            <Label fx:id="timerLabel" layoutX="626.0" layoutY="17.0" text="Label" />
          </children>
       </Pane>
       <Pane layoutX="170.0" layoutY="75.0" prefHeight="450.0" prefWidth="646.0">

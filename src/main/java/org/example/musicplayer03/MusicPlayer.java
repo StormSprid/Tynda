@@ -1,17 +1,26 @@
 package org.example.musicplayer03;
 
 import javax.sound.sampled.*;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import java.io.IOException;
-import java.util.Scanner;
+import java.util.Timer;
+import java.util.TimerTask;
+
 
 public class MusicPlayer {
+
     private static Clip clip;
     public static Clip musicClip;
     public static Clip vocalsClip;
     public static boolean playMusicOnly = false;
+    public static  boolean isSongPlaying = false;
+    private static int songDuration;
 
     public static void play(String filePathMusic, String filePathVocals) {
+        isSongPlaying =true;
+
         try {
             // Путь к файлу с музыкой
             File musicFile = new File(filePathMusic);
@@ -24,19 +33,15 @@ public class MusicPlayer {
             vocalsClip = AudioSystem.getClip();
             vocalsClip.open(AudioSystem.getAudioInputStream(vocalsFile));
 
+            songDuration = getSongDurationSeconds(musicClip);
+
             // Воспроизведение музыки
             musicClip.start();
 
-            // Установка уровня громкости для вокала
-            FloatControl gainControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
-            if (playMusicOnly) {
-                gainControl.setValue(-80.0f);
-            } else {
-                gainControl.setValue(0.0f);
-            }
 
             // Воспроизведение вокала
             vocalsClip.start();
+            isSongPlaying();
         } catch (UnsupportedAudioFileException | IOException | LineUnavailableException e) {
             e.printStackTrace();
         }
@@ -44,6 +49,7 @@ public class MusicPlayer {
 
 
     public static void stop() {
+        isSongPlaying = false;
         if (musicClip != null && musicClip.isRunning()) {
             musicClip.stop();
             musicClip.close();
@@ -53,6 +59,7 @@ public class MusicPlayer {
             vocalsClip.close();
         }
     }
+
     public static void karaoke() {
         playMusicOnly = !playMusicOnly;
         FloatControl gainControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -63,5 +70,80 @@ public class MusicPlayer {
         }
     }
 
+    public static String[] lyricsLineReader(String fileName) {
+        String[] defaultParts = {"No lyrics","no Timimg"};
+        try (BufferedReader br = new BufferedReader(new FileReader(fileName))) {
 
+            String line = br.readLine();
+            if (line != null) {
+                String[] parts = line.split("//");
+                return parts;
+
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return defaultParts;
+    }
+
+    public static void showLyricsOnTiming(String[] parts){
+        String lyricsLine = parts[0];
+        String timing = parts[1];
+        if(lyricsLine!=null){
+            System.out.println(lyricsLine);
+            
+        }
+    }
+    private static Timer timer;
+    public static void playMusicWithTimer(String filePathMusic, String filePathVocals) {
+        play(filePathMusic, filePathVocals); // Начинаем воспроизведение музыки
+
+        // Создаем новый таймер
+        timer = new Timer();
+
+        // Запускаем таймер, который каждую секунду увеличивает счетчик времени
+        timer.scheduleAtFixedRate(new TimerTask() {
+            int seconds = 0;
+
+            @Override
+            public void run() {
+                if(seconds<=songDuration) {
+                    seconds++;
+                    System.out.println(formatTime(seconds)); // Выводим текущее время
+                }else{
+                    stopMusicWithTimer();
+                }
+            }
+        }, 0, 1000); // Начинаем сразу и повторяем каждую секунду
+    }
+
+    public static void stopMusicWithTimer() {
+        stop(); // Останавливаем воспроизведение музыки
+
+        // Останавливаем таймер
+        if (timer != null) {
+            timer.cancel();
+            timer = null;
+        }
+    }
+
+    private static String formatTime(int seconds) {
+        int minutes = seconds / 60;
+        seconds = seconds % 60;
+        return String.format("%02d:%02d", minutes, seconds);
+    }
+    public static void isSongPlaying(){
+        if(musicClip!=null ){
+            isSongPlaying = true;
+        }
+        else{
+            isSongPlaying = false;
+        }
+    }
+    private static int getSongDurationSeconds(Clip clip) {
+        long frames = clip.getFrameLength();
+        float frameRate = clip.getFormat().getFrameRate();
+        return (int) (frames / frameRate);
+    }
 }
+

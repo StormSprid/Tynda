@@ -17,14 +17,14 @@ public class Controller {
     @FXML
     protected void play() {
         // Ваш код для воспроизведения музыки
-        MusicPlayer.play("src/Music/roses [music].wav","src/Music/roses [vocals].wav");
+        MusicPlayer.playMusicWithTimer("src/Music/My_Universe_music.wav","src/Music/My_Universe_vocals.wav");
     }
 
     // Метод, который будет вызываться при нажатии на кнопку Stop
     @FXML
     protected void stop() {
         //код для остановки воспроизведения музыки
-        MusicPlayer.stop();
+        MusicPlayer.stopMusicWithTimer();
     }
 
     @FXML
