@@ -21,7 +21,7 @@
    <children>
       <Pane layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
          <children>
-            <ImageView fx:id="UpperSongPhoto" fitHeight="60.0" fitWidth="60.0" layoutX="35.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="UpperSongPhoto" fitHeight="60.0" fitWidth="60.0" layoutX="32.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                </image></ImageView>
@@ -38,19 +38,19 @@
             <Slider fx:id="UpperSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
             <HBox alignment="TOP_CENTER" layoutX="330.0" layoutY="42.0" prefHeight="27.0" prefWidth="264.0">
                <children>
-                  <Button fx:id="backButton" mnemonicParsing="false" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                  <Button fx:id="startPlay" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                      <graphic>
                         <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="20" />
                      </graphic>
                   </Button>
                   <StackPane prefHeight="29.0" prefWidth="102.0">
                      <children>
-                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="PLAY" size="20" smooth="false" wrappingWidth="14.006094932556152" />
                            </graphic>
                         </Button>
-                        <Button fx:id="stopButton" mnemonicParsing="false" onAction="#stop" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                        <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" visible="false">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="PAUSE" size="20" />
                            </graphic>
@@ -64,14 +64,15 @@
                   </Button>
                </children>
             </HBox>
-            <Slider fx:id="UpperVolumeSlider" layoutX="724.0" layoutY="19.0" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
+            <Slider fx:id="volumeSlider" layoutX="724.0" layoutY="19.0" onDragDone="#setVolume" onMouseClicked="#setVolume" onMouseDragReleased="#setVolume" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
             <FontAwesomeIconView fill="#ffdcbd" glyphName="VOLUME_UP" layoutX="760.0" layoutY="62.0" size="20" />
+            <Label fx:id="volumeLabel" layoutX="786.0" layoutY="46.0" onDragExited="#setVolume" onDragOver="#setVolume" text="100%" textFill="#ffdcbd" />
          </children></Pane>
       <Pane layoutX="10.0" layoutY="10.0" prefHeight="780.0" prefWidth="250.0" style="-fx-background-color: #ffdcbd; -fx-background-radius: 30;">
          <children>
-            <ImageView fitHeight="56.0" fitWidth="188.0" layoutX="16.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="Logo" fitHeight="56.0" fitWidth="188.0" layoutX="16.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../icons/TyndaLabelPh-removebg-preview.png" />
+                  <Image url="@../../../icons/TyndaLabelPh-removebg-preview.png" />
                </image>
                <viewport>
                   <Rectangle2D />
@@ -150,9 +151,9 @@
                      <children>
                         <Label fx:id="HmPsLb1" contentDisplay="BOTTOM" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
                            <graphic>
-                              <ImageView fx:id="HmPsPh1" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="ForYouIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                                  <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/radio.jpg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -160,26 +161,26 @@
                               <Font name="PT Sans Bold" size="45.0" />
                            </font>
                         </Label>
-                        <Label fx:id="HmPsLb2" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
+                        <Label fx:id="HmPsLb2" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="Rock" textFill="WHITE">
                            <font>
                               <Font name="PT Sans Bold" size="45.0" />
                            </font>
                            <graphic>
-                              <ImageView fx:id="HmPsPh2" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="RockIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/rock.jpg" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Label>
-                        <Label fx:id="HmPsLb3" contentDisplay="BOTTOM" layoutX="20.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
+                        <Label fx:id="HmPsLb3" contentDisplay="BOTTOM" layoutX="20.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="Hip-Hop" textFill="WHITE">
                            <font>
                               <Font name="PT Sans Bold" size="45.0" />
                            </font>
                            <graphic>
-                              <ImageView fx:id="HmPsPh3" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="HipHopIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                                  <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/HipHop.jpg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -188,11 +189,11 @@
                   </HBox>
                   <HBox layoutX="50.0" layoutY="320.0" prefHeight="266.0" prefWidth="825.0">
                      <children>
-                        <Label fx:id="HmPsLb4" contentDisplay="BOTTOM" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
+                        <Label fx:id="HmPsLb4" contentDisplay="BOTTOM" prefHeight="260.0" prefWidth="275.0" text="Kazakh " textFill="WHITE">
                            <graphic>
                               <ImageView fx:id="HmPsPh4" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/Kazakh.jpg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -200,26 +201,26 @@
                               <Font name="PT Sans Bold" size="45.0" />
                            </font>
                         </Label>
-                        <Label fx:id="HmPsLb5" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
+                        <Label fx:id="HmPsLb5" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="Russia" textFill="WHITE">
                            <font>
                               <Font name="PT Sans Bold" size="45.0" />
                            </font>
                            <graphic>
                               <ImageView fx:id="HmPsPh5" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/Russia.jpg" />
                                  </image>
                               </ImageView>
                            </graphic>
                         </Label>
-                        <Label fx:id="HmPsLb6" contentDisplay="BOTTOM" layoutX="20.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
+                        <Label fx:id="HmPsLb6" contentDisplay="BOTTOM" layoutX="20.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="From Us" textFill="WHITE">
                            <font>
                               <Font name="PT Sans Bold" size="45.0" />
                            </font>
                            <graphic>
-                              <ImageView fx:id="HmPsPh6" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="HmPsPh6" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                                  <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/FromUs.jpg" />
                                  </image>
                               </ImageView>
                            </graphic>

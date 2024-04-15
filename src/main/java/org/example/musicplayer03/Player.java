@@ -7,7 +7,7 @@ public class Player extends MusicLib{
 
     public static void playSong(){
 
-        playDouble("src/Music/My_Universe_music.wav","src/Music/My_Universe_vocals.wav");
+        playDouble("src/Music/ЛИЗЕР/lizer-mayot-gori-mp3 [music].wav","src/Music/ЛИЗЕР/lizer-mayot-gori-mp3 [vocals].wav");
 
 
     }

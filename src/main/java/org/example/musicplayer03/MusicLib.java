@@ -1,9 +1,9 @@
 package org.example.musicplayer03;
 import javax.sound.sampled.*;
-import java.io.IOException;
+
 import java.io.File;
 
-import static javax.sound.sampled.FloatControl.*;
+
 
 
 public class MusicLib  {
@@ -94,9 +94,35 @@ public class MusicLib  {
         return String.format("%02d:%02d", minutes, seconds);
     }
 
-    private  static void setCurrenttiming(){
+    public static void setVolume(double volume) {
+        if (musicClip != null && vocalsClip != null) {
+            FloatControl vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
+            FloatControl musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
 
+            float maxVolume = Math.min(vocalControl.getMaximum(), musicControl.getMaximum());
+            float minVolume = Math.min(vocalControl.getMinimum(), musicControl.getMinimum());
+
+            // Изменение дБ относительно минимального значения
+            double dbChange = (volume / 100.0) * (6.0206 - (-80));
+            // Масштабирование и добавление минимального значения
+            float db = (float) (minVolume + dbChange);
+
+            vocalControl.setValue(db);
+            musicControl.setValue(db);
+        }
     }
+
+    private static double linearToLogarithmicVolume(double linearVolume) {
+        double minDb = -80; // Минимальное значение в децибелах
+        double maxDb = 6.0206; // Максимальное значение в децибелах (эквивалентно 100% громкости)
+
+        // Преобразование линейного значения громкости в логарифмическое
+        double logarithmicVolume = minDb + (maxDb - minDb) * linearVolume;
+
+        // Убедимся, что результат не выходит за пределы допустимых значений
+        return Math.min(maxDb, Math.max(minDb, logarithmicVolume));
+    }
+
 
 
 }

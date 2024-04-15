@@ -26,14 +26,16 @@ public class Controller {
 
     @FXML
     private Button playButton;
-    @FXML
-    private Button karaokeButton;
-    @FXML
-    private Button stopButton;
 
-    private Label label;
     @FXML
-    private Slider slider;
+    private Button pauseButton;
+
+    @FXML
+    private Button startPlay;
+    @FXML
+    private Label volumeLabel;
+    @FXML
+    private Slider volumeSlider;
     private Timeline timeline;
     private int seconds;
 
@@ -45,18 +47,22 @@ public class Controller {
     private Button currentActiveButton = null;
 
 
+
+
     private void updateButtonVisibility() {
         playButton.setVisible(!isPlaying);
-        stopButton.setVisible(isPlaying);
+        pauseButton.setVisible(isPlaying);
+
     }
 
 
     @FXML
     protected void play() {
-
+        isPlaying = true;
         Player.playSong();
-
+        updateButtonVisibility();
     }
+
 
 
     @FXML
@@ -71,28 +77,27 @@ public class Controller {
 
 
     }
-
     @FXML
     public void initialize() {
         updateButtonVisibility(); // Установка начального состояния кнопок
+
     }
 
 
     @FXML
     protected void pause() {
         isPlaying = !isPlaying;
-        if (!isPlaying) {
-
-            MusicLib.pauseDouble();
-            timeline.pause();
-
-        } else {
-
-            MusicLib.pauseDouble();
-            timeline.play();
-        }
+        MusicLib.pauseDouble();
+        updateButtonVisibility();
     }
 
+    @FXML
+    protected void setVolume(){
+        MusicLib.setVolume(volumeSlider.getValue());
+        double currentVolume = volumeSlider.getValue();
+        volumeLabel.setText(String.format("%.0f%%",currentVolume));
+
+    }
     @FXML
     private void showHome() {
         HomePage.setVisible(true);
@@ -122,3 +127,4 @@ public class Controller {
         button.setStyle("-fx-background-color: #ffdcbd;");
     }
 }
+
