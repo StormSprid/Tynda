@@ -10,11 +10,14 @@ import java.io.IOException;
 public class Main extends Application {
     @Override
     public void start(Stage stage) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/org/example/musicplayer03/ui.fxml"));
+        FXMLLoader fxmlLoader = new FXMLLoader(Main.class.getResource("/org/example/musicplayer03/login.fxml"));
 
         Scene scene = new Scene(fxmlLoader.load());
+
+
         stage.setScene(scene);
         stage.setTitle("Music Player");
+        stage.setResizable(false);
         stage.show();
     }
 
