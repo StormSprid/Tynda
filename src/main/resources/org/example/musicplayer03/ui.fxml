@@ -69,13 +69,13 @@
          <children>
             <ImageView fitHeight="56.0" fitWidth="188.0" layoutX="16.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../../../icons/TyndaLabelPh-removebg-preview.png" />
+                  <Image url="@../../../icons/TyndaLabelPh-removebg-preview.png" />
                </image>
                <viewport>
                   <Rectangle2D />
                </viewport>
             </ImageView>
-            <TextField fx:id="SearchField" layoutX="16.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" promptText="Search" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;" />
+            <TextField fx:id="SearchField" layoutX="16.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" promptText="Search" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;" styleClass="search" stylesheets="@design.css" />
             <VBox fx:id="LeftPaneButtonsVBox" layoutX="10.0" layoutY="157.0" prefHeight="537.0" prefWidth="250.0" spacing="8.0">
                <children>
                   <Button fx:id="HomeBtn" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#showHome" prefHeight="60.0" prefWidth="239.0" stylesheets="@design.css" text="  Home" textFill="#1e1c23">
@@ -150,7 +150,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh1" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -165,7 +165,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh2" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -177,7 +177,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh3" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -190,7 +190,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh4" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -205,7 +205,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh5" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -217,7 +217,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh6" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -230,7 +230,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh7" fitHeight="200.0" fitWidth="273.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -245,7 +245,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh8" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -257,7 +257,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh9" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
