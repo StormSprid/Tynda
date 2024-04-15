@@ -5,14 +5,9 @@
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
-<<<<<<< HEAD
-<?import javafx.scene.control.RadioButton?>
-<?import javafx.scene.control.Slider?>
-=======
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextField?>
->>>>>>> Adlet
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -26,18 +21,21 @@
    <children>
       <Pane layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
          <children>
-            <ImageView fx:id="UpperSongPhoto" fitHeight="60.0" fitWidth="60.0" layoutX="35.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true" />
-            <Label fx:id="UpperSongName" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" textFill="WHITE">
+            <ImageView fx:id="UpperSongPhoto" fitHeight="60.0" fitWidth="60.0" layoutX="35.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+               </image></ImageView>
+            <Label fx:id="UpperSongName" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Song Name" textFill="WHITE">
                <font>
                   <Font name="PT Sans" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="UpperArtistName" layoutX="108.0" layoutY="43.0" prefHeight="24.0" prefWidth="185.0" textFill="#84817e">
+            <Label fx:id="UpperArtistName" layoutX="108.0" layoutY="43.0" prefHeight="24.0" prefWidth="185.0" text="Artist" textFill="#84817e">
                <font>
                   <Font name="PT Sans" size="15.0" />
                </font>
             </Label>
-            <Slider fx:id="UpperSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" prefHeight="15.0" prefWidth="274.0" style="-fx-background-fill: linear-gradient(to right, #2D819D %d%%, #969696 %d%%) ; -fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
+            <Slider fx:id="UpperSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
             <HBox alignment="TOP_CENTER" layoutX="330.0" layoutY="42.0" prefHeight="27.0" prefWidth="264.0">
                <children>
                   <Button fx:id="backButton" mnemonicParsing="false" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
@@ -66,96 +64,19 @@
                   </Button>
                </children>
             </HBox>
-            <Slider fx:id="UpperVolumeSlider" layoutX="724.0" layoutY="19.0" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" />
-            <FontAwesomeIconView fill="#ffdcbd" glyphName="VOLUME_UP" layoutX="814.0" layoutY="62.0" size="20" />
-            <FontAwesomeIconView fill="#ffdcbd" glyphName="VOLUME_OFF" layoutX="731.0" layoutY="61.0" size="20" />
+            <Slider fx:id="UpperVolumeSlider" layoutX="724.0" layoutY="19.0" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
+            <FontAwesomeIconView fill="#ffdcbd" glyphName="VOLUME_UP" layoutX="760.0" layoutY="62.0" size="20" />
          </children></Pane>
       <Pane layoutX="10.0" layoutY="10.0" prefHeight="780.0" prefWidth="250.0" style="-fx-background-color: #ffdcbd; -fx-background-radius: 30;">
          <children>
             <ImageView fitHeight="56.0" fitWidth="188.0" layoutX="16.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                <image>
-<<<<<<< HEAD
-                  <Image url="@../../../../../icons8-music-player-64.png" />
-               </image>
-            </ImageView>
-            <Label layoutX="52.0" layoutY="112.0" text="Home" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="57.0" layoutY="154.0" text="New" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="53.0" layoutY="199.0" text="Albums" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="55.0" layoutY="238.0" text="Top 100" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="53.0" layoutY="277.0" text="Playlists" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="58.0" layoutY="319.0" text="Favorites" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="54.0" layoutY="364.0" text="Your Playlist" textFill="#a49a9a">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="56.0" layoutY="403.0" text="For gym" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-            <Label layoutX="56.0" layoutY="437.0" text="For depression" textFill="WHITE">
-               <font>
-                  <Font name="System Bold" size="12.0" />
-               </font>
-            </Label>
-         </children>
-      </Pane>
-      <Pane layoutX="170.0" prefHeight="75.0" prefWidth="1050.0" style="-fx-background-color: black;">
-         <children>
-            <Button layoutX="558.0" layoutY="25.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Sign Up" textFill="#58df6c" />
-            <Button layoutX="500.0" layoutY="25.0" mnemonicParsing="false" style="-fx-background-color: transparent;" text="Sign In" textFill="#58df6c" />
-         </children>
-      </Pane>
-      <Pane layoutX="163.0" layoutY="750.0" prefHeight="134.0" prefWidth="1058.0" style="-fx-background-color: black;">
-         <children>
-            <Button fx:id="playButton" layoutX="348.0" layoutY="4.0" mnemonicParsing="false" onAction="#play" text="play" />
-            <Button layoutX="402.0" layoutY="4.0" mnemonicParsing="false" onAction="#stop" text="stop" />
-            <RadioButton layoutX="465.0" layoutY="8.0" mnemonicParsing="false" onAction="#Karaoke" text="Karaoke mode" textFill="WHITE" />
-            <Label fx:id="label" layoutX="591.0" layoutY="3.0" prefHeight="31.0" prefWidth="48.0" text="00:00" textFill="WHITE" />
-            <Button fx:id="pauseButton" layoutX="300.0" layoutY="5.0" mnemonicParsing="false" onAction="#pause" text="Pause" />
-         </children>
-      </Pane>
-      <Pane layoutX="170.0" layoutY="75.0" prefHeight="450.0" prefWidth="646.0">
-         <children>
-            <ImageView fitHeight="643.0" fitWidth="1045.0" layoutX="2.0" pickOnBounds="true">
-               <image>
-                  <Image url="@../../../../../roses.png" />
-=======
-                  <Image url="@../../../icons/TyndaLabelPh-removebg-preview.png" />
->>>>>>> Adlet
+                  <Image url="@../../../../../icons/TyndaLabelPh-removebg-preview.png" />
                </image>
                <viewport>
                   <Rectangle2D />
                </viewport>
             </ImageView>
-<<<<<<< HEAD
-            <Slider fx:id="slider" layoutX="5.0" layoutY="636.0" prefHeight="14.0" prefWidth="1039.0" />
-=======
             <TextField fx:id="SearchField" layoutX="16.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" promptText="Search" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;" />
             <VBox fx:id="LeftPaneButtonsVBox" layoutX="10.0" layoutY="157.0" prefHeight="537.0" prefWidth="250.0" spacing="8.0">
                <children>
@@ -219,12 +140,11 @@
                   </Button>
                </children>
             </HBox>
->>>>>>> Adlet
          </children>
       </Pane>
       <ScrollPane fx:id="HomePage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="925.0" prefWidth="880.0" style="-fx-background-color: #000000;">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="925.0" prefWidth="880.0" style="-fx-background-color: #000000;">
                <children>
                   <HBox layoutX="50.0" layoutY="2.0" prefHeight="266.0" prefWidth="825.0">
                      <children>
@@ -312,7 +232,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh7" fitHeight="200.0" fitWidth="273.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -327,7 +247,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh8" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -339,7 +259,7 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh9" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+                                    <Image url="@../../../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -348,15 +268,15 @@
                   </HBox>
                </children>
             </AnchorPane>
-        </content>
+         </content>
          <styleClass>
             <String fx:value="scroll-bar" />
             <String fx:value="scroll-pane" />
          </styleClass>
       </ScrollPane>
       <ScrollPane fx:id="topSongsPage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="749.0" prefWidth="879.0" style="-fx-background-color: #000000;">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="749.0" prefWidth="879.0" style="-fx-background-color: #000000;">
                <children>
                   <Label text="ТОП СОНГС" textFill="WHITE">
                      <font>
@@ -364,7 +284,7 @@
                      </font>
                   </Label>
                </children></AnchorPane>
-        </content>
+         </content>
       </ScrollPane>
    </children>
 </AnchorPane>
