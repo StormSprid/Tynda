@@ -1,12 +1,15 @@
 package org.example.musicplayer03;
+import javafx.application.Platform;
+
 import javax.sound.sampled.*;
 
 import java.io.File;
+import javax.swing.Timer;
 
 
 
+public class MusicLib {
 
-public class MusicLib  {
 
     private static Clip song;
     private static Clip musicClip;
@@ -14,10 +17,12 @@ public class MusicLib  {
     private static boolean playMusicOnly = false;
     private static boolean isPlaying = false;
     private static int songDuration;
+    private static Timer sliderTimer;
+    private static final int SLIDER_UPDATE_INTERVAL = 100;
 
-    public static void playDouble(String musicPath, String vocalsPath){
-        try{
-            if(!isPlaying) {
+    public static void playDouble(String musicPath, String vocalsPath) {
+        try {
+            if (!isPlaying) {
                 File musicFile = new File(musicPath);
                 File vocalsFile = new File(vocalsPath);
 
@@ -27,20 +32,20 @@ public class MusicLib  {
                 vocalsClip = AudioSystem.getClip();
                 vocalsClip.open(AudioSystem.getAudioInputStream(vocalsFile));
 
-//            songDuration = getSongDuration(musicClip);
-
 
                 musicClip.start();
                 vocalsClip.start();
+
+
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         isPlaying = true;
     }
 
-    public static void stopDouble(){
+    public static void stopDouble() {
         isPlaying = false;
         musicClip.close();
         vocalsClip.close();
@@ -61,38 +66,7 @@ public class MusicLib  {
             }
         }
     }
-    public static void nonVoiceMod(){
-        playMusicOnly = !playMusicOnly;
-        FloatControl gainControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
-        if(playMusicOnly){
-            gainControl.setValue(-80f);
-        }else{
-            gainControl.setValue(0f);
-        }
-    }
-    public static String getCurrentPositionMusic(){
-        long currentPositionMicros = musicClip.getMicrosecondPosition();
-        double currentPositionSeconds = currentPositionMicros / 1_000_000.0;
 
-
-        int minutes = (int) currentPositionSeconds / 60;
-        int seconds = (int) currentPositionSeconds % 60;
-
-
-        return String.format("%02d:%02d", minutes, seconds);
-    }
-
-    public static String getCurrentPositionVocals(){
-        long currentPositionMicros = musicClip.getMicrosecondPosition();
-        double currentPositionSeconds = currentPositionMicros / 1_000_000.0;
-
-
-        int minutes = (int) currentPositionSeconds / 60;
-        int seconds = (int) currentPositionSeconds % 60;
-
-
-        return String.format("%02d:%02d", minutes, seconds);
-    }
 
     public static void setVolume(double volume) {
         if (musicClip != null && vocalsClip != null) {
@@ -112,17 +86,40 @@ public class MusicLib  {
         }
     }
 
-    private static double linearToLogarithmicVolume(double linearVolume) {
-        double minDb = -80; // Минимальное значение в децибелах
-        double maxDb = 6.0206; // Максимальное значение в децибелах (эквивалентно 100% громкости)
 
-        // Преобразование линейного значения громкости в логарифмическое
-        double logarithmicVolume = minDb + (maxDb - minDb) * linearVolume;
+    public static void setTrackPosition(double position) {
+        if (musicClip != null) {
+            long clipPosition = (long) (position * musicClip.getMicrosecondLength() / 100);
+            musicClip.setMicrosecondPosition(clipPosition);
+            vocalsClip.setMicrosecondPosition(clipPosition);
+        }
+    }
 
-        // Убедимся, что результат не выходит за пределы допустимых значений
-        return Math.min(maxDb, Math.max(minDb, logarithmicVolume));
+    public static double getTrackPosition() {
+        if (musicClip != null) {
+            long clipPosition = musicClip.getMicrosecondPosition();
+            long clipLength = musicClip.getMicrosecondLength();
+            return (double) clipPosition / clipLength * 100;
+        }
+        return 0;
+    }
+
+    public static int getTotalDuration() {
+        return (int) musicClip.getMicrosecondLength();
     }
 
 
+    public static boolean isTrackDone() {
+        if (musicClip != null) {
+            if (getTrackPosition() >= getTotalDuration() || getTrackPosition() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
+    }
 
 }
+
+

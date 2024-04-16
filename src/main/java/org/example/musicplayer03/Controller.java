@@ -10,8 +10,13 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
 
+
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
+
 
 
 public class Controller implements Initializable {
@@ -32,14 +37,16 @@ public class Controller implements Initializable {
     private Button stopButton;
     @FXML
     private Button pauseButton;
-    @FXML
-    private Button startPlay;
+
     @FXML
     private Label volumeLabel;
     @FXML
     private Slider volumeSlider;
+    @FXML
+    private Slider trackSlider;
+
     private Timeline timeline;
-    private int seconds;
+
 
 
     @FXML
@@ -48,9 +55,6 @@ public class Controller implements Initializable {
     private ScrollPane topSongsPage;
     private boolean isPlaying = false;
     private Button currentActiveButton = null;
-
-
-
 
 
 
@@ -67,7 +71,17 @@ public class Controller implements Initializable {
         Player.playSong();
         updateButtonVisibility();
 
+
+
+
+
+        timeline.play();
+        if(MusicLib.isTrackDone()){
+            updateButtonVisibility();
+        }
     }
+
+
 
     @FXML
     protected void stop() {
@@ -82,8 +96,55 @@ public class Controller implements Initializable {
     }
 
     @FXML
-    public void initialize() {
-        updateButtonVisibility(); // Установка начального состояния кнопок
+    private void initialize() {
+        // Инициализация интерфейса
+        updateButtonVisibility();
+        initializeSliders();
+        initializeTimeline();
+
+    }
+
+    private void initializeSliders() {
+        // Инициализация слайдеров
+        trackSlider.setMin(0);
+        trackSlider.setMax(100);
+        trackSlider.setValue(0);
+
+        // Обработчик изменения значения слайдера
+        trackSlider.setOnMouseDragEntered(event -> {
+            if (isPlaying) {
+                MusicLib.setTrackPosition(trackSlider.getValue());
+            }
+
+
+        });
+        trackSlider.setOnMouseClicked(event -> {
+            if (isPlaying) {
+                MusicLib.setTrackPosition(trackSlider.getValue());
+            }
+
+        });
+        trackSlider.setOnDragDone(event -> {
+            if (isPlaying) {
+                MusicLib.setTrackPosition(trackSlider.getValue());
+            }
+
+        });
+    }
+
+    private void initializeTimeline() {
+        // Создание таймлайна для обновления слайдера каждую секунду
+        timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), event -> {
+                    if (isPlaying && !trackSlider.isValueChanging()) {
+
+                        trackSlider.setValue((double) MusicLib.getTrackPosition());
+//                        timerLabel.setText((String) MusicLib.getTrackPosition());
+                    }
+
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
 
     }
 
@@ -94,13 +155,15 @@ public class Controller implements Initializable {
         isPlaying = !isPlaying;
         MusicLib.pauseDouble();
         updateButtonVisibility();
+        timeline.play();
+
     }
 
     @FXML
-    protected void setVolume(){
+    protected void setVolume() {
         MusicLib.setVolume(volumeSlider.getValue());
         double currentVolume = volumeSlider.getValue();
-        volumeLabel.setText(String.format("%.0f%%",currentVolume));
+        volumeLabel.setText(String.format("%.0f%%", currentVolume));
 
     }
 
@@ -137,6 +200,7 @@ public class Controller implements Initializable {
     }
 
 
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         button_logout.setOnAction(new EventHandler<ActionEvent>() {
@@ -151,8 +215,14 @@ public class Controller implements Initializable {
     public void setUserInformation(String username) {
         label_welcome.setText("Welcome " + username + "!");
     }
+
+
+    
+    @FXML
+    private  void setTrackPosition(){
+        MusicLib.setTrackPosition(trackSlider.getValue());
+    }
+
 }
-
-
 
 
