@@ -21,18 +21,11 @@
    <children>
       <Pane layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
          <children>
-            <ImageView fx:id="UpperSongPhoto2" fitHeight="60.0" fitWidth="60.0" layoutX="35.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
-               </image></ImageView>
-            <Label fx:id="UpperSongName1" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" textFill="WHITE"></Label>
-
-            <ImageView fx:id="UpperSongPhoto1" fitHeight="60.0" fitWidth="60.0" layoutX="32.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+            <ImageView fx:id="UpperSongPhoto" fitHeight="60.0" fitWidth="60.0" layoutX="32.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
                </image></ImageView>
-            <Label fx:id="UpperSongName2" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Song Name" textFill="WHITE">
-
+            <Label fx:id="UpperSongName" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Song Name" textFill="WHITE">
                <font>
                   <Font name="PT Sans" size="18.0" />
                </font>

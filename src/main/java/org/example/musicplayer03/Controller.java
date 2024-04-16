@@ -1,22 +1,19 @@
 package org.example.musicplayer03;
 
+import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.control.Slider;
-
-
-import java.net.URL;
-import java.util.ResourceBundle;
-
-import javafx.animation.KeyFrame;
 import javafx.util.Duration;
 
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
+import java.net.URL;
+import java.util.ResourceBundle;
 
 
 public class Controller implements Initializable {
@@ -95,14 +92,14 @@ public class Controller implements Initializable {
 
     }
 
-    @FXML
-    private void initialize() {
-        // Инициализация интерфейса
-        updateButtonVisibility();
-        initializeSliders();
-        initializeTimeline();
-
-    }
+//    @FXML
+//    private void initialize() {
+//        // Инициализация интерфейса
+//        updateButtonVisibility();
+//        initializeSliders();
+//        initializeTimeline();
+//
+//    }
 
     private void initializeSliders() {
         // Инициализация слайдеров
@@ -210,6 +207,8 @@ public class Controller implements Initializable {
             }
         });
         updateButtonVisibility(); // Установка начального состояния кнопок
+        initializeSliders();
+        initializeTimeline();
     }
 
     public void setUserInformation(String username) {
@@ -217,7 +216,7 @@ public class Controller implements Initializable {
     }
 
 
-    
+
     @FXML
     private  void setTrackPosition(){
         MusicLib.setTrackPosition(trackSlider.getValue());
