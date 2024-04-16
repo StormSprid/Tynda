@@ -1,86 +1,106 @@
 package org.example.musicplayer03;
 
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.control.*;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.input.MouseEvent;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.Pane;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.layout.VBox;
-import javafx.stage.Stage;
+import javafx.scene.control.Slider;
 
-import java.awt.*;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
 
 public class Controller implements Initializable {
 
     @FXML
     private Label label_welcome;
-
     @FXML
     private Button button_logout;
-
     @FXML
     private Button HomeBtn;
-
     @FXML
     private Button TopSongsBtn;
-
     @FXML
     private Button playButton;
-
     @FXML
     private Button karaokeButton;
-
     @FXML
     private Button stopButton;
+    @FXML
+    private Button pauseButton;
+    @FXML
+    private Button startPlay;
+    @FXML
+    private Label volumeLabel;
+    @FXML
+    private Slider volumeSlider;
+    private Timeline timeline;
+    private int seconds;
+
 
     @FXML
     private ScrollPane HomePage;
-
     @FXML
     private ScrollPane topSongsPage;
-
     private boolean isPlaying = false;
     private Button currentActiveButton = null;
 
+
+
+
+
+
     private void updateButtonVisibility() {
         playButton.setVisible(!isPlaying);
-        stopButton.setVisible(isPlaying);
+        pauseButton.setVisible(isPlaying);
+
     }
 
-    // Метод, который будет вызываться при нажатии на кнопку Play
+
     @FXML
     protected void play() {
-        // Ваш код для воспроизведения музыки
-        MusicPlayer.play("src/Music/roses [music].wav","src/Music/roses [vocals].wav");
         isPlaying = true;
+        Player.playSong();
         updateButtonVisibility();
     }
 
-    // Метод, который будет вызываться при нажатии на кнопку Stop
     @FXML
     protected void stop() {
-        //код для остановки воспроизведения музыки
-        MusicPlayer.stop();
-        isPlaying = false;
+        isPlaying = !isPlaying;
+        if (!isPlaying) {
+
+
+            Player.stopSong();
+
+        }
+
+    }
+
+    @FXML
+    public void initialize() {
+        updateButtonVisibility(); // Установка начального состояния кнопок
+
+    }
+
+
+
+    @FXML
+    protected void pause() {
+        isPlaying = !isPlaying;
+        MusicLib.pauseDouble();
         updateButtonVisibility();
     }
 
     @FXML
-    protected void Karaoke(){
-        MusicPlayer.karaoke();
+    protected void setVolume(){
+        MusicLib.setVolume(volumeSlider.getValue());
+        double currentVolume = volumeSlider.getValue();
+        volumeLabel.setText(String.format("%.0f%%",currentVolume));
+
     }
 
     @FXML
@@ -100,7 +120,10 @@ public class Controller implements Initializable {
         // добавить для других панелей
     }
 
-    private void PressButton(Button button){
+
+
+    private void PressButton(Button button) {
+
         if (currentActiveButton != null) {
             UnpressButton(currentActiveButton);
         }
@@ -111,6 +134,7 @@ public class Controller implements Initializable {
     private void UnpressButton(Button button) {
         button.setStyle("-fx-background-color: #ffdcbd;");
     }
+
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -127,3 +151,7 @@ public class Controller implements Initializable {
         label_welcome.setText("Welcome " + username + "!");
     }
 }
+
+
+
+
