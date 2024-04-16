@@ -8,7 +8,7 @@ import javax.swing.Timer;
 
 
 
-public class MusicLib  {
+public class MusicLib {
 
 
     private static Clip song;
@@ -20,9 +20,9 @@ public class MusicLib  {
     private static Timer sliderTimer;
     private static final int SLIDER_UPDATE_INTERVAL = 100;
 
-    public static void playDouble(String musicPath, String vocalsPath){
-        try{
-            if(!isPlaying) {
+    public static void playDouble(String musicPath, String vocalsPath) {
+        try {
+            if (!isPlaying) {
                 File musicFile = new File(musicPath);
                 File vocalsFile = new File(vocalsPath);
 
@@ -33,21 +33,19 @@ public class MusicLib  {
                 vocalsClip.open(AudioSystem.getAudioInputStream(vocalsFile));
 
 
-
-
                 musicClip.start();
                 vocalsClip.start();
 
 
             }
 
-        }catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
         }
         isPlaying = true;
     }
 
-    public static void stopDouble(){
+    public static void stopDouble() {
         isPlaying = false;
         musicClip.close();
         vocalsClip.close();
@@ -68,9 +66,6 @@ public class MusicLib  {
             }
         }
     }
-
-
-
 
 
     public static void setVolume(double volume) {
@@ -109,8 +104,22 @@ public class MusicLib  {
         return 0;
     }
 
-    public static int getTotalDuration(){
-        return (int)musicClip.getMicrosecondLength();
+    public static int getTotalDuration() {
+        return (int) musicClip.getMicrosecondLength();
+    }
+
+
+    public static boolean isTrackDone() {
+        if (musicClip != null) {
+            if (getTrackPosition() >= getTotalDuration() || getTrackPosition() == 0) {
+                return true;
+            } else {
+                return false;
+            }
+        }
+        return false;
     }
 
 }
+
+

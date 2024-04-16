@@ -39,7 +39,9 @@ public class Controller {
     @FXML
     private Slider volumeSlider;
     @FXML
-    private  Slider trackSlider;
+    private Slider trackSlider;
+    @FXML
+    private  Label timerLabel;
     private Timeline timeline;
     private int totalSongDuration;
     private int seconds;
@@ -50,8 +52,6 @@ public class Controller {
     @FXML
     private ScrollPane topSongsPage;
     private Button currentActiveButton = null;
-
-
 
 
     private void updateButtonVisibility() {
@@ -67,8 +67,10 @@ public class Controller {
         Player.playSong();
         updateButtonVisibility();
         timeline.play();
+        if(MusicLib.isTrackDone()){
+            updateButtonVisibility();
+        }
     }
-
 
 
     @FXML
@@ -83,12 +85,14 @@ public class Controller {
 
 
     }
+
     @FXML
     private void initialize() {
         // Инициализация интерфейса
         updateButtonVisibility();
         initializeSliders();
         initializeTimeline();
+
     }
 
     private void initializeSliders() {
@@ -98,13 +102,24 @@ public class Controller {
         trackSlider.setValue(0);
 
         // Обработчик изменения значения слайдера
-        trackSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
-            if (!trackSlider.isValueChanging()) {
-                // Проверка, воспроизводится ли трек и не находится ли слайдер в процессе изменения
-                if (isPlaying) {
-                    MusicLib.setTrackPosition(newValue.doubleValue());
-                }
+        trackSlider.setOnMouseDragEntered(event -> {
+            if (isPlaying) {
+                MusicLib.setTrackPosition(trackSlider.getValue());
             }
+
+
+        });
+        trackSlider.setOnMouseClicked(event -> {
+            if (isPlaying) {
+                MusicLib.setTrackPosition(trackSlider.getValue());
+            }
+
+        });
+        trackSlider.setOnDragDone(event -> {
+            if (isPlaying) {
+                MusicLib.setTrackPosition(trackSlider.getValue());
+            }
+
         });
     }
 
@@ -113,14 +128,16 @@ public class Controller {
         timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
                     if (isPlaying && !trackSlider.isValueChanging()) {
-                        int currentDuration = (int) MusicLib.getTrackPosition();
-                        trackSlider.setValue((double) currentDuration);
+
+                        trackSlider.setValue((double) MusicLib.getTrackPosition());
+//                        timerLabel.setText((String) MusicLib.getTrackPosition());
                     }
+
                 })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
-    }
 
+    }
 
 
     @FXML
@@ -133,12 +150,13 @@ public class Controller {
     }
 
     @FXML
-    protected void setVolume(){
+    protected void setVolume() {
         MusicLib.setVolume(volumeSlider.getValue());
         double currentVolume = volumeSlider.getValue();
-        volumeLabel.setText(String.format("%.0f%%",currentVolume));
+        volumeLabel.setText(String.format("%.0f%%", currentVolume));
 
     }
+
     @FXML
     private void showHome() {
         HomePage.setVisible(true);
@@ -167,5 +185,11 @@ public class Controller {
     private void UnpressButton(Button button) {
         button.setStyle("-fx-background-color: #ffdcbd;");
     }
-}
 
+
+    @FXML
+    private  void setTrackPosition(){
+        MusicLib.setTrackPosition(trackSlider.getValue());
+    }
+
+}
