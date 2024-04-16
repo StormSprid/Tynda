@@ -7,6 +7,7 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -16,60 +17,10 @@
 <?import javafx.scene.layout.StackPane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
 
 <AnchorPane fx:id="mainAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.musicplayer03.Controller">
    <children>
-      <Pane layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
-         <children>
-            <ImageView fx:id="UpperSongPhoto" fitHeight="60.0" fitWidth="60.0" layoutX="32.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
-               <image>
-                  <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
-               </image></ImageView>
-            <Label fx:id="UpperSongName" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Song Name" textFill="WHITE">
-               <font>
-                  <Font name="PT Sans" size="18.0" />
-               </font>
-            </Label>
-            <Label fx:id="UpperArtistName" layoutX="108.0" layoutY="43.0" prefHeight="24.0" prefWidth="185.0" text="Artist" textFill="#84817e">
-               <font>
-                  <Font name="PT Sans" size="15.0" />
-               </font>
-            </Label>
-            <Slider fx:id="trackSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" onDragDetected="#setTrackPosition" onDragDone="#setTrackPosition" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
-            <HBox alignment="TOP_CENTER" layoutX="330.0" layoutY="42.0" prefHeight="27.0" prefWidth="264.0">
-               <children>
-                  <Button fx:id="startPlay" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
-                     <graphic>
-                        <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="20" />
-                     </graphic>
-                  </Button>
-                  <StackPane prefHeight="29.0" prefWidth="102.0">
-                     <children>
-                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
-                           <graphic>
-                              <FontAwesomeIconView fill="#ffdcbd" glyphName="PLAY" size="20" smooth="false" wrappingWidth="14.006094932556152" />
-                           </graphic>
-                        </Button>
-                        <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" visible="false">
-                           <graphic>
-                              <FontAwesomeIconView fill="#ffdcbd" glyphName="PAUSE" size="20" />
-                           </graphic>
-                        </Button>
-                     </children>
-                  </StackPane>
-                  <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#stop" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
-                     <graphic>
-                        <FontAwesomeIconView fill="#ffdcbd" glyphName="FORWARD" size="20" wrappingWidth="22.363237380981445" />
-                     </graphic>
-                  </Button>
-               </children>
-            </HBox>
-
-            <Slider fx:id="volumeSlider" layoutX="724.0" layoutY="19.0" onDragDone="#setVolume" onMouseClicked="#setVolume" onMouseDragReleased="#setVolume" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
-            <FontAwesomeIconView fill="#ffdcbd" glyphName="VOLUME_UP" layoutX="760.0" layoutY="62.0" size="20" />
-            <Label fx:id="volumeLabel" layoutX="786.0" layoutY="46.0" onDragExited="#setVolume" onDragOver="#setVolume" text="100%" textFill="#ffdcbd" />
-         </children>
-      </Pane>
       <Pane layoutX="10.0" layoutY="10.0" prefHeight="780.0" prefWidth="250.0" style="-fx-background-color: #ffdcbd; -fx-background-radius: 30;">
          <children>
             <Pane layoutX="12.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;">
@@ -319,5 +270,165 @@
                </children></AnchorPane>
          </content>
       </ScrollPane>
+      <Pane fx:id="Shtorka" layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
+         <children>
+            <TextFlow fx:id="ArtistSongNameText" layoutX="-2.0" layoutY="535.0" prefHeight="65.0" prefWidth="908.0" textAlignment="CENTER" visible="false">
+               <children>
+                  <Label fx:id="UpperArtistName1" alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="442.0" text="Artist name" textAlignment="RIGHT" textFill="#ffdcbd">
+                     <font>
+                        <Font name="PT Sans" size="30.0" />
+                     </font>
+                  </Label>
+                  <Label text=" - " textFill="#ffdcbd">
+                     <font>
+                        <Font size="30.0" />
+                     </font>
+                  </Label>
+                  <Label fx:id="UpperSongName1" prefHeight="39.0" prefWidth="410.0" text="Song Name" textFill="#ffdcbd">
+                     <font>
+                        <Font name="PT Sans" size="30.0" />
+                     </font>
+                  </Label>
+               </children>
+            </TextFlow>
+            <TextArea fx:id="SongTextArea" editable="false" layoutX="468.0" layoutY="88.0" prefHeight="441.0" prefWidth="421.0" style="-fx-border-width: 0;" styleClass="SongTextArea" stylesheets="@design.css" visible="false" wrapText="true">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </TextArea>
+            <ImageView fx:id="UpperSongPhOpened" fitHeight="441.0" fitWidth="444.0" layoutX="19.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" visible="false">
+               <image>
+                  <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+               </image>
+            </ImageView>
+            <ImageView fx:id="UpperSongPh" fitHeight="60.0" fitWidth="60.0" layoutX="32.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+               </image>
+            </ImageView>
+            <Label fx:id="UpperSongName" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Song Name" textFill="WHITE">
+               <font>
+                  <Font name="PT Sans" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="UpperArtistName" layoutX="108.0" layoutY="43.0" prefHeight="24.0" prefWidth="185.0" text="Artist" textFill="#84817e">
+               <font>
+                  <Font name="PT Sans" size="15.0" />
+               </font>
+            </Label>
+            <Slider fx:id="trackSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" onDragDetected="#setTrackPosition" onDragDone="#setTrackPosition" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
+            <HBox fx:id="UpperButtonsHBox" alignment="TOP_CENTER" layoutX="330.0" layoutY="42.0" prefHeight="27.0" prefWidth="264.0">
+               <children>
+                  <Button fx:id="startPlay" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                     <graphic>
+                        <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="20" />
+                     </graphic>
+                  </Button>
+                  <StackPane prefHeight="29.0" prefWidth="102.0">
+                     <children>
+                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                           <graphic>
+                              <FontAwesomeIconView fill="#ffdcbd" glyphName="PLAY" size="20" smooth="false" wrappingWidth="14.006094932556152" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" visible="false">
+                           <graphic>
+                              <FontAwesomeIconView fill="#ffdcbd" glyphName="PAUSE" size="20" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </StackPane>
+                  <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#stop" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
+                     <graphic>
+                        <FontAwesomeIconView fill="#ffdcbd" glyphName="FORWARD" size="20" wrappingWidth="22.363237380981445" />
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+
+                                                <Slider fx:id="volumeSlider" layoutX="724.0" layoutY="19.0" onDragDone="#setVolume" onMouseClicked="#setVolume" onMouseDragReleased="#setVolume" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
+            <Label fx:id="volumeLabel" layoutX="754.0" layoutY="46.0" onDragExited="#setVolume" onDragOver="#setVolume" text="100%" textFill="#ffdcbd">
+               <graphic>
+                  <FontAwesomeIconView fx:id="volume" fill="#ffdcbd" glyphName="VOLUME_UP" size="20" />
+               </graphic>
+            </Label>
+            <HBox fx:id="OpenedButtonsHBox" layoutX="115.0" layoutY="622.0" prefHeight="100.0" prefWidth="765.0" visible="false">
+               <children>
+                  <VBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="195.0">
+                     <children>
+                        <Slider prefHeight="42.0" prefWidth="241.0" styleClass="Slider" stylesheets="@design.css" />
+                        <Label alignment="CENTER" prefHeight="26.0" prefWidth="248.0" text="Karaoke" textFill="#ffdcbd">
+                           <font>
+                              <Font name="PT Sans Bold" size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+                  <HBox alignment="TOP_CENTER" prefHeight="62.0" prefWidth="315.0">
+                     <children>
+                        <Button fx:id="startPlay1" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                           <graphic>
+                              <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="30" />
+                           </graphic>
+                        </Button>
+                        <StackPane alignment="TOP_CENTER" prefHeight="85.0" prefWidth="101.0">
+                           <children>
+                              <Button fx:id="playButton1" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                                 <graphic>
+                                    <FontAwesomeIconView fill="#ffdcbd" glyphName="PLAY" size="30" smooth="false" wrappingWidth="14.006094932556152" />
+                                 </graphic>
+                              </Button>
+                              <Button fx:id="pauseButton1" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" visible="false">
+                                 <graphic>
+                                    <FontAwesomeIconView fill="#ffdcbd" glyphName="PAUSE" size="30" />
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </StackPane>
+                        <Button fx:id="forwardButton1" mnemonicParsing="false" onAction="#stop" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
+                           <graphic>
+                              <FontAwesomeIconView fill="#ffdcbd" glyphName="FORWARD" size="30" wrappingWidth="22.363237380981445" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </HBox>
+                  <VBox layoutX="10.0" layoutY="10.0" prefHeight="100.0" prefWidth="160.0">
+                     <children>
+                        <Slider fx:id="volumeSlider1" onDragDone="#setVolume" onMouseClicked="#setVolume" onMouseDragReleased="#setVolume" prefHeight="42.0" prefWidth="220.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
+                        <Label fx:id="volumeLabel1" alignment="CENTER" onDragDetected="#setVolume" onDragExited="#setVolume" onDragOver="#setVolume" prefHeight="50.0" prefWidth="250.0" text="100%" textFill="#ffdcbd">
+                           <graphic>
+                              <FontAwesomeIconView fill="#ffdcbd" glyphName="VOLUME_UP" size="30" />
+                           </graphic>
+                           <font>
+                              <Font size="20.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </children>
+            </HBox>
+            <HBox fx:id="OpenedSliderHBox" layoutX="55.0" layoutY="578.0" prefHeight="28.0" prefWidth="838.0" visible="false">
+               <children>
+                  <Label fx:id="TimerLabel" prefHeight="22.0" prefWidth="76.0" text="1:55" textFill="#84817e">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+                  <Slider fx:id="trackSlider1" majorTickUnit="100.0" minorTickCount="1" onDragDetected="#setTrackPosition" onDragDone="#setTrackPosition" prefHeight="15.0" prefWidth="774.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
+                  <Label fx:id="ProdPesni" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="22.0" prefWidth="77.0" text="2:22" textFill="#84817e">
+                     <font>
+                        <Font size="17.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+            <Button fx:id="ShtorkaRaskrytieBtn" layoutX="19.0" layoutY="2.0" mnemonicParsing="false" onAction="#RotateShtorka" prefHeight="80.0" prefWidth="246.0" style="-fx-background-color: transparent;" />
+            <Button fx:id="CloseShtorka" layoutX="443.0" layoutY="-11.0" mnemonicParsing="false" onAction="#RotateShtorka" style="-fx-background-color: transparent;" visible="false">
+               <graphic>
+                  <FontAwesomeIconView fill="GREY" glyphName="ANGLE_UP" size="35" wrappingWidth="26.098023489318166" />
+               </graphic>
+            </Button>
+         </children>
+      </Pane>
    </children>
 </AnchorPane>

@@ -23,3 +23,16 @@
 .search {
     -fx-text-fill: white;
 }
+.SongTextArea {
+-fx-padding:0;
+-fx-control-inner-background: #1e1c23;
+-fx-text-fill: #ffdcbd;
+-fx-border-color: #1e1c23;
+-fx-border-width: 1px;
+}
+.SongTextArea .scroll-bar:vertical .thumb {
+    -fx-background-color: #ffdcbd; /* Цвет ползунка */
+}
+.SongTextArea .scroll-bar:vertical {
+    -fx-background-color: #1e1c23; /* Цвет ползунка */
+}
