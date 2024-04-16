@@ -32,19 +32,16 @@ public class Controller {
     @FXML
     private Button pauseButton;
 
-    @FXML
-    private Button startPlay;
+
     @FXML
     private Label volumeLabel;
     @FXML
     private Slider volumeSlider;
     @FXML
     private Slider trackSlider;
-    @FXML
-    private  Label timerLabel;
+
     private Timeline timeline;
-    private int totalSongDuration;
-    private int seconds;
+
 
 
     @FXML
@@ -193,3 +190,5 @@ public class Controller {
     }
 
 }
+
+//GAshiykg yobal  rot  adleta
