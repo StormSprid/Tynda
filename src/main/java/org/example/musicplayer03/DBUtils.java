@@ -20,8 +20,8 @@ public class DBUtils {
             try {
                 FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource(fxmFile));
                 root = loader.load();
-                MainController MainController = loader.getController();
-                MainController.setUserInformation(username);
+                Controller Controller = loader.getController();
+                Controller.setUserInformation(username);
             } catch (IOException e){
                 e.printStackTrace();
             }
@@ -62,7 +62,7 @@ public class DBUtils {
                 psInsert.setString(2, password);
                 psInsert.executeUpdate();
 
-                changeScene(event, "main.fxml", username);
+                changeScene(event, "ui.fxml", username);
             }
         }catch (SQLException e) {
             e.printStackTrace();
@@ -117,7 +117,7 @@ public class DBUtils {
                 while (resultSet.next()) {
                     String retrievedPassword = resultSet.getString("password");
                     if (retrievedPassword.equals(password)) {
-                        changeScene(event, "main.fxml", username);
+                        changeScene(event, "ui.fxml", username);
                     }else {
                         System.out.println("Password did not match");
                         Alert alert = new Alert(Alert.AlertType.ERROR);

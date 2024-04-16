@@ -1,0 +1,26 @@
+.left_menu_button{
+    -fx-background-color: #ffdcbd;
+    -fx-background-radius: 30px; /* Apply radius here for consistency */
+}
+
+.left_menu_button:hover{
+    -fx-background-color: rgba(0,0,0,0.57); /* Consider changing the opacity if needed */
+}
+.Slider .track {
+    -fx-background-color: linear-gradient(to left, #ffdcbd, #ffdcbd);
+    -fx-pref-height: 1px;
+}
+.Slider .thumb {
+    -fx-background-color: #ffdcbd
+
+}
+.left_menu_button:highlighted {
+    -fx-background-color: rgba(0, 0, 0, 0.57); /* Изменение цвета фона при нажатии */
+    -fx-background-radius: 30px; /* Применение радиуса для консистенции */
+}
+.scroll-pane > .viewport {
+    -fx-background-color: #000000; /* Цвет фона контента */
+}
+.scroll-bar:vertical {
+    -fx-background-color: #000000; /* Цвет фона вертикальной полосы прокрутки */
+}
