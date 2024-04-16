@@ -66,6 +66,7 @@ public class Controller implements Initializable {
         isPlaying = true;
         Player.playSong();
         updateButtonVisibility();
+
     }
 
     @FXML

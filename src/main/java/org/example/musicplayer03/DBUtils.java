@@ -62,7 +62,7 @@ public class DBUtils {
                 psInsert.setString(2, password);
                 psInsert.executeUpdate();
 
-                changeScene(event, "ui.fxml", username);
+                changeScene(event, "main.fxml", username);
             }
         }catch (SQLException e) {
             e.printStackTrace();
@@ -117,7 +117,7 @@ public class DBUtils {
                 while (resultSet.next()) {
                     String retrievedPassword = resultSet.getString("password");
                     if (retrievedPassword.equals(password)) {
-                        changeScene(event, "ui.fxml", username);
+                        changeScene(event, "main.fxml", username);
                     }else {
                         System.out.println("Password did not match");
                         Alert alert = new Alert(Alert.AlertType.ERROR);

@@ -1,21 +1,323 @@
-<!--<?xml version="1.0" encoding="UTF-8"?>-->
+<?xml version="1.0" encoding="UTF-8"?>
 
-<!--<?import javafx.scene.control.Button?>-->
-<!--<?import javafx.scene.control.Label?>-->
-<!--<?import javafx.scene.layout.AnchorPane?>-->
-<!--<?import javafx.scene.text.Font?>-->
+<?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
+<?import java.lang.String?>
+<?import javafx.geometry.Rectangle2D?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
 
-<!--<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: yellow;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.musicplayer03.MainController">-->
-<!--   <children>-->
-<!--      <Label fx:id="label_welcome" layoutX="176.0" layoutY="154.0" text="Welcome to Tynda">-->
-<!--         <font>-->
-<!--            <Font size="30.0" />-->
-<!--         </font>-->
-<!--      </Label>-->
-<!--      <Button fx:id="button_logout" layoutX="251.0" layoutY="244.0" mnemonicParsing="false" style="-fx-background-color: red;" text="Log Out">-->
-<!--         <font>-->
-<!--            <Font size="20.0" />-->
-<!--         </font>-->
-<!--      </Button>-->
-<!--   </children>-->
-<!--</AnchorPane>-->
+<AnchorPane fx:id="mainAnchorPane" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" prefHeight="800.0" prefWidth="1200.0" style="-fx-background-color: #000000;" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.example.musicplayer03.Controller">
+   <children>
+      <Pane layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
+         <children>
+            <ImageView fx:id="UpperSongPhoto2" fitHeight="60.0" fitWidth="60.0" layoutX="35.0" layoutY="11.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+               </image></ImageView>
+            <Label fx:id="UpperSongName1" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" textFill="WHITE"></Label>
+
+            <ImageView fx:id="UpperSongPhoto1" fitHeight="60.0" fitWidth="60.0" layoutX="32.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
+               </image></ImageView>
+            <Label fx:id="UpperSongName2" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Song Name" textFill="WHITE">
+
+               <font>
+                  <Font name="PT Sans" size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="UpperArtistName" layoutX="108.0" layoutY="43.0" prefHeight="24.0" prefWidth="185.0" text="Artist" textFill="#84817e">
+               <font>
+                  <Font name="PT Sans" size="15.0" />
+               </font>
+            </Label>
+            <Slider fx:id="UpperSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
+            <HBox alignment="TOP_CENTER" layoutX="330.0" layoutY="42.0" prefHeight="27.0" prefWidth="264.0">
+               <children>
+                  <Button fx:id="startPlay" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                     <graphic>
+                        <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="20" />
+                     </graphic>
+                  </Button>
+                  <StackPane prefHeight="29.0" prefWidth="102.0">
+                     <children>
+                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                           <graphic>
+                              <FontAwesomeIconView fill="#ffdcbd" glyphName="PLAY" size="20" smooth="false" wrappingWidth="14.006094932556152" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="pauseButton" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" visible="false">
+                           <graphic>
+                              <FontAwesomeIconView fill="#ffdcbd" glyphName="PAUSE" size="20" />
+                           </graphic>
+                        </Button>
+                     </children>
+                  </StackPane>
+                  <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#stop" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
+                     <graphic>
+                        <FontAwesomeIconView fill="#ffdcbd" glyphName="FORWARD" size="20" wrappingWidth="22.363237380981445" />
+                     </graphic>
+                  </Button>
+               </children>
+            </HBox>
+            <Slider fx:id="volumeSlider" layoutX="724.0" layoutY="19.0" onDragDone="#setVolume" onMouseClicked="#setVolume" onMouseDragReleased="#setVolume" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
+            <FontAwesomeIconView fill="#ffdcbd" glyphName="VOLUME_UP" layoutX="760.0" layoutY="62.0" size="20" />
+            <Label fx:id="volumeLabel" layoutX="786.0" layoutY="46.0" onDragExited="#setVolume" onDragOver="#setVolume" text="100%" textFill="#ffdcbd" />
+         </children></Pane>
+      <Pane layoutX="10.0" layoutY="10.0" prefHeight="780.0" prefWidth="250.0" style="-fx-background-color: #ffdcbd; -fx-background-radius: 30;">
+         <children>
+            <ImageView fx:id="Logo" fitHeight="56.0" fitWidth="188.0" layoutX="16.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
+               <image>
+                  <Image url="@../../../icons/TyndaLabelPh-removebg-preview.png" />
+               </image>
+               <viewport>
+                  <Rectangle2D />
+               </viewport>
+            </ImageView>
+            <TextField fx:id="SearchField" layoutX="16.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" promptText="Search" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;" />
+            <VBox fx:id="LeftPaneButtonsVBox" layoutX="10.0" layoutY="157.0" prefHeight="537.0" prefWidth="250.0" spacing="8.0">
+               <children>
+                  <Button fx:id="HomeBtn" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#showHome" prefHeight="60.0" prefWidth="239.0" stylesheets="@design.css" text="  Home" textFill="#1e1c23">
+                     <font>
+                        <Font name="PT Sans Bold" size="25.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="HOME" size="35" wrappingWidth="28.071428298950195" />
+                     </graphic>
+                     <styleClass>
+                        <String fx:value="PressedButton" />
+                        <String fx:value="left_menu_button" />
+                     </styleClass>
+                  </Button>
+                  <Button fx:id="TopSongsBtn" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#showTopSongs" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="Top songs">
+                     <font>
+                        <Font name="PT Sans Bold" size="25.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="FIRE" size="35" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="MySongsBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="My songs" textFill="#1e1c23">
+                     <font>
+                        <Font name="PT Sans Bold" size="25.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="HEART" size="35" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="PlaylistBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="  Your playlists">
+                     <font>
+                        <Font name="PT Sans Bold" size="25.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="MUSIC" size="35" />
+                     </graphic>
+                  </Button>
+                  <Button fx:id="ForChildrenBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="  For children" textFill="#1e1c23">
+                     <font>
+                        <Font name="PT Sans Bold" size="25.0" />
+                     </font>
+                     <graphic>
+                        <FontAwesomeIconView glyphName="CHILD" size="35" />
+                     </graphic>
+                  </Button>
+                  <Label fx:id="label_welcome" text="Welcome" />
+               </children>
+            </VBox>
+            <HBox fx:id="SignInUpHbox" layoutX="7.0" layoutY="701.0" prefHeight="58.0" prefWidth="234.0">
+               <children>
+                  <Button fx:id="SignInBtn" mnemonicParsing="false" prefHeight="61.0" prefWidth="111.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 30;" text="Sign in" textFill="#ffdcbd">
+                     <font>
+                        <Font name="PT Sans Bold" size="20.0" />
+                     </font>
+                  </Button>
+                  <Button fx:id="button_logout" mnemonicParsing="false" prefHeight="62.0" prefWidth="125.0" style="-fx-background-color: #ffdcbd;" text="Log OUT" textFill="#1e1c23">
+                     <font>
+                        <Font name="PT Sans Bold" size="20.0" />
+                     </font>
+                  </Button>
+               </children>
+            </HBox>
+         </children>
+      </Pane>
+      <ScrollPane fx:id="HomePage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="925.0" prefWidth="880.0" style="-fx-background-color: #000000;">
+               <children>
+                  <HBox layoutX="50.0" layoutY="2.0" prefHeight="266.0" prefWidth="825.0">
+                     <children>
+                        <Label fx:id="HmPsLb1" contentDisplay="BOTTOM" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
+                           <graphic>
+                              <ImageView fx:id="ForYouIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                                 <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
+                                    <Image url="@../../../icons/radio.jpg" />
+
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="PT Sans Bold" size="45.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="HmPsLb2" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="Rock" textFill="WHITE">
+                           <font>
+                              <Font name="PT Sans Bold" size="45.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fx:id="RockIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
+                                    <Image url="@../../../icons/rock.jpg" />
+
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                        <Label fx:id="HmPsLb3" contentDisplay="BOTTOM" layoutX="20.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="Hip-Hop" textFill="WHITE">
+                           <font>
+                              <Font name="PT Sans Bold" size="45.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fx:id="HipHopIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                                 <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
+                                    <Image url="@../../../icons/HipHop.jpg" />
+
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="50.0" layoutY="320.0" prefHeight="266.0" prefWidth="825.0">
+                     <children>
+                        <Label fx:id="HmPsLb4" contentDisplay="BOTTOM" prefHeight="260.0" prefWidth="275.0" text="Kazakh " textFill="WHITE">
+                           <graphic>
+                              <ImageView fx:id="HmPsPh4" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
+                                    <Image url="@../../../icons/Kazakh.jpg" />
+
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="PT Sans Bold" size="45.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="HmPsLb5" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="Russia" textFill="WHITE">
+                           <font>
+                              <Font name="PT Sans Bold" size="45.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fx:id="HmPsPh5" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
+                                    <Image url="@../../../icons/Russia.jpg" />
+
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                        <Label fx:id="HmPsLb6" contentDisplay="BOTTOM" layoutX="20.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="From Us" textFill="WHITE">
+                           <font>
+                              <Font name="PT Sans Bold" size="45.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fx:id="HmPsPh6" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
+                                 <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
+                                    <Image url="@../../../icons/FromUs.jpg" />
+
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <HBox layoutX="50.0" layoutY="638.0" prefHeight="266.0" prefWidth="825.0">
+                     <children>
+                        <Label fx:id="HmPsLb7" contentDisplay="BOTTOM" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
+                           <graphic>
+                              <ImageView fx:id="HmPsPh7" fitHeight="200.0" fitWidth="273.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                           <font>
+                              <Font name="PT Sans Bold" size="45.0" />
+                           </font>
+                        </Label>
+                        <Label fx:id="HmPsLb8" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
+                           <font>
+                              <Font name="PT Sans Bold" size="45.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fx:id="HmPsPh8" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                        <Label fx:id="HmPsLb9" contentDisplay="BOTTOM" layoutX="20.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
+                           <font>
+                              <Font name="PT Sans Bold" size="45.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fx:id="HmPsPh9" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Label>
+                     </children>
+                  </HBox>
+               </children>
+            </AnchorPane>
+         </content>
+         <styleClass>
+            <String fx:value="scroll-bar" />
+            <String fx:value="scroll-pane" />
+         </styleClass>
+      </ScrollPane>
+      <ScrollPane fx:id="topSongsPage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
+         <content>
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="749.0" prefWidth="879.0" style="-fx-background-color: #000000;">
+               <children>
+                  <Label text="ТОП СОНГС" textFill="WHITE">
+                     <font>
+                        <Font size="96.0" />
+                     </font>
+                  </Label>
+               </children></AnchorPane>
+         </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
