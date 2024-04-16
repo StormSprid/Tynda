@@ -7,7 +7,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -32,7 +31,7 @@
                   <Font name="PT Sans" size="15.0" />
                </font>
             </Label>
-            <Slider fx:id="UpperSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" prefHeight="15.0" prefWidth="274.0" style="-fx-background-fill: linear-gradient(to right, #2D819D %d%%, #969696 %d%%) ; -fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
+            <Slider fx:id="UpperSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
             <HBox alignment="TOP_CENTER" layoutX="330.0" layoutY="42.0" prefHeight="27.0" prefWidth="264.0">
                <children>
                   <Button fx:id="backButton" mnemonicParsing="false" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
@@ -64,9 +63,11 @@
             <Slider fx:id="UpperVolumeSlider" layoutX="724.0" layoutY="19.0" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" />
             <FontAwesomeIconView fill="#ffdcbd" glyphName="VOLUME_UP" layoutX="814.0" layoutY="62.0" size="20" />
             <FontAwesomeIconView fill="#ffdcbd" glyphName="VOLUME_OFF" layoutX="731.0" layoutY="61.0" size="20" />
-         </children></Pane>
+         </children>
+      </Pane>
       <Pane layoutX="10.0" layoutY="10.0" prefHeight="780.0" prefWidth="250.0" style="-fx-background-color: #ffdcbd; -fx-background-radius: 30;">
          <children>
+            <Pane layoutX="12.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;" />
             <ImageView fitHeight="56.0" fitWidth="188.0" layoutX="16.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
                <image>
                   <Image url="@../../../icons/TyndaLabelPh-removebg-preview.png" />
@@ -75,7 +76,7 @@
                   <Rectangle2D />
                </viewport>
             </ImageView>
-            <TextField fx:id="SearchField" layoutX="16.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" promptText="Search" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;" styleClass="search" stylesheets="@design.css" />
+            <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" layoutX="28.0" layoutY="106.0" selectionFill="#ffdcbd" />
             <VBox fx:id="LeftPaneButtonsVBox" layoutX="10.0" layoutY="157.0" prefHeight="537.0" prefWidth="250.0" spacing="8.0">
                <children>
                   <Button fx:id="HomeBtn" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#showHome" prefHeight="60.0" prefWidth="239.0" stylesheets="@design.css" text="  Home" textFill="#1e1c23">
