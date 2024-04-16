@@ -7,13 +7,10 @@ public class Player extends MusicLib{
 
     public static void playSong(){
 
-        playDouble("src/Music/ЛИЗЕР/lizer-mayot-gori-mp3 [music].wav","src/Music/ЛИЗЕР/lizer-mayot-gori-mp3 [vocals].wav");
+        playDouble("src/Music/Стрыкало/Валентин Стрыкало - Кайен [music].wav","src/Music/Стрыкало/Валентин Стрыкало - Кайен [vocals].wav");
 
 
     }
-    public static void stopSong(){
 
-        stopDouble();
-    }
 
 }

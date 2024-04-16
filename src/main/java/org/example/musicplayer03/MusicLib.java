@@ -49,6 +49,9 @@ public class MusicLib {
         isPlaying = false;
         musicClip.close();
         vocalsClip.close();
+        musicClip = null;
+        vocalsClip = null;
+
 
     }
 
@@ -118,6 +121,9 @@ public class MusicLib {
             }
         }
         return false;
+    }
+    public static boolean isSongLoaded(){
+        return musicClip != null && vocalsClip != null;
     }
 
 }

@@ -38,14 +38,14 @@
             <Slider fx:id="trackSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" onDragDetected="#setTrackPosition" onDragDone="#setTrackPosition" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
             <HBox alignment="TOP_CENTER" layoutX="330.0" layoutY="42.0" prefHeight="27.0" prefWidth="264.0">
                <children>
-                  <Button fx:id="startPlay" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                  <Button fx:id="resetButton" mnemonicParsing="false" onAction="#stop" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                      <graphic>
                         <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="20" />
                      </graphic>
                   </Button>
                   <StackPane prefHeight="29.0" prefWidth="102.0">
                      <children>
-                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="PLAY" size="20" smooth="false" wrappingWidth="14.006094932556152" />
                            </graphic>

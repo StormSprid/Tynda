@@ -18,6 +18,7 @@ import java.util.ResourceBundle;
 
 public class Controller implements Initializable {
 
+
     @FXML
     private Label label_welcome;
     @FXML
@@ -28,12 +29,11 @@ public class Controller implements Initializable {
     private Button TopSongsBtn;
     @FXML
     private Button playButton;
-    @FXML
-    private Button karaokeButton;
-    @FXML
-    private Button stopButton;
+
     @FXML
     private Button pauseButton;
+    @FXML
+    private Button resetButton;
 
     @FXML
     private Label volumeLabel;
@@ -64,17 +64,18 @@ public class Controller implements Initializable {
 
     @FXML
     protected void play() {
-        isPlaying = true;
-        Player.playSong();
-        updateButtonVisibility();
+        if (!MusicLib.isSongLoaded()) {
 
 
-
-
-
-        timeline.play();
-        if(MusicLib.isTrackDone()){
+            isPlaying = true;
+            Player.playSong();
             updateButtonVisibility();
+            timeline.play();
+
+
+        } else {
+            pause();
+
         }
     }
 
@@ -83,23 +84,14 @@ public class Controller implements Initializable {
     @FXML
     protected void stop() {
         isPlaying = !isPlaying;
-        if (!isPlaying) {
-
-
-            Player.stopSong();
+        if (isPlaying) {
+            MusicLib.stopDouble();
 
         }
 
     }
 
-//    @FXML
-//    private void initialize() {
-//        // Инициализация интерфейса
-//        updateButtonVisibility();
-//        initializeSliders();
-//        initializeTimeline();
-//
-//    }
+
 
     private void initializeSliders() {
         // Инициализация слайдеров
