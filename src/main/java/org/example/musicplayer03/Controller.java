@@ -12,6 +12,8 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.Parent;
 
 import javafx.stage.Stage;
+import javafx.animation.KeyFrame;
+import javafx.util.Duration;
 
 
 public class Controller {
@@ -36,7 +38,10 @@ public class Controller {
     private Label volumeLabel;
     @FXML
     private Slider volumeSlider;
+    @FXML
+    private  Slider trackSlider;
     private Timeline timeline;
+    private int totalSongDuration;
     private int seconds;
 
 
@@ -61,6 +66,7 @@ public class Controller {
         isPlaying = true;
         Player.playSong();
         updateButtonVisibility();
+        timeline.play();
     }
 
 
@@ -78,10 +84,43 @@ public class Controller {
 
     }
     @FXML
-    public void initialize() {
-        updateButtonVisibility(); // Установка начального состояния кнопок
-
+    private void initialize() {
+        // Инициализация интерфейса
+        updateButtonVisibility();
+        initializeSliders();
+        initializeTimeline();
     }
+
+    private void initializeSliders() {
+        // Инициализация слайдеров
+        trackSlider.setMin(0);
+        trackSlider.setMax(100);
+        trackSlider.setValue(0);
+
+        // Обработчик изменения значения слайдера
+        trackSlider.valueProperty().addListener((observable, oldValue, newValue) -> {
+            if (!trackSlider.isValueChanging()) {
+                // Проверка, воспроизводится ли трек и не находится ли слайдер в процессе изменения
+                if (isPlaying) {
+                    MusicLib.setTrackPosition(newValue.doubleValue());
+                }
+            }
+        });
+    }
+
+    private void initializeTimeline() {
+        // Создание таймлайна для обновления слайдера каждую секунду
+        timeline = new Timeline(
+                new KeyFrame(Duration.seconds(1), event -> {
+                    if (isPlaying && !trackSlider.isValueChanging()) {
+                        int currentDuration = (int) MusicLib.getTrackPosition();
+                        trackSlider.setValue((double) currentDuration);
+                    }
+                })
+        );
+        timeline.setCycleCount(Timeline.INDEFINITE);
+    }
+
 
 
     @FXML
@@ -89,6 +128,8 @@ public class Controller {
         isPlaying = !isPlaying;
         MusicLib.pauseDouble();
         updateButtonVisibility();
+        timeline.play();
+
     }
 
     @FXML
