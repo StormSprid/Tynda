@@ -35,7 +35,7 @@
                   <Font name="PT Sans" size="15.0" />
                </font>
             </Label>
-            <Slider fx:id="UpperSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
+            <Slider fx:id="trackSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" onDragDetected="#setTrackPosition" onDragDone="#setTrackPosition" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
             <HBox alignment="TOP_CENTER" layoutX="330.0" layoutY="42.0" prefHeight="27.0" prefWidth="264.0">
                <children>
                   <Button fx:id="startPlay" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
@@ -132,6 +132,7 @@
                         <FontAwesomeIconView glyphName="CHILD" size="35" />
                      </graphic>
                   </Button>
+                  <Label fx:id="label_welcome" text="Welcome" />
                </children>
             </VBox>
             <HBox fx:id="SignInUpHbox" layoutX="7.0" layoutY="701.0" prefHeight="58.0" prefWidth="234.0">
@@ -141,7 +142,7 @@
                         <Font name="PT Sans Bold" size="20.0" />
                      </font>
                   </Button>
-                  <Button mnemonicParsing="false" prefHeight="62.0" prefWidth="125.0" style="-fx-background-color: #ffdcbd;" text="Sign up" textFill="#1e1c23">
+                  <Button fx:id="button_logout" mnemonicParsing="false" prefHeight="62.0" prefWidth="125.0" style="-fx-background-color: #ffdcbd;" text="Log OUT" textFill="#1e1c23">
                      <font>
                         <Font name="PT Sans Bold" size="20.0" />
                      </font>
@@ -160,7 +161,11 @@
                            <graphic>
                               <ImageView fx:id="ForYouIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                                  <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
                                     <Image url="@../../../icons/radio.jpg" />
+
                                  </image>
                               </ImageView>
                            </graphic>
@@ -175,7 +180,11 @@
                            <graphic>
                               <ImageView fx:id="RockIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
                                     <Image url="@../../../icons/rock.jpg" />
+
                                  </image>
                               </ImageView>
                            </graphic>
@@ -187,7 +196,11 @@
                            <graphic>
                               <ImageView fx:id="HipHopIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                                  <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
                                     <Image url="@../../../icons/HipHop.jpg" />
+
                                  </image>
                               </ImageView>
                            </graphic>
@@ -200,7 +213,11 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh4" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
                                     <Image url="@../../../icons/Kazakh.jpg" />
+
                                  </image>
                               </ImageView>
                            </graphic>
@@ -215,7 +232,11 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh5" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
                                     <Image url="@../../../icons/Russia.jpg" />
+
                                  </image>
                               </ImageView>
                            </graphic>
@@ -227,7 +248,11 @@
                            <graphic>
                               <ImageView fx:id="HmPsPh6" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
                                  <image>
+
+                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
+
                                     <Image url="@../../../icons/FromUs.jpg" />
+
                                  </image>
                               </ImageView>
                            </graphic>
