@@ -76,7 +76,6 @@ public class MusicLib {
             FloatControl vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
             FloatControl musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
 
-            float maxVolume = Math.min(vocalControl.getMaximum(), musicControl.getMaximum());
             float minVolume = Math.min(vocalControl.getMinimum(), musicControl.getMinimum());
 
             // Изменение дБ относительно минимального значения
@@ -86,6 +85,21 @@ public class MusicLib {
 
             vocalControl.setValue(db);
             musicControl.setValue(db);
+        }
+    }
+
+    public static void setVocalVolume(double volume){
+        if(vocalsClip!=null) {
+
+            FloatControl vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
+            FloatControl musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            float minVolume = Math.min(vocalControl.getMinimum(), musicControl.getMinimum());
+            double dbChange = (volume / 100.0) * (6.0206 - (-80));
+            // Масштабирование и добавление минимального значения
+            float db = (float) (minVolume + dbChange);
+
+            vocalControl.setValue(db);
         }
     }
 
@@ -113,19 +127,16 @@ public class MusicLib {
 
 
     public static boolean isTrackDone() {
-        if (musicClip != null) {
-            if (getTrackPosition() >= getTotalDuration() || getTrackPosition() == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
+
+            return getTrackPosition() >= getTotalDuration() || getTrackPosition() == 0;
+
     }
-    public static boolean isSongLoaded(){
+
+    public static boolean isSongLoaded() {
         return musicClip != null && vocalsClip != null;
     }
 
+
+
+
 }
-
-

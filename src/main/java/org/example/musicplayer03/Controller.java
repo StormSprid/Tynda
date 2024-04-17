@@ -47,9 +47,22 @@ public class Controller implements Initializable {
     @FXML
     private Label volumeLabel;
     @FXML
+    private Label karaokeLabel;
+
+    @FXML
+    private Label volumeLabelShtorka;
+
+    @FXML
     private Slider volumeSlider;
+
+    @FXML
+    private Slider karaokeSlider;
+    @FXML
+    private Slider volumeSliderShtorka;
     @FXML
     private Slider trackSlider;
+    @FXML
+    private Slider trackSliderShtorka;
     @FXML
     private Button ShtorkaVrskytieBtn;
     @FXML
@@ -109,6 +122,8 @@ public class Controller implements Initializable {
             timeline.play();
 
 
+
+
         } else {
             pause();
 
@@ -136,6 +151,10 @@ public class Controller implements Initializable {
         trackSlider.setMin(0);
         trackSlider.setMax(100);
         trackSlider.setValue(0);
+        trackSliderShtorka.setMin(0);
+        trackSliderShtorka.setMax(100);
+        trackSliderShtorka.setValue(0);
+
 
         // Обработчик изменения значения слайдера
         trackSlider.setOnMouseDragEntered(event -> {
@@ -157,17 +176,47 @@ public class Controller implements Initializable {
             }
 
         });
+
+
+        trackSliderShtorka.setOnMouseDragEntered(event -> {
+            if (isPlaying) {
+                MusicLib.setTrackPosition(trackSliderShtorka.getValue());
+            }
+
+
+        });
+        trackSliderShtorka.setOnMouseClicked(event -> {
+            if (isPlaying) {
+                MusicLib.setTrackPosition(trackSliderShtorka.getValue());
+            }
+
+        });
+        trackSliderShtorka.setOnDragDone(event -> {
+            if (isPlaying) {
+                MusicLib.setTrackPosition(trackSliderShtorka.getValue());
+            }
+
+        });
     }
 
     private void initializeTimeline() {
         // Создание таймлайна для обновления слайдера каждую секунду
         timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
+                    if (MusicLib.isTrackDone()){
+                        updateButtonVisibility();
+                    }
                     if (isPlaying && !trackSlider.isValueChanging()) {
 
                         trackSlider.setValue((double) MusicLib.getTrackPosition());
-//                        timerLabel.setText((String) MusicLib.getTrackPosition());
+
                     }
+                    if (isPlaying && !trackSliderShtorka.isValueChanging()) {
+
+                        trackSliderShtorka.setValue((double) MusicLib.getTrackPosition());
+
+                    }
+
 
                 })
         );
@@ -189,9 +238,33 @@ public class Controller implements Initializable {
     @FXML
     protected void setVolume() {
         MusicLib.setVolume(volumeSlider.getValue());
-        double currentVolume = volumeSlider.getValue();
-        volumeLabel.setText(String.format("%.0f%%", currentVolume));
+        MusicLib.setVolume(volumeSliderShtorka.getValue());
 
+        if (volumeSlider.isValueChanging()) {
+            double currentVolume = volumeSlider.getValue();
+
+            volumeSlider.setValue(currentVolume);
+            volumeSliderShtorka.setValue(currentVolume);
+
+            volumeLabel.setText(String.format("%.0f%%", currentVolume));
+            volumeLabelShtorka.setText(String.format("%.0f%%", currentVolume));
+
+
+        } else if (volumeSliderShtorka.isValueChanging()){
+            double currentVolume = volumeSliderShtorka.getValue();
+
+            volumeSlider.setValue(currentVolume);
+            volumeSliderShtorka.setValue(currentVolume);
+
+            volumeLabel.setText(String.format("%.0f%%", currentVolume));
+            volumeLabelShtorka.setText(String.format("%.0f%%", currentVolume));
+        }
+    }
+    @FXML
+    protected void setKaraokeVolume(){
+        MusicLib.setVocalVolume(karaokeSlider.getValue());
+        double currentVolume = karaokeSlider.getValue();
+        karaokeLabel.setText(String.format("%.0f%%",currentVolume));
     }
 
     @FXML
@@ -250,6 +323,7 @@ public class Controller implements Initializable {
     @FXML
     private  void setTrackPosition(){
         MusicLib.setTrackPosition(trackSlider.getValue());
+        MusicLib.setTrackPosition(trackSliderShtorka.getValue());
     }
 
 @FXML
@@ -417,7 +491,7 @@ public void RotateShtorka() {
     // Чтение текста из файла и установка его в TextArea
     @FXML
     public void loadText() {
-        String path = "src/Lyrics/Rapsodiya.txt"; // Замените путём к вашему файлу
+        String path = "src/Lyrics/Алматынын тундеры.txt"; // Замените путём к вашему файлу
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             StringBuilder content = new StringBuilder();
             String line;
