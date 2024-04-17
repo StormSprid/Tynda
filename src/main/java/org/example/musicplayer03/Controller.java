@@ -1,17 +1,23 @@
 package org.example.musicplayer03;
 
-import javafx.animation.KeyFrame;
-import javafx.animation.Timeline;
+import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Slider;
+import javafx.scene.control.*;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.Pane;
+import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -33,7 +39,10 @@ public class Controller implements Initializable {
     @FXML
     private Button pauseButton;
     @FXML
-    private Button resetButton;
+    private Button pauseButton1;
+    @FXML
+    private Button playButton1;
+
 
     @FXML
     private Label volumeLabel;
@@ -41,6 +50,31 @@ public class Controller implements Initializable {
     private Slider volumeSlider;
     @FXML
     private Slider trackSlider;
+    @FXML
+    private Button ShtorkaVrskytieBtn;
+    @FXML
+    private Pane Shtorka;
+    private Boolean isShtorkaOpen = false;
+   @FXML
+    private ImageView UpperSongPhOpened;
+    @FXML
+    private ImageView UpperSongPh;
+    @FXML
+    private TextArea SongTextArea;
+    @FXML
+    private TextFlow ArtistSongNameText;
+    @FXML
+    private Label UpperArtistName;
+    @FXML
+    private Label UpperSongName;
+    @FXML
+    private HBox OpenedSliderHBox;
+    @FXML
+    private HBox OpenedButtonsHBox;
+    @FXML
+    private HBox UpperButtonsHBox;
+    @FXML
+    private Button CloseShtorka;
 
     private Timeline timeline;
 
@@ -58,6 +92,8 @@ public class Controller implements Initializable {
     private void updateButtonVisibility() {
         playButton.setVisible(!isPlaying);
         pauseButton.setVisible(isPlaying);
+        playButton1.setVisible(!isPlaying);
+        pauseButton1.setVisible(isPlaying);
 
     }
 
@@ -76,7 +112,9 @@ public class Controller implements Initializable {
         } else {
             pause();
 
+
         }
+
     }
 
 
@@ -213,6 +251,194 @@ public class Controller implements Initializable {
     private  void setTrackPosition(){
         MusicLib.setTrackPosition(trackSlider.getValue());
     }
+
+@FXML
+public void RotateShtorka() {
+    animateSize(); // Запуск анимации изменения размеров
+    animateImage(); // Запуск анимации изображения
+    animateTextArea();
+    animateArtistSongName();
+    animateSlider();
+    animateButtons();
+    if(isShtorkaOpen){
+        CloseShtorka.setVisible(true);
+    }
+    else{
+        CloseShtorka.setVisible(false);
+    }
+}
+
+    private void animateSize() {
+        Timeline timeline = new Timeline();
+
+        KeyValue kvWidth;
+        KeyValue kvHeight;
+
+        if (!isShtorkaOpen) {
+            kvWidth = new KeyValue(Shtorka.prefWidthProperty(), 898);
+            kvHeight = new KeyValue(Shtorka.prefHeightProperty(), 760);
+            isShtorkaOpen = true;
+        } else {
+            kvWidth = new KeyValue(Shtorka.prefWidthProperty(), 898);
+            kvHeight = new KeyValue(Shtorka.prefHeightProperty(), 82);
+            isShtorkaOpen = false;
+        }
+
+        KeyFrame kfSize = new KeyFrame(Duration.seconds(0.6), kvWidth, kvHeight);
+        timeline.getKeyFrames().add(kfSize);
+        timeline.play(); // Запуск анимации изменения размеров
+    }
+
+    private void animateImage() {
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), UpperSongPhOpened);
+
+        if (isShtorkaOpen) {
+            UpperSongPhOpened.setVisible(true);
+            UpperSongPhOpened.setOpacity(0.0);
+            fadeTransition.setFromValue(0.0);
+            fadeTransition.setToValue(1.0);
+            fadeTransition.setDelay(Duration.seconds(0.5));
+            UpperSongPh.setVisible(false);// Задержка перед началом fade-in
+        } else {
+            UpperSongPh.setVisible(true);
+            fadeTransition.setFromValue(1.0);
+            fadeTransition.setToValue(0.0);
+            fadeTransition.setDelay(Duration.seconds(0.0)); // Без задержки
+
+            // Установка действия по завершении fade-out
+            fadeTransition.setOnFinished(event -> UpperSongPhOpened.setVisible(false));
+        }
+
+        fadeTransition.play(); // Запуск анимации fade
+    }
+    private void animateTextArea() {
+        // Создаём объект FadeTransition с указанием длительности анимации и объекта TextArea
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), SongTextArea);
+
+        if (isShtorkaOpen) {
+            // Устанавливаем видимость TextArea и начальное значение прозрачности
+            SongTextArea.setVisible(true);
+            SongTextArea.setOpacity(0.0);
+            // Устанавливаем значения начальной и конечной прозрачности
+            fadeTransition.setFromValue(0.0);
+            fadeTransition.setToValue(1.0);
+            // Задержка перед началом fade-in
+            fadeTransition.setDelay(Duration.seconds(0.5));
+            loadText();
+        } else {
+            // Устанавливаем значения начальной и конечной прозрачности
+            fadeTransition.setFromValue(1.0);
+            fadeTransition.setToValue(0.0);
+            // Установка видимости TextArea на false после завершения fade-out анимации
+            fadeTransition.setOnFinished(event -> SongTextArea.setVisible(false));
+        }
+
+        // Запуск анимации fade
+        fadeTransition.play();
+    }
+    private void animateArtistSongName() {
+        // Создаём объект FadeTransition с указанием длительности анимации и объекта TextArea
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), ArtistSongNameText);
+
+        if (isShtorkaOpen) {
+            // Устанавливаем видимость TextArea и начальное значение прозрачности
+            ArtistSongNameText.setVisible(true);
+            ArtistSongNameText.setOpacity(0.0);
+            // Устанавливаем значения начальной и конечной прозрачности
+            fadeTransition.setFromValue(0.0);
+            fadeTransition.setToValue(1.0);
+            // Задержка перед началом fade-in
+            fadeTransition.setDelay(Duration.seconds(0.5));
+            UpperArtistName.setVisible(false);
+            UpperSongName.setVisible(false);
+        } else {
+            // Устанавливаем значения начальной и конечной прозрачности
+            fadeTransition.setFromValue(1.0);
+            fadeTransition.setToValue(0.0);
+            UpperArtistName.setVisible(true);
+            UpperSongName.setVisible(true);
+            // Установка видимости TextArea на false после завершения fade-out анимации
+            fadeTransition.setOnFinished(event -> ArtistSongNameText.setVisible(false));
+        }
+
+        // Запуск анимации fade
+        fadeTransition.play();
+    }
+
+
+
+    public void animateSlider() {
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), OpenedSliderHBox);
+        if (isShtorkaOpen) {
+            OpenedSliderHBox.setOpacity(0.0);
+            OpenedSliderHBox.setVisible(true);
+            fadeTransition.setFromValue(0.0);
+            fadeTransition.setToValue(1.0);
+            fadeTransition.setDelay(Duration.seconds(0.5));
+            trackSlider.setVisible(false);
+        } else {
+            fadeTransition.setFromValue(1.0);
+            fadeTransition.setToValue(0.0);
+            fadeTransition.setOnFinished(event -> {
+                OpenedSliderHBox.setVisible(false);
+
+            });
+            trackSlider.setVisible(true);
+        }
+        fadeTransition.play();
+    }
+
+    public void animateButtons() {
+        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), OpenedButtonsHBox);
+        if (isShtorkaOpen) {
+            OpenedButtonsHBox.setOpacity(0.0);
+            OpenedButtonsHBox.setVisible(true);
+            fadeTransition.setFromValue(0.0);
+            fadeTransition.setToValue(1.0);
+            fadeTransition.setDelay(Duration.seconds(0.5));
+                volumeSlider.setVisible(false);
+                volumeLabel.setVisible(false);
+                UpperButtonsHBox.setVisible(false);
+
+        } else {
+            fadeTransition.setFromValue(1.0);
+            fadeTransition.setToValue(0.0);
+            fadeTransition.setOnFinished(event -> {
+                OpenedButtonsHBox.setVisible(false);
+            });
+            volumeSlider.setVisible(true);
+            volumeLabel.setVisible(true);
+            UpperButtonsHBox.setVisible(true);
+        }
+        fadeTransition.play();
+    }
+
+
+    // Чтение текста из файла и установка его в TextArea
+    @FXML
+    public void loadText() {
+        String path = "src/Lyrics/Rapsodiya.txt"; // Замените путём к вашему файлу
+        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+            StringBuilder content = new StringBuilder();
+            String line;
+
+            // Читаем файл построчно
+            while ((line = reader.readLine()) != null) {
+                content.append(line).append("\n");
+            }
+
+            // Записываем содержимое файла в TextArea
+            SongTextArea.setText(content.toString());
+
+        } catch (IOException e) {
+            // Обработка ошибок чтения файла
+            System.err.println("Error reading file: " + e.getMessage());
+        }
+    }
+
+
+
+
 
 }
 
