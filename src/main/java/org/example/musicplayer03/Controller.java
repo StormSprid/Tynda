@@ -79,6 +79,10 @@ public class Controller implements Initializable {
     @FXML
     private Label UpperArtistName;
     @FXML
+    private Label durationLabel;
+    @FXML
+    private Label timerLabel;
+    @FXML
     private Label UpperSongName;
     @FXML
     private HBox OpenedSliderHBox;
@@ -121,6 +125,7 @@ public class Controller implements Initializable {
             updateButtonVisibility();
             timeline.play();
 
+            durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
 
 
 
@@ -216,7 +221,7 @@ public class Controller implements Initializable {
                         trackSliderShtorka.setValue((double) MusicLib.getTrackPosition());
 
                     }
-
+                timerLabel.setText(MusicLib.secondsToString(MusicLib.getTrackPositionToInt()));
 
                 })
         );

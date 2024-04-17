@@ -120,9 +120,16 @@ public class MusicLib {
         }
         return 0;
     }
+    public static int getTrackPositionToInt(){
+        if (musicClip!=null){
+            long clipPosition = musicClip.getMicrosecondPosition();
+            return (int) clipPosition / 1000000;
+        }
+        return 0;
+    }
 
     public static int getTotalDuration() {
-        return (int) musicClip.getMicrosecondLength();
+        return (int) musicClip.getMicrosecondLength() / 1000000;
     }
 
 
@@ -136,7 +143,13 @@ public class MusicLib {
         return musicClip != null && vocalsClip != null;
     }
 
+public static String secondsToString(int seconds){
+    int minutes = seconds / 60;
+    int remainingSeconds = seconds % 60;
 
+
+    return String.format("%02d:%02d", minutes, remainingSeconds);
+}
 
 
 }

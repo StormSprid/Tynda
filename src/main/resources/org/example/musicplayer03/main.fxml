@@ -409,13 +409,13 @@
             </HBox>
             <HBox fx:id="OpenedSliderHBox" layoutX="55.0" layoutY="578.0" prefHeight="28.0" prefWidth="838.0" visible="false">
                <children>
-                  <Label fx:id="TimerLabel" prefHeight="22.0" prefWidth="76.0" text="1:55" textFill="#84817e">
+                  <Label fx:id="timerLabel" prefHeight="22.0" prefWidth="76.0" text="1:55" textFill="#84817e">
                      <font>
                         <Font size="17.0" />
                      </font>
                   </Label>
                   <Slider fx:id="trackSliderShtorka" majorTickUnit="100.0" minorTickCount="1" onDragDetected="#setTrackPosition" onDragDone="#setTrackPosition" prefHeight="15.0" prefWidth="774.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
-                  <Label fx:id="ProdPesni" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="22.0" prefWidth="77.0" text="2:22" textFill="#84817e">
+                  <Label fx:id="durationLabel" alignment="CENTER_RIGHT" layoutX="10.0" layoutY="10.0" prefHeight="22.0" prefWidth="77.0" text="2:22" textFill="#84817e">
                      <font>
                         <Font size="17.0" />
                      </font>
