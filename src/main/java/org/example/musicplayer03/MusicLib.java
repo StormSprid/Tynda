@@ -3,7 +3,9 @@ import javafx.application.Platform;
 
 import javax.sound.sampled.*;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import javax.swing.Timer;
 
 
@@ -88,8 +90,8 @@ public class MusicLib {
         }
     }
 
-    public static void setVocalVolume(double volume){
-        if(vocalsClip!=null) {
+    public static void setVocalVolume(double volume) {
+        if (vocalsClip != null) {
 
             FloatControl vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
             FloatControl musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
@@ -120,8 +122,9 @@ public class MusicLib {
         }
         return 0;
     }
-    public static int getTrackPositionToInt(){
-        if (musicClip!=null){
+
+    public static int getTrackPositionToInt() {
+        if (musicClip != null) {
             long clipPosition = musicClip.getMicrosecondPosition();
             return (int) clipPosition / 1000000;
         }
@@ -129,13 +132,16 @@ public class MusicLib {
     }
 
     public static int getTotalDuration() {
-        return (int) musicClip.getMicrosecondLength() / 1000000;
+
+            return (int) musicClip.getMicrosecondLength() / 1000000;
+
+
     }
 
 
     public static boolean isTrackDone() {
 
-            return getTrackPosition() >= getTotalDuration() || getTrackPosition() == 0;
+        return getTrackPosition() >= getTotalDuration() || getTrackPosition() == 0;
 
     }
 
@@ -143,13 +149,13 @@ public class MusicLib {
         return musicClip != null && vocalsClip != null;
     }
 
-public static String secondsToString(int seconds){
-    int minutes = seconds / 60;
-    int remainingSeconds = seconds % 60;
+    public static String secondsToString(int seconds) {
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
 
 
-    return String.format("%02d:%02d", minutes, remainingSeconds);
-}
+        return String.format("%02d:%02d", minutes, remainingSeconds);
+    }
 
 
 }

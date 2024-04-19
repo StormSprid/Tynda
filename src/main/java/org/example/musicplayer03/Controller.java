@@ -10,6 +10,7 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import java.io.File;
 
 
 import javafx.event.ActionEvent;
@@ -19,11 +20,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 
 public class Controller implements Initializable {
 
+
+int currentSongid = 0;
 
     @FXML
     private Label label_welcome;
@@ -101,8 +106,14 @@ public class Controller implements Initializable {
     private ScrollPane HomePage;
     @FXML
     private ScrollPane topSongsPage;
+    @FXML
+    private TextField lyricsField;
     private boolean isPlaying = false;
     private Button currentActiveButton = null;
+
+
+
+
 
 
 
@@ -121,12 +132,11 @@ public class Controller implements Initializable {
 
 
             isPlaying = true;
-            Player.playSong();
+
             updateButtonVisibility();
             timeline.play();
-
+            playPlaylist();
             durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
-
 
 
         } else {
@@ -136,6 +146,10 @@ public class Controller implements Initializable {
         }
 
     }
+//    @FXML
+//    protected   void playNextSong(){
+//        Player.playNextSong();
+//    }
 
 
 
@@ -221,12 +235,54 @@ public class Controller implements Initializable {
                         trackSliderShtorka.setValue((double) MusicLib.getTrackPosition());
 
                     }
+
+
                 timerLabel.setText(MusicLib.secondsToString(MusicLib.getTrackPositionToInt()));
 
+
+                    int currentSecond = MusicLib.getTrackPositionToInt();
+                    String dir = "src/Lyrics/Алматынын тундеры.txt";
+                    try (BufferedReader br = new BufferedReader(new FileReader(dir))) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            String[] parts = line.split(",");
+                            if (parts.length == 2) {
+                                String time = parts[0];
+                                String text = parts[1];
+
+                                String[] timeParts = time.split(":");
+                                int minute = Integer.parseInt(timeParts[0]);
+                                int seconds = Integer.parseInt(timeParts[1]);
+
+                                if (currentSecond ==(minute*60 + seconds)){
+                                    SongTextArea.appendText(text + "\n");
+                                }
+                            }
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
 
+    }
+
+    private List<Songs> playlist;
+
+    private void initializePlaylist(){
+        playlist = new ArrayList<>();
+
+        Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
+        Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "src/main/resources/icons/6480931.jpg", "src/Lyrics/Гори.txt");
+        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
+        Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
+        playlist.add(Lizer);
+        playlist.add(Rihanna);
+        playlist.add(roses);
+        playlist.add(Strykalo);
     }
 
 
@@ -317,6 +373,7 @@ public class Controller implements Initializable {
         updateButtonVisibility(); // Установка начального состояния кнопок
         initializeSliders();
         initializeTimeline();
+        initializePlaylist();
     }
 
     public void setUserInformation(String username) {
@@ -507,7 +564,7 @@ public void RotateShtorka() {
             }
 
             // Записываем содержимое файла в TextArea
-            SongTextArea.setText(content.toString());
+//            SongTextArea.setText(content.toString());
 
         } catch (IOException e) {
             // Обработка ошибок чтения файла
@@ -516,9 +573,52 @@ public void RotateShtorka() {
     }
 
 
+public void playPlaylist(){
+                System.out.println(currentSongid);
+                Songs song = playlist.get(currentSongid);
+                MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
+                 Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
+                 UpperSongPh.setImage(image);
+                 UpperSongName.setText(song.Name);
+                    UpperArtistName.setText(song.Artist);
 
 
+}
+    @FXML
+    protected void playNextSong(){
 
+        currentSongid++;
+        if (currentSongid<playlist.size()) {
+
+            Songs song = playlist.get(currentSongid);
+            Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
+            UpperSongPh.setImage(image);
+            UpperSongName.setText(song.Name);
+            UpperArtistName.setText(song.Artist);
+            MusicLib.stopDouble();
+            MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
+            if (playButton.isVisible()) {
+                playButton.setVisible(false);
+                pauseButton.setVisible(true);
+            }
+        }
+}
+
+    @FXML
+    protected void playPreviousSong(){
+
+        currentSongid--;
+        if (currentSongid<playlist.size()) {
+
+            Songs song = playlist.get(currentSongid);
+            MusicLib.stopDouble();
+            MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
+            if (playButton.isVisible()) {
+                playButton.setVisible(false);
+                pauseButton.setVisible(true);
+            }
+        }
+    }
 }
 
 
