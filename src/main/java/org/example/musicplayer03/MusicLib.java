@@ -150,6 +150,10 @@ public static String secondsToString(int seconds){
 
     return String.format("%02d:%02d", minutes, remainingSeconds);
 }
+    public static String getCurrentTrack() {
+        return musicClip.getFormat().toString(); // Это пример. Вы можете изменить это в соответствии с вашими требованиями.
+    }
+
 
 
 }

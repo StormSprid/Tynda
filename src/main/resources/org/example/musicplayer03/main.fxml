@@ -250,6 +250,7 @@
                         </Label>
                      </children>
                   </HBox>
+                  <Button fx:id="openPlaylistButton" layoutX="179.0" layoutY="288.0" mnemonicParsing="false" onAction="#handleOpenPlaylist" text="Button" />
                </children>
             </AnchorPane>
          </content>
@@ -262,9 +263,9 @@
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="749.0" prefWidth="879.0" style="-fx-background-color: #000000;">
                <children>
-                  <Label text="ТОП СОНГС" textFill="WHITE">
+                  <Label text="Top songs for this month:" textFill="WHITE">
                      <font>
-                        <Font size="96.0" />
+                        <Font name="PT Sans" size="50.0" />
                      </font>
                   </Label>
                </children></AnchorPane>
@@ -430,5 +431,14 @@
             </Button>
          </children>
       </Pane>
+      <ScrollPane fx:id="PlaylistPane" layoutX="290.0" layoutY="112.0" prefHeight="677.0" prefWidth="882.0" visible="false">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="823.0" prefWidth="861.0">
+               <children>
+                  <VBox fx:id="songsList" layoutX="12.0" layoutY="10.0" prefHeight="636.0" prefWidth="840.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
    </children>
 </AnchorPane>

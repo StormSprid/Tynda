@@ -5,9 +5,9 @@ public class Player extends MusicLib{
 
 
 
-    public static void playSong(){
+    public static void playSong(String music, String vocal){
 
-        playDouble("src/Music/Кайрош/Алматынын тундеры/kayrat-nurtas-nyusha-dzheyson-almatynyn-tunderi-ay [music].wav","src/Music/Кайрош/Алматынын тундеры/kayrat-nurtas-nyusha-dzheyson-almatynyn-tunderi-ay [vocals].wav");
+        playDouble(music,vocal);
 
 
     }

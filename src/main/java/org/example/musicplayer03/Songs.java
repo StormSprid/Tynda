@@ -4,10 +4,18 @@ public class Songs {
     int SongId;
     String Name;
     String genre;
-    String url;
+    String url_vocal;
+    String url_music;
 
     int counter;
-
+    public Songs(int songId, String name, String genre, String urlMusic, String urlVocal, int counter) {
+        this.SongId = songId;
+        this.Name = name;
+        this.genre = genre;
+        this.url_music = urlMusic;
+        this.url_vocal = urlVocal;
+        this.counter = counter;
+    }
     public int getSongId() {
         return SongId;
     }
@@ -32,12 +40,19 @@ public class Songs {
         this.genre = genre;
     }
 
-    public String getUrl() {
-        return url;
+    public String getUrl_vocal() {
+        return url_vocal;
     }
 
-    public void setUrl(String url) {
-        this.url = url;
+    public void setUrl_vocal(String url_vocal) {
+        this.url_vocal = url_vocal;
+    }
+    public String getUrl_music() {
+        return url_music;
+    }
+
+    public void setUrl_music(String url_music) {
+        this.url_music = url_music;
     }
 
     public int getCounter() {
@@ -47,4 +62,5 @@ public class Songs {
     public void setCounter(int counter) {
         this.counter = counter;
     }
+
 }

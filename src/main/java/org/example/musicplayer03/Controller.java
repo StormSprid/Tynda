@@ -8,6 +8,7 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
+import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 
@@ -20,6 +21,8 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+
+import static org.example.musicplayer03.Player.playSong;
 
 
 public class Controller implements Initializable {
@@ -92,17 +95,25 @@ public class Controller implements Initializable {
     private HBox UpperButtonsHBox;
     @FXML
     private Button CloseShtorka;
+    @FXML
+    private VBox songsList;
+    @FXML
+    private Button openPlaylistButton;
+    private String  PlayingVocal = "src/Music/Кайрош/Алматынын тундеры/kayrat-nurtas-nyusha-dzheyson-almatynyn-tunderi-ay [vocals].wav";
+    private String PlayingMusic = "src/Music/Кайрош/Алматынын тундеры/kayrat-nurtas-nyusha-dzheyson-almatynyn-tunderi-ay [music].wav";
 
     private Timeline timeline;
 
 
-
+    @FXML
+    private ScrollPane PlaylistPane;
     @FXML
     private ScrollPane HomePage;
     @FXML
     private ScrollPane topSongsPage;
     private boolean isPlaying = false;
     private Button currentActiveButton = null;
+    private PlaylistService playlistService = new PlaylistService();
 
 
 
@@ -117,24 +128,20 @@ public class Controller implements Initializable {
 
     @FXML
     protected void play() {
-        if (!MusicLib.isSongLoaded()) {
-
-
+        if (!MusicLib.isSongLoaded() || !MusicLib.getCurrentTrack().equals(PlayingMusic)) {
+            if (isPlaying) {
+                MusicLib.stopDouble();
+            }
+            else{
+            playSong(PlayingMusic, PlayingVocal);
             isPlaying = true;
-            Player.playSong();
             updateButtonVisibility();
             timeline.play();
-
             durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
-
-
-
-        } else {
+            }
+        } else  {
             pause();
-
-
         }
-
     }
 
 
@@ -513,6 +520,35 @@ public void RotateShtorka() {
             // Обработка ошибок чтения файла
             System.err.println("Error reading file: " + e.getMessage());
         }
+    }
+    @FXML
+    private void handleOpenPlaylist() {
+        // Предполагаем, что есть доступ к какому-то плейлисту
+        Playlists playlist = playlistService.getPlaylistByName("My Favorite Songs");
+        PlaylistPane.setVisible(true);
+        HomePage.setVisible(false);
+
+        // Очистить предыдущий список
+        songsList.getChildren().clear();
+        for (Songs song : playlist.getSongs()) {
+            System.out.println("Song: " + song.getName() + ", Genre: " + song.getGenre()); // Для отладки
+
+            if (song.getName() != null && song.getGenre() != null) {
+                String buttonText = song.getName() + " (" + song.getGenre() + ")";
+                Button songButton = new Button(buttonText);
+                songButton.setOnAction(event ->{
+                        UpdateMusicVocal(song.getUrl_music(), song.getUrl_vocal());
+                });
+                songsList.getChildren().add(songButton);
+            } else {
+                System.out.println("Error: Song name or genre is null.");
+            }
+        }
+    }
+    public void UpdateMusicVocal(String music, String vocal){
+        PlayingMusic = music;
+        PlayingVocal = vocal;
+        play();
     }
 
 
