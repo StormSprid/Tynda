@@ -306,12 +306,12 @@
                   <Image url="@../../../icons/Kazakh.jpg" />
                </image>
             </ImageView>
-            <Label fx:id="UpperSongName" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Алматынын Тундери Ай   " textFill="WHITE">
+            <Label fx:id="UpperSongName" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Song" textFill="WHITE">
                <font>
                   <Font name="PT Sans" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="UpperArtistName" layoutX="108.0" layoutY="43.0" prefHeight="24.0" prefWidth="185.0" text="Кайрат Нуртас" textFill="#84817e">
+            <Label fx:id="UpperArtistName" layoutX="108.0" layoutY="43.0" prefHeight="24.0" prefWidth="185.0" text="Name" textFill="#84817e">
                <font>
                   <Font name="PT Sans" size="15.0" />
                </font>
@@ -366,14 +366,14 @@
                   </VBox>
                   <HBox alignment="TOP_CENTER" prefHeight="62.0" prefWidth="315.0">
                      <children>
-                        <Button fx:id="startPlay1" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                        <Button fx:id="startPlay1" mnemonicParsing="false" onAction="#playPreviousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="30" />
                            </graphic>
                         </Button>
                         <StackPane alignment="TOP_CENTER" prefHeight="85.0" prefWidth="101.0">
                            <children>
-                              <Button fx:id="playButton1" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                              <Button fx:id="playButton1" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                                  <graphic>
                                     <FontAwesomeIconView fill="#ffdcbd" glyphName="PLAY" size="30" smooth="false" wrappingWidth="14.006094932556152" />
                                  </graphic>
@@ -385,7 +385,7 @@
                               </Button>
                            </children>
                         </StackPane>
-                        <Button fx:id="forwardButton1" mnemonicParsing="false" onAction="#stop" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
+                        <Button fx:id="forwardButton1" mnemonicParsing="false" onAction="#playNextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="FORWARD" size="30" wrappingWidth="22.363237380981445" />
                            </graphic>

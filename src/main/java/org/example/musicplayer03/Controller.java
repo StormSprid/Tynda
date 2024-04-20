@@ -28,7 +28,7 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
 
-int currentSongid = 0;
+    int currentSongid = 0;
 
     @FXML
     private Label label_welcome;
@@ -73,7 +73,7 @@ int currentSongid = 0;
     @FXML
     private Pane Shtorka;
     private Boolean isShtorkaOpen = false;
-   @FXML
+    @FXML
     private ImageView UpperSongPhOpened;
     @FXML
     private ImageView UpperSongPh;
@@ -83,6 +83,10 @@ int currentSongid = 0;
     private TextFlow ArtistSongNameText;
     @FXML
     private Label UpperArtistName;
+    @FXML
+    private Label UpperArtistName1;
+    @FXML
+    private Label UpperSongName1;
     @FXML
     private Label durationLabel;
     @FXML
@@ -111,6 +115,7 @@ int currentSongid = 0;
     private boolean isPlaying = false;
     private Button currentActiveButton = null;
 
+    String currentLyrics = " ";
 
 
 
@@ -237,15 +242,15 @@ int currentSongid = 0;
                     }
 
 
-                timerLabel.setText(MusicLib.secondsToString(MusicLib.getTrackPositionToInt()));
+                    timerLabel.setText(MusicLib.secondsToString(MusicLib.getTrackPositionToInt()));
 
 
                     int currentSecond = MusicLib.getTrackPositionToInt();
-                    String dir = "src/Lyrics/Алматынын тундеры.txt";
+                    String dir = currentLyrics;
                     try (BufferedReader br = new BufferedReader(new FileReader(dir))) {
                         String line;
                         while ((line = br.readLine()) != null) {
-                            String[] parts = line.split(",");
+                            String[] parts = line.split(";");
                             if (parts.length == 2) {
                                 String time = parts[0];
                                 String text = parts[1];
@@ -277,12 +282,16 @@ int currentSongid = 0;
 
         Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
         Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "src/main/resources/icons/6480931.jpg", "src/Lyrics/Гори.txt");
-        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
-        Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
+        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "src/main/resources/icons/roses.png", "src/Lyrics/Гори.txt");
+        Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "src/main/resources/icons/Смирись_и_расслабься!.jpg", "src/Lyrics/кайен.txt");
+        Songs Kayrat_almaty = new Songs(5, "Алматынын тундеры", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/Алматынын тундеры/music.wav", "src/Music/Кайрош/Алматынын тундеры/vocals.wav", "src/main/resources/icons/Kazakh.jpg", "src/Lyrics/Алматынын тундеры.txt");
+        Songs Kayrat_myUniverse = new Songs(6, "My universe", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/My Universe/My_Universe_music.wav", "src/Music/Кайрош/My Universe/My_Universe_vocals.wav", "src/main/resources/icons/Kazakh.jpg", "src/Lyrics/MyUniverse.txt");
         playlist.add(Lizer);
         playlist.add(Rihanna);
         playlist.add(roses);
         playlist.add(Strykalo);
+        playlist.add(Kayrat_almaty);
+        playlist.add(Kayrat_myUniverse);
     }
 
 
@@ -388,21 +397,21 @@ int currentSongid = 0;
         MusicLib.setTrackPosition(trackSliderShtorka.getValue());
     }
 
-@FXML
-public void RotateShtorka() {
-    animateSize(); // Запуск анимации изменения размеров
-    animateImage(); // Запуск анимации изображения
-    animateTextArea();
-    animateArtistSongName();
-    animateSlider();
-    animateButtons();
-    if(isShtorkaOpen){
-        CloseShtorka.setVisible(true);
+    @FXML
+    public void RotateShtorka() {
+        animateSize(); // Запуск анимации изменения размеров
+        animateImage(); // Запуск анимации изображения
+        animateTextArea();
+        animateArtistSongName();
+        animateSlider();
+        animateButtons();
+        if(isShtorkaOpen){
+            CloseShtorka.setVisible(true);
+        }
+        else{
+            CloseShtorka.setVisible(false);
+        }
     }
-    else{
-        CloseShtorka.setVisible(false);
-    }
-}
 
     private void animateSize() {
         Timeline timeline = new Timeline();
@@ -460,7 +469,7 @@ public void RotateShtorka() {
             fadeTransition.setToValue(1.0);
             // Задержка перед началом fade-in
             fadeTransition.setDelay(Duration.seconds(0.5));
-            loadText();
+            loadText(currentLyrics);
         } else {
             // Устанавливаем значения начальной и конечной прозрачности
             fadeTransition.setFromValue(1.0);
@@ -532,9 +541,9 @@ public void RotateShtorka() {
             fadeTransition.setFromValue(0.0);
             fadeTransition.setToValue(1.0);
             fadeTransition.setDelay(Duration.seconds(0.5));
-                volumeSlider.setVisible(false);
-                volumeLabel.setVisible(false);
-                UpperButtonsHBox.setVisible(false);
+            volumeSlider.setVisible(false);
+            volumeLabel.setVisible(false);
+            UpperButtonsHBox.setVisible(false);
 
         } else {
             fadeTransition.setFromValue(1.0);
@@ -552,8 +561,7 @@ public void RotateShtorka() {
 
     // Чтение текста из файла и установка его в TextArea
     @FXML
-    public void loadText() {
-        String path = "src/Lyrics/Алматынын тундеры.txt"; // Замените путём к вашему файлу
+    public void loadText(String path ) {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             StringBuilder content = new StringBuilder();
             String line;
@@ -573,17 +581,26 @@ public void RotateShtorka() {
     }
 
 
-public void playPlaylist(){
-                System.out.println(currentSongid);
-                Songs song = playlist.get(currentSongid);
-                MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
-                 Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
-                 UpperSongPh.setImage(image);
-                 UpperSongName.setText(song.Name);
-                    UpperArtistName.setText(song.Artist);
+    public void playPlaylist(){
+        System.out.println(currentSongid);
+        Songs song = playlist.get(currentSongid);
+        MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
+        Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
+        UpperSongPh.setImage(image);
+        UpperSongPhOpened.setImage(image);
+
+        UpperSongName.setText(song.Name);
+        UpperArtistName.setText(song.Artist);
 
 
-}
+        UpperArtistName1.setText(song.Name);
+        UpperSongName1.setText(song.Artist);
+        SongTextArea.setText(" ");
+
+
+        currentLyrics = song.urlLyrics;
+
+    }
     @FXML
     protected void playNextSong(){
 
@@ -593,8 +610,17 @@ public void playPlaylist(){
             Songs song = playlist.get(currentSongid);
             Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
             UpperSongPh.setImage(image);
+            UpperSongPhOpened.setImage(image);
+
             UpperSongName.setText(song.Name);
             UpperArtistName.setText(song.Artist);
+
+
+            UpperArtistName1.setText(song.Name);
+            UpperSongName1.setText(song.Artist);
+            currentLyrics = song.urlLyrics;
+            SongTextArea.setText(" ");
+
             MusicLib.stopDouble();
             MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
             if (playButton.isVisible()) {
@@ -602,7 +628,7 @@ public void playPlaylist(){
                 pauseButton.setVisible(true);
             }
         }
-}
+    }
 
     @FXML
     protected void playPreviousSong(){
@@ -611,6 +637,17 @@ public void playPlaylist(){
         if (currentSongid<playlist.size()) {
 
             Songs song = playlist.get(currentSongid);
+            Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
+            UpperSongPh.setImage(image);
+            UpperSongPhOpened.setImage(image);
+
+            UpperSongName.setText(song.Name);
+            UpperArtistName.setText(song.Artist);
+            currentLyrics = song.urlLyrics;
+            SongTextArea.setText(" ");
+
+            UpperArtistName1.setText(song.Name);
+            UpperSongName1.setText(song.Artist);
             MusicLib.stopDouble();
             MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
             if (playButton.isVisible()) {
