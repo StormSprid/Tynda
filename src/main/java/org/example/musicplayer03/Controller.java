@@ -8,9 +8,9 @@ import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.layout.VBox;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
+import java.io.File;
 
 
 import javafx.event.ActionEvent;
@@ -20,13 +20,15 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
-
-import static org.example.musicplayer03.Player.playSong;
 
 
 public class Controller implements Initializable {
 
+
+    int currentSongid = 0;
 
     @FXML
     private Label label_welcome;
@@ -71,7 +73,7 @@ public class Controller implements Initializable {
     @FXML
     private Pane Shtorka;
     private Boolean isShtorkaOpen = false;
-   @FXML
+    @FXML
     private ImageView UpperSongPhOpened;
     @FXML
     private ImageView UpperSongPh;
@@ -95,25 +97,23 @@ public class Controller implements Initializable {
     private HBox UpperButtonsHBox;
     @FXML
     private Button CloseShtorka;
-    @FXML
-    private VBox songsList;
-    @FXML
-    private Button openPlaylistButton;
-    private String  PlayingVocal = "src/Music/Кайрош/Алматынын тундеры/kayrat-nurtas-nyusha-dzheyson-almatynyn-tunderi-ay [vocals].wav";
-    private String PlayingMusic = "src/Music/Кайрош/Алматынын тундеры/kayrat-nurtas-nyusha-dzheyson-almatynyn-tunderi-ay [music].wav";
 
     private Timeline timeline;
 
 
-    @FXML
-    private ScrollPane PlaylistPane;
+
     @FXML
     private ScrollPane HomePage;
     @FXML
     private ScrollPane topSongsPage;
+    @FXML
+    private TextField lyricsField;
     private boolean isPlaying = false;
     private Button currentActiveButton = null;
-    private PlaylistService playlistService = new PlaylistService();
+
+
+
+
 
 
 
@@ -128,21 +128,28 @@ public class Controller implements Initializable {
 
     @FXML
     protected void play() {
-        if (!MusicLib.isSongLoaded() || !MusicLib.getCurrentTrack().equals(PlayingMusic)) {
-            if (isPlaying) {
-                MusicLib.stopDouble();
-            }
-            else{
-            playSong(PlayingMusic, PlayingVocal);
+        if (!MusicLib.isSongLoaded()) {
+
+
             isPlaying = true;
+
             updateButtonVisibility();
             timeline.play();
+            playPlaylist();
             durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
-            }
-        } else  {
+
+
+        } else {
             pause();
+
+
         }
+
     }
+//    @FXML
+//    protected   void playNextSong(){
+//        Player.playNextSong();
+//    }
 
 
 
@@ -228,12 +235,54 @@ public class Controller implements Initializable {
                         trackSliderShtorka.setValue((double) MusicLib.getTrackPosition());
 
                     }
-                timerLabel.setText(MusicLib.secondsToString(MusicLib.getTrackPositionToInt()));
 
+
+                    timerLabel.setText(MusicLib.secondsToString(MusicLib.getTrackPositionToInt()));
+
+
+                    int currentSecond = MusicLib.getTrackPositionToInt();
+                    String dir = "src/Lyrics/Алматынын тундеры.txt";
+                    try (BufferedReader br = new BufferedReader(new FileReader(dir))) {
+                        String line;
+                        while ((line = br.readLine()) != null) {
+                            String[] parts = line.split(",");
+                            if (parts.length == 2) {
+                                String time = parts[0];
+                                String text = parts[1];
+
+                                String[] timeParts = time.split(":");
+                                int minute = Integer.parseInt(timeParts[0]);
+                                int seconds = Integer.parseInt(timeParts[1]);
+
+                                if (currentSecond ==(minute*60 + seconds)){
+                                    SongTextArea.appendText(text + "\n");
+                                }
+                            }
+
+                        }
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
 
+    }
+
+    private List<Songs> playlist;
+
+    private void initializePlaylist(){
+        playlist = new ArrayList<>();
+
+        Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
+        Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "src/main/resources/icons/6480931.jpg", "src/Lyrics/Гори.txt");
+        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
+        Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
+        playlist.add(Lizer);
+        playlist.add(Rihanna);
+        playlist.add(roses);
+        playlist.add(Strykalo);
     }
 
 
@@ -324,6 +373,7 @@ public class Controller implements Initializable {
         updateButtonVisibility(); // Установка начального состояния кнопок
         initializeSliders();
         initializeTimeline();
+        initializePlaylist();
     }
 
     public void setUserInformation(String username) {
@@ -338,21 +388,21 @@ public class Controller implements Initializable {
         MusicLib.setTrackPosition(trackSliderShtorka.getValue());
     }
 
-@FXML
-public void RotateShtorka() {
-    animateSize(); // Запуск анимации изменения размеров
-    animateImage(); // Запуск анимации изображения
-    animateTextArea();
-    animateArtistSongName();
-    animateSlider();
-    animateButtons();
-    if(isShtorkaOpen){
-        CloseShtorka.setVisible(true);
+    @FXML
+    public void RotateShtorka() {
+        animateSize(); // Запуск анимации изменения размеров
+        animateImage(); // Запуск анимации изображения
+        animateTextArea();
+        animateArtistSongName();
+        animateSlider();
+        animateButtons();
+        if(isShtorkaOpen){
+            CloseShtorka.setVisible(true);
+        }
+        else{
+            CloseShtorka.setVisible(false);
+        }
     }
-    else{
-        CloseShtorka.setVisible(false);
-    }
-}
 
     private void animateSize() {
         Timeline timeline = new Timeline();
@@ -482,9 +532,9 @@ public void RotateShtorka() {
             fadeTransition.setFromValue(0.0);
             fadeTransition.setToValue(1.0);
             fadeTransition.setDelay(Duration.seconds(0.5));
-                volumeSlider.setVisible(false);
-                volumeLabel.setVisible(false);
-                UpperButtonsHBox.setVisible(false);
+            volumeSlider.setVisible(false);
+            volumeLabel.setVisible(false);
+            UpperButtonsHBox.setVisible(false);
 
         } else {
             fadeTransition.setFromValue(1.0);
@@ -514,47 +564,60 @@ public void RotateShtorka() {
             }
 
             // Записываем содержимое файла в TextArea
-            SongTextArea.setText(content.toString());
+//            SongTextArea.setText(content.toString());
 
         } catch (IOException e) {
             // Обработка ошибок чтения файла
             System.err.println("Error reading file: " + e.getMessage());
         }
     }
+
+
+    public void playPlaylist(){
+        System.out.println(currentSongid);
+        Songs song = playlist.get(currentSongid);
+        MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
+        Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
+        UpperSongPh.setImage(image);
+        UpperSongName.setText(song.Name);
+        UpperArtistName.setText(song.Artist);
+
+
+    }
     @FXML
-    private void handleOpenPlaylist() {
-        // Предполагаем, что есть доступ к какому-то плейлисту
-        Playlists playlist = playlistService.getPlaylistByName("My Favorite Songs");
-        PlaylistPane.setVisible(true);
-        HomePage.setVisible(false);
+    protected void playNextSong(){
 
-        // Очистить предыдущий список
-        songsList.getChildren().clear();
-        for (Songs song : playlist.getSongs()) {
-            System.out.println("Song: " + song.getName() + ", Genre: " + song.getGenre()); // Для отладки
+        currentSongid++;
+        if (currentSongid<playlist.size()) {
 
-            if (song.getName() != null && song.getGenre() != null) {
-                String buttonText = song.getName() + " (" + song.getGenre() + ")";
-                Button songButton = new Button(buttonText);
-                songButton.setOnAction(event ->{
-                        UpdateMusicVocal(song.getUrl_music(), song.getUrl_vocal());
-                });
-                songsList.getChildren().add(songButton);
-            } else {
-                System.out.println("Error: Song name or genre is null.");
+            Songs song = playlist.get(currentSongid);
+            Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
+            UpperSongPh.setImage(image);
+            UpperSongName.setText(song.Name);
+            UpperArtistName.setText(song.Artist);
+            MusicLib.stopDouble();
+            MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
+            if (playButton.isVisible()) {
+                playButton.setVisible(false);
+                pauseButton.setVisible(true);
             }
         }
     }
-    public void UpdateMusicVocal(String music, String vocal){
-        PlayingMusic = music;
-        PlayingVocal = vocal;
-        play();
+
+    @FXML
+    protected void playPreviousSong(){
+
+        currentSongid--;
+        if (currentSongid<playlist.size()) {
+
+            Songs song = playlist.get(currentSongid);
+            MusicLib.stopDouble();
+            MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
+            if (playButton.isVisible()) {
+                playButton.setVisible(false);
+                pauseButton.setVisible(true);
+            }
+        }
     }
-
-
-
-
-
 }
-
 

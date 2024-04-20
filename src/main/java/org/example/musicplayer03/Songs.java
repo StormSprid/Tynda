@@ -3,19 +3,68 @@ package org.example.musicplayer03;
 public class Songs {
     int SongId;
     String Name;
+    String Artist;
     String genre;
-    String url_vocal;
-    String url_music;
+
+    String urlMusic;
+    String urlVocal;
+    String urlPhoto;
+    String urlLyrics;
 
     int counter;
-    public Songs(int songId, String name, String genre, String urlMusic, String urlVocal, int counter) {
-        this.SongId = songId;
-        this.Name = name;
+
+    public Songs(int songId, String name, String artist, String genre, String urlMusic, String urlVocal, String urlPhoto, String urlLyrics) {
+        SongId = songId;
+        Name = name;
+        Artist = artist;
         this.genre = genre;
-        this.url_music = urlMusic;
-        this.url_vocal = urlVocal;
-        this.counter = counter;
+        this.urlMusic = urlMusic;
+        this.urlVocal = urlVocal;
+        this.urlPhoto = urlPhoto;
+        this.urlLyrics = urlLyrics;
     }
+
+    public String getArtist() {
+        return Artist;
+    }
+
+    public void setArtist(String artist) {
+        Artist = artist;
+    }
+
+    public String getUrlMusic() {
+        return urlMusic;
+    }
+
+    public void setUrlMusic(String urlMusic) {
+        this.urlMusic = urlMusic;
+    }
+
+    public String getUrlVocal() {
+        return urlVocal;
+    }
+
+    public void setUrlVocal(String urlVocal) {
+        this.urlVocal = urlVocal;
+    }
+
+    public String getUrlPhoto() {
+        return urlPhoto;
+    }
+
+    public void setUrlPhoto(String urlPhoto) {
+        this.urlPhoto = urlPhoto;
+    }
+
+    public String getUrlLyrics() {
+        return urlLyrics;
+    }
+
+    public void setUrlLyrics(String urlLyrics) {
+        this.urlLyrics = urlLyrics;
+    }
+
+
     public int getSongId() {
         return SongId;
     }
@@ -40,20 +89,7 @@ public class Songs {
         this.genre = genre;
     }
 
-    public String getUrl_vocal() {
-        return url_vocal;
-    }
 
-    public void setUrl_vocal(String url_vocal) {
-        this.url_vocal = url_vocal;
-    }
-    public String getUrl_music() {
-        return url_music;
-    }
-
-    public void setUrl_music(String url_music) {
-        this.url_music = url_music;
-    }
 
     public int getCounter() {
         return counter;
