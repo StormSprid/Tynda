@@ -133,7 +133,7 @@ public class Controller implements Initializable {
 
     @FXML
     protected void play() {
-        if (!MusicLib.isSongLoaded()) {
+//        if (!MusicLib.isSongLoaded()) {
 
 
             isPlaying = true;
@@ -143,12 +143,19 @@ public class Controller implements Initializable {
             playPlaylist();
             durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
 
-
-        } else {
-            pause();
-
-
+        if (MusicLib.getTrackPositionToInt() == MusicLib.getTotalDuration() ){
+            updateButtonVisibility();
+            stop();
+            playNextSong();
         }
+
+
+
+//        } else {
+//            pause();
+//
+//
+//        }
 
     }
 //    @FXML
@@ -227,6 +234,8 @@ public class Controller implements Initializable {
         // Создание таймлайна для обновления слайдера каждую секунду
         timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
+                    System.out.println(MusicLib.getTotalDuration());
+                    System.out.println(MusicLib.getTrackPositionToInt());
                     if (MusicLib.isTrackDone()){
                         updateButtonVisibility();
                     }
@@ -614,6 +623,11 @@ public class Controller implements Initializable {
 
         currentLyrics = song.urlLyrics;
         durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
+        if (MusicLib.getTrackPositionToInt() == MusicLib.getTotalDuration() ){
+            updateButtonVisibility();
+            MusicLib.stopDouble();
+            playNextSong();
+        }
 
     }
     @FXML

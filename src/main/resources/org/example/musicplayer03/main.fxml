@@ -10,9 +10,6 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
-<?import javafx.scene.effect.Light.Distant?>
-<?import javafx.scene.effect.Lighting?>
-<?import javafx.scene.effect.Shadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -295,23 +292,13 @@
                   </Label>
                </children>
             </TextFlow>
-            <TextArea fx:id="SongTextArea" editable="false" layoutX="468.0" layoutY="88.0" prefHeight="441.0" prefWidth="421.0" style="-fx-border-width: 0; -fx-border-color: transparent; -fx-background-color: transparent;" styleClass="SongTextArea" stylesheets="@design.css" visible="false" wrapText="true">
+            <TextArea fx:id="SongTextArea" editable="false" layoutX="468.0" layoutY="88.0" prefHeight="441.0" prefWidth="421.0" promptText="Увы!Текст этой песни открывается только с платной подпиской " style="-fx-border-width: 0; -fx-border-color: transparent; -fx-background-color: transparent;" styleClass="SongTextArea" stylesheets="@design.css" visible="false" wrapText="true">
                <font>
                   <Font size="25.0" />
                </font>
                <cursor>
                   <Cursor fx:constant="NONE" />
                </cursor>
-               <effect>
-                  <Lighting>
-                     <bumpInput>
-                        <Shadow />
-                     </bumpInput>
-                     <light>
-                        <Light.Distant />
-                     </light>
-                  </Lighting>
-               </effect>
             </TextArea>
             <ImageView fx:id="UpperSongPhOpened" fitHeight="441.0" fitWidth="444.0" layoutX="19.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
@@ -373,7 +360,7 @@
                <children>
                   <VBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="195.0">
                      <children>
-                        <Slider fx:id="karaokeSlider" onDragDetected="#setKaraokeVolume" onDragDone="#setKaraokeVolume" onMouseClicked="#setKaraokeVolume" onMouseDragEntered="#setTrackPosition" onMouseDragged="#setKaraokeVolume" onMousePressed="#setKaraokeVolume" prefHeight="42.0" prefWidth="241.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
+                        <Slider fx:id="karaokeSlider" onDragDetected="#setKaraokeVolume" onDragDone="#setKaraokeVolume" onMouseClicked="#setKaraokeVolume" onMouseDragEntered="#setTrackPosition" onMouseDragged="#setKaraokeVolume" onMousePressed="#setKaraokeVolume" prefHeight="42.0" prefWidth="241.0" styleClass="Slider" stylesheets="@design.css" value="90.0" />
                         <Label fx:id="karaokeLabel" alignment="CENTER" prefHeight="26.0" prefWidth="248.0" text="Karaoke" textFill="#ffdcbd">
                            <font>
                               <Font name="PT Sans Bold" size="20.0" />
