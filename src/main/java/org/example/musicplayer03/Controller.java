@@ -571,8 +571,7 @@ public class Controller implements Initializable {
                 content.append(line).append("\n");
             }
 
-            // Записываем содержимое файла в TextArea
-//            SongTextArea.setText(content.toString());
+
 
         } catch (IOException e) {
             // Обработка ошибок чтения файла
@@ -599,6 +598,7 @@ public class Controller implements Initializable {
 
 
         currentLyrics = song.urlLyrics;
+        durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
 
     }
     @FXML
@@ -620,6 +620,7 @@ public class Controller implements Initializable {
             UpperSongName1.setText(song.Artist);
             currentLyrics = song.urlLyrics;
             SongTextArea.setText(" ");
+            durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
 
             MusicLib.stopDouble();
             MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
@@ -648,6 +649,7 @@ public class Controller implements Initializable {
 
             UpperArtistName1.setText(song.Name);
             UpperSongName1.setText(song.Artist);
+            durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
             MusicLib.stopDouble();
             MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
             if (playButton.isVisible()) {
