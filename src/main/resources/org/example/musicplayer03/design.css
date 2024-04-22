@@ -29,6 +29,14 @@
 -fx-text-fill: #ffdcbd;
 -fx-border-color: #1e1c23;
 -fx-border-width: 1px;
+
+-fx-background-color: transparent;
+-fx-background: transparent;
+-fx-background-insets: 0;
+-fx-background-radius: 0;
+-fx-padding: 0;
+-fx-border-color: transparent;
+
 }
 .SongTextArea .scroll-bar:vertical .thumb {
     -fx-background-color: #ffdcbd; /* Цвет ползунка */
@@ -36,3 +44,12 @@
 .SongTextArea .scroll-bar:vertical {
     -fx-background-color: #1e1c23; /* Цвет ползунка */
 }
+.SongTextArea .scroll-bar:vertical {
+    -fx-pref-width: 1;
+    -fx-opacity: 0;
+}
+.SongTextArea .scroll-bar:horizontal {
+    -fx-pref-height: 1;
+    -fx-opacity: 0;
+}
+

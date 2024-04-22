@@ -247,11 +247,20 @@ public class Controller implements Initializable {
 
                     int currentSecond = MusicLib.getTrackPositionToInt();
                     String dir = currentLyrics;
+                    boolean foundValidLines = false; // Флаг для отслеживания найденных корректных строк
                     try (BufferedReader br = new BufferedReader(new FileReader(dir))) {
                         String line;
                         while ((line = br.readLine()) != null) {
+                            // Проверяем наличие нулевого байта в строке
+                            if (line.startsWith("\uFEFF")) {
+                                line = line.substring(1); // Удаляем нулевой байт из строки
+                            }
+
                             String[] parts = line.split(";");
+                            // Проверяем количество частей после разделения строки
                             if (parts.length == 2) {
+                                foundValidLines = true; // Устанавливаем флаг в true, если найдена корректная строка
+
                                 String time = parts[0];
                                 String text = parts[1];
 
@@ -259,16 +268,20 @@ public class Controller implements Initializable {
                                 int minute = Integer.parseInt(timeParts[0]);
                                 int seconds = Integer.parseInt(timeParts[1]);
 
-                                if (currentSecond ==(minute*60 + seconds)){
+                                if (currentSecond == (minute * 60 + seconds)) {
                                     SongTextArea.appendText(text + "\n");
                                 }
                             }
-
                         }
 
-                    } catch (Exception e) {
+                        // Если не было найдено корректных строк, выводим соответствующее сообщение
+                        if (!foundValidLines) {
+                            SongTextArea.setText("Упс! Текст данной песни откроется на платной версии приложения!");
+                        }
+                    } catch (IOException e) {
                         e.printStackTrace();
                     }
+
                 })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
@@ -281,17 +294,19 @@ public class Controller implements Initializable {
         playlist = new ArrayList<>();
 
         Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
-        Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "src/main/resources/icons/6480931.jpg", "src/Lyrics/Гори.txt");
-        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "src/main/resources/icons/roses.png", "src/Lyrics/Гори.txt");
+        Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "src/main/resources/icons/6480931.jpg", "src/Lyrics/rihanna.txt");
+        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "src/main/resources/icons/roses.png", "src/Lyrics/roses.txt");
         Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "src/main/resources/icons/Смирись_и_расслабься!.jpg", "src/Lyrics/кайен.txt");
         Songs Kayrat_almaty = new Songs(5, "Алматынын тундеры", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/Алматынын тундеры/music.wav", "src/Music/Кайрош/Алматынын тундеры/vocals.wav", "src/main/resources/icons/Kazakh.jpg", "src/Lyrics/Алматынын тундеры.txt");
         Songs Kayrat_myUniverse = new Songs(6, "My universe", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/My Universe/My_Universe_music.wav", "src/Music/Кайрош/My Universe/My_Universe_vocals.wav", "src/main/resources/icons/Kazakh.jpg", "src/Lyrics/MyUniverse.txt");
+        Songs Rhapsody = new Songs(7,"Рапсодия конца света","Gone.FLUDD","Russia","src/Music/Рапсодия Конца Света/music.wav","src/Music/Рапсодия Конца Света/vocals.wav","src/main/resources/icons/Rapsodiya_Konca_Sveta.jpeg","src/Lyrics/Rapsodiya.txt");
         playlist.add(Lizer);
         playlist.add(Rihanna);
         playlist.add(roses);
         playlist.add(Strykalo);
         playlist.add(Kayrat_almaty);
         playlist.add(Kayrat_myUniverse);
+        playlist.add(Rhapsody);
     }
 
 
