@@ -15,6 +15,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
 <?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.TilePane?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.TextFlow?>
@@ -102,162 +103,6 @@
             </HBox>
          </children>
       </Pane>
-      <ScrollPane fx:id="HomePage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css">
-         <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="925.0" prefWidth="880.0" style="-fx-background-color: #000000;">
-               <children>
-                  <HBox layoutX="50.0" layoutY="2.0" prefHeight="266.0" prefWidth="825.0">
-                     <children>
-                        <Label fx:id="HmPsLb1" contentDisplay="BOTTOM" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
-                           <graphic>
-                              <ImageView fx:id="ForYouIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
-                                 <image>
-
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
-
-                                    <Image url="@../../../icons/radio.jpg" />
-
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <font>
-                              <Font name="PT Sans Bold" size="45.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="HmPsLb2" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="Rock" textFill="WHITE">
-                           <font>
-                              <Font name="PT Sans Bold" size="45.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fx:id="RockIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
-
-                                    <Image url="@../../../icons/rock.jpg" />
-
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Label>
-                        <Label fx:id="HmPsLb3" contentDisplay="BOTTOM" layoutX="20.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="Hip-Hop" textFill="WHITE">
-                           <font>
-                              <Font name="PT Sans Bold" size="45.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fx:id="HipHopIcon" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
-                                 <image>
-
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
-
-                                    <Image url="@../../../icons/HipHop.jpg" />
-
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox layoutX="50.0" layoutY="320.0" prefHeight="266.0" prefWidth="825.0">
-                     <children>
-                        <Label fx:id="HmPsLb4" contentDisplay="BOTTOM" prefHeight="260.0" prefWidth="275.0" text="Kazakh " textFill="WHITE">
-                           <graphic>
-                              <ImageView fx:id="HmPsPh4" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
-
-                                    <Image url="@../../../icons/Kazakh.jpg" />
-
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <font>
-                              <Font name="PT Sans Bold" size="45.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="HmPsLb5" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="Russia" textFill="WHITE">
-                           <font>
-                              <Font name="PT Sans Bold" size="45.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fx:id="HmPsPh5" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
-
-                                    <Image url="@../../../icons/Russia.jpg" />
-
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Label>
-                        <Label fx:id="HmPsLb6" contentDisplay="BOTTOM" layoutX="20.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="From Us" textFill="WHITE">
-                           <font>
-                              <Font name="PT Sans Bold" size="45.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fx:id="HmPsPh6" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true">
-                                 <image>
-
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.png" />
-
-                                    <Image url="@../../../icons/FromUs.jpg" />
-
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Label>
-                     </children>
-                  </HBox>
-                  <HBox layoutX="50.0" layoutY="638.0" prefHeight="266.0" prefWidth="825.0">
-                     <children>
-                        <Label fx:id="HmPsLb7" contentDisplay="BOTTOM" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
-                           <graphic>
-                              <ImageView fx:id="HmPsPh7" fitHeight="200.0" fitWidth="273.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                           <font>
-                              <Font name="PT Sans Bold" size="45.0" />
-                           </font>
-                        </Label>
-                        <Label fx:id="HmPsLb8" contentDisplay="BOTTOM" layoutX="10.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
-                           <font>
-                              <Font name="PT Sans Bold" size="45.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fx:id="HmPsPh8" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Label>
-                        <Label fx:id="HmPsLb9" contentDisplay="BOTTOM" layoutX="20.0" layoutY="10.0" prefHeight="260.0" prefWidth="275.0" text="For you" textFill="WHITE">
-                           <font>
-                              <Font name="PT Sans Bold" size="45.0" />
-                           </font>
-                           <graphic>
-                              <ImageView fx:id="HmPsPh9" fitHeight="200.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
-                                 <image>
-                                    <Image url="@../../../icons/Rapsodiya_Konca_Sveta.jpeg" />
-                                 </image>
-                              </ImageView>
-                           </graphic>
-                        </Label>
-                     </children>
-                  </HBox>
-               </children>
-            </AnchorPane>
-         </content>
-         <styleClass>
-            <String fx:value="scroll-bar" />
-            <String fx:value="scroll-pane" />
-         </styleClass>
-      </ScrollPane>
       <ScrollPane fx:id="topSongsPage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="749.0" prefWidth="879.0" style="-fx-background-color: #000000;">
@@ -269,6 +114,24 @@
                   </Label>
                </children></AnchorPane>
          </content>
+      </ScrollPane>
+      <ScrollPane fx:id="HomePage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" visible="false">
+         <content>
+            <TilePane fx:id="ExampleTilePAne" prefHeight="865.0" prefWidth="880.0" />
+         </content>
+      </ScrollPane>
+      <ScrollPane fx:id="PlaylistScrollPane" layoutX="293.0" layoutY="130.0" prefHeight="640.0" prefWidth="884.0" style="-fx-background-color: #000000;" styleClass="scroll-bar" stylesheets="@design.css">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="797.0" prefWidth="859.0" style="-fx-background-color: #000000;">
+               <children>
+                  <Button fx:id="ClosePlbtn" mnemonicParsing="false" onAction="#ClosePlaylist" style="-fx-background-color: transparent;">
+                     <graphic>
+                        <FontAwesomeIconView fill="GREY" glyphName="ARROW_LEFT" size="20" />
+                     </graphic>
+                  </Button>
+                  <TilePane fx:id="PlaylistPane" layoutX="26.0" layoutY="33.0" prefHeight="787.0" prefWidth="798.0" style="-fx-background-color: #000000;" />
+               </children></AnchorPane>
+        </content>
       </ScrollPane>
       <Pane fx:id="Shtorka" focusTraversable="true" layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
          <children>
@@ -306,12 +169,12 @@
                   <Image url="@../../../icons/Kazakh.jpg" />
                </image>
             </ImageView>
-            <Label fx:id="UpperSongName" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Алматынын Тундери Ай   " textFill="WHITE">
+            <Label fx:id="UpperSongName" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Song" textFill="WHITE">
                <font>
                   <Font name="PT Sans" size="18.0" />
                </font>
             </Label>
-            <Label fx:id="UpperArtistName" layoutX="108.0" layoutY="43.0" prefHeight="24.0" prefWidth="185.0" text="Кайрат Нуртас" textFill="#84817e">
+            <Label fx:id="UpperArtistName" layoutX="108.0" layoutY="43.0" prefHeight="24.0" prefWidth="185.0" text="Name" textFill="#84817e">
                <font>
                   <Font name="PT Sans" size="15.0" />
                </font>
@@ -319,7 +182,7 @@
             <Slider fx:id="trackSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" onDragDetected="#setTrackPosition" onDragDone="#setTrackPosition" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
             <HBox fx:id="UpperButtonsHBox" alignment="TOP_CENTER" layoutX="330.0" layoutY="42.0" prefHeight="27.0" prefWidth="264.0">
                <children>
-                  <Button fx:id="resetButton" mnemonicParsing="false" onAction="#playPreviousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                  <Button fx:id="resetButton" mnemonicParsing="false" onAction="#previousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                      <graphic>
                         <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="20" />
                      </graphic>
@@ -338,7 +201,7 @@
                         </Button>
                      </children>
                   </StackPane>
-                  <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#playNextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
+                  <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#nextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
                      <graphic>
                         <FontAwesomeIconView fill="#ffdcbd" glyphName="FORWARD" size="20" wrappingWidth="22.363237380981445" />
                      </graphic>
@@ -366,14 +229,14 @@
                   </VBox>
                   <HBox alignment="TOP_CENTER" prefHeight="62.0" prefWidth="315.0">
                      <children>
-                        <Button fx:id="startPlay1" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                        <Button fx:id="startPlay1" mnemonicParsing="false" onAction="#playPreviousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="30" />
                            </graphic>
                         </Button>
                         <StackPane alignment="TOP_CENTER" prefHeight="85.0" prefWidth="101.0">
                            <children>
-                              <Button fx:id="playButton1" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                              <Button fx:id="playButton1" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                                  <graphic>
                                     <FontAwesomeIconView fill="#ffdcbd" glyphName="PLAY" size="30" smooth="false" wrappingWidth="14.006094932556152" />
                                  </graphic>
@@ -385,7 +248,7 @@
                               </Button>
                            </children>
                         </StackPane>
-                        <Button fx:id="forwardButton1" mnemonicParsing="false" onAction="#stop" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
+                        <Button fx:id="forwardButton1" mnemonicParsing="false" onAction="#playNextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="FORWARD" size="30" wrappingWidth="22.363237380981445" />
                            </graphic>

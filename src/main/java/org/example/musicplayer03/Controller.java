@@ -1,21 +1,23 @@
 package org.example.musicplayer03;
-
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
+import javafx.geometry.Orientation;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Line;
+import javafx.scene.text.Font;
 import javafx.scene.text.TextFlow;
 import javafx.util.Duration;
 import java.io.File;
-
-
+import javafx.scene.control.Label;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
@@ -23,8 +25,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
-
-
 public class Controller implements Initializable {
 
 
@@ -84,6 +84,10 @@ public class Controller implements Initializable {
     @FXML
     private Label UpperArtistName;
     @FXML
+    private Label UpperArtistName1;
+    @FXML
+    private Label UpperSongName1;
+    @FXML
     private Label durationLabel;
     @FXML
     private Label timerLabel;
@@ -97,7 +101,16 @@ public class Controller implements Initializable {
     private HBox UpperButtonsHBox;
     @FXML
     private Button CloseShtorka;
-
+    @FXML
+    private TilePane PlaylistPane;
+    @FXML
+    private ScrollPane PlaylistScrollPane;
+    @FXML
+    private ScrollPane ExamplePAne;
+@FXML
+private Button ClosePlbtn;
+@FXML
+private TilePane ExampleTilePAne;
     private Timeline timeline;
 
 
@@ -110,6 +123,9 @@ public class Controller implements Initializable {
     private TextField lyricsField;
     private boolean isPlaying = false;
     private Button currentActiveButton = null;
+
+    String currentLyrics = " ";
+    private int currentIndex = 0; // Индекс текущей песни
 
 
 
@@ -241,11 +257,11 @@ public class Controller implements Initializable {
 
 
                     int currentSecond = MusicLib.getTrackPositionToInt();
-                    String dir = "src/Lyrics/Алматынын тундеры.txt";
+                    String dir = currentLyrics;
                     try (BufferedReader br = new BufferedReader(new FileReader(dir))) {
                         String line;
                         while ((line = br.readLine()) != null) {
-                            String[] parts = line.split(",");
+                            String[] parts = line.split(";");
                             if (parts.length == 2) {
                                 String time = parts[0];
                                 String text = parts[1];
@@ -271,18 +287,47 @@ public class Controller implements Initializable {
     }
 
     private List<Songs> playlist;
+    public List<Playlists> HomePlaylists = new ArrayList<>();
+
+    Playlists ForYouPl = new Playlists(1, "For you", "/icons/radio.jpg");
+
 
     private void initializePlaylist(){
         playlist = new ArrayList<>();
 
-        Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
-        Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "src/main/resources/icons/6480931.jpg", "src/Lyrics/Гори.txt");
-        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
-        Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "src/main/resources/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
+        Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
+        Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "/icons/6480931.jpg", "src/Lyrics/Гори.txt");
+        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "/icons/roses.png", "src/Lyrics/Гори.txt");
+        Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "/icons/Kayen.1000x1000x1.png", "src/Lyrics/кайен.txt");
+        Songs Kayrat_almaty = new Songs(5, "Алматынын тундеры", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/Алматынын тундеры/music.wav", "src/Music/Кайрош/Алматынын тундеры/vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/Алматынын тундеры.txt");
+        Songs Kayrat_myUniverse = new Songs(6, "My universe", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/My Universe/My_Universe_music.wav", "src/Music/Кайрош/My Universe/My_Universe_vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/MyUniverse.txt");
         playlist.add(Lizer);
         playlist.add(Rihanna);
         playlist.add(roses);
         playlist.add(Strykalo);
+        playlist.add(Kayrat_almaty);
+        playlist.add(Kayrat_myUniverse);
+        ForYouPl.addSong(Lizer);
+        ForYouPl.addSong(Rihanna);
+        ForYouPl.addSong(roses);
+        ForYouPl.addSong(Strykalo);
+        Playlists RockPl = new Playlists(2, "Rock", "/icons/rock.jpg");
+        Playlists HipHopPl = new Playlists(3, "Hip-hop", "/icons/HipHop.jpg" );
+        Playlists KazakhPl = new Playlists(4, "Kazakh music", "/icons/Kazakh.jpg");
+        Playlists RussianPl = new Playlists(5, "Russian music", "/icons/Russia.jpg");
+        Playlists FromUsPl = new Playlists(6, "From us", "/icons/FromUs.jpg");
+        HomePlaylists.add(ForYouPl);
+        HomePlaylists.add(RockPl);
+        HomePlaylists.add(HipHopPl);
+        HomePlaylists.add(KazakhPl);
+        HomePlaylists.add(RussianPl);
+        HomePlaylists.add(FromUsPl);
+        RockPl.addSong(Kayrat_almaty);
+        RockPl.addSong(Kayrat_myUniverse);
+        RockPl.addSong(Lizer);
+
+
+
     }
 
 
@@ -330,15 +375,18 @@ public class Controller implements Initializable {
 
     @FXML
     private void showHome() {
-        HomePage.setVisible(true);
+        SetupHome();
         topSongsPage.setVisible(false);
         PressButton(HomeBtn);
+        PlaylistScrollPane.setVisible(false);
+        HomePage.setVisible(true);
         // добавить для других панелей
     }
 
     @FXML
     private void showTopSongs() {
-        HomePage.setVisible(false);
+       HomePage.setVisible(false);
+        PlaylistScrollPane.setVisible(false);
         topSongsPage.setVisible(true);
         PressButton(TopSongsBtn);
 
@@ -374,6 +422,7 @@ public class Controller implements Initializable {
         initializeSliders();
         initializeTimeline();
         initializePlaylist();
+        showHome();
     }
 
     public void setUserInformation(String username) {
@@ -460,7 +509,7 @@ public class Controller implements Initializable {
             fadeTransition.setToValue(1.0);
             // Задержка перед началом fade-in
             fadeTransition.setDelay(Duration.seconds(0.5));
-            loadText();
+            loadText(currentLyrics);
         } else {
             // Устанавливаем значения начальной и конечной прозрачности
             fadeTransition.setFromValue(1.0);
@@ -552,8 +601,7 @@ public class Controller implements Initializable {
 
     // Чтение текста из файла и установка его в TextArea
     @FXML
-    public void loadText() {
-        String path = "src/Lyrics/Алматынын тундеры.txt"; // Замените путём к вашему файлу
+    public void loadText(String path ) {
         try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
             StringBuilder content = new StringBuilder();
             String line;
@@ -579,9 +627,20 @@ public class Controller implements Initializable {
         MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
         Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
         UpperSongPh.setImage(image);
+
+        UpperSongPhOpened.setImage(image);
+
         UpperSongName.setText(song.Name);
         UpperArtistName.setText(song.Artist);
 
+
+
+        UpperArtistName1.setText(song.Name);
+        UpperSongName1.setText(song.Artist);
+        SongTextArea.setText(" ");
+
+
+        currentLyrics = song.urlLyrics;
 
     }
     @FXML
@@ -593,8 +652,17 @@ public class Controller implements Initializable {
             Songs song = playlist.get(currentSongid);
             Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
             UpperSongPh.setImage(image);
+            UpperSongPhOpened.setImage(image);
+
             UpperSongName.setText(song.Name);
             UpperArtistName.setText(song.Artist);
+
+
+            UpperArtistName1.setText(song.Name);
+            UpperSongName1.setText(song.Artist);
+            currentLyrics = song.urlLyrics;
+            SongTextArea.setText(" ");
+
             MusicLib.stopDouble();
             MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
             if (playButton.isVisible()) {
@@ -603,6 +671,7 @@ public class Controller implements Initializable {
             }
         }
     }
+
 
     @FXML
     protected void playPreviousSong(){
@@ -611,6 +680,17 @@ public class Controller implements Initializable {
         if (currentSongid<playlist.size()) {
 
             Songs song = playlist.get(currentSongid);
+            Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
+            UpperSongPh.setImage(image);
+            UpperSongPhOpened.setImage(image);
+
+            UpperSongName.setText(song.Name);
+            UpperArtistName.setText(song.Artist);
+            currentLyrics = song.urlLyrics;
+            SongTextArea.setText(" ");
+
+            UpperArtistName1.setText(song.Name);
+            UpperSongName1.setText(song.Artist);
             MusicLib.stopDouble();
             MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
             if (playButton.isVisible()) {
@@ -619,5 +699,139 @@ public class Controller implements Initializable {
             }
         }
     }
+    Playlists currentPlaylist;
+
+
+        // Создаем блок VBox для каждой песни
+        public void OpenPlaylist(Playlists playlist) {
+            PlaylistPane.getChildren().removeIf(node -> node != ClosePlbtn);
+            currentPlaylist = playlist;
+            PlaylistScrollPane.setVisible(true);
+
+            for (int i = 0; i < playlist.getSongs().size(); i++) {
+                Songs song = playlist.getSongs().get(i);
+
+                HBox songBox = new HBox(10); // HBox с отступом между элементами
+                songBox.setAlignment(Pos.CENTER_LEFT); // Выравнивание элементов внутри HBox
+                songBox.setPadding(new Insets(5, 10, 5, 10)); // Отступы внутри HBox
+
+                ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(song.getUrlPhoto())));
+                imageView.setFitHeight(70);
+                imageView.setFitWidth(70);
+
+                Label nameLabel = new Label(song.getName());
+                nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 22;");
+
+                Label artistLabel = new Label(song.getArtist());
+                artistLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 19;");
+
+                VBox textVBox = new VBox(nameLabel, artistLabel);
+                textVBox.setAlignment(Pos.CENTER_LEFT);
+
+                songBox.getChildren().addAll(imageView, textVBox);
+
+                VBox container = new VBox(songBox); // Контейнер для HBox и, возможно, линии-разделителя
+                Line separator = new Line(0, 0, 790, 0); // Линия длиной в ширину TilePane
+                separator.setStrokeWidth(0.5);
+                separator.setStroke(Color.GRAY);
+                VBox.setMargin(separator, new Insets(10, 0, 2, 0)); // Отступ для линии
+                container.getChildren().add(separator);
+
+                Button songButton = new Button();
+                songButton.setGraphic(container);
+                songButton.setOnMouseEntered(e -> songBox.setStyle("-fx-background-color:  rgba(204, 204, 204, 0.5);"));
+                songButton.setOnMouseExited(e -> songBox.setStyle("-fx-background-color: transparent;"));
+                songButton.setStyle("-fx-background-color: transparent;");
+                songButton.setOnAction(event -> playSongPl(song, playlist));
+
+                PlaylistPane.getChildren().add(songButton);
+            }
+        }
+
+
+
+
+    public void playSongPl(Songs song, Playlists playlist){
+        if(!isPlaying){
+            isPlaying = true;
+        MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
+            currentIndex = playlist.getSongs().indexOf(song);;
+        }
+        else{
+            pause();
+            playSongPl(song, playlist);
+        }
+
+        Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
+        UpperSongPh.setImage(image);
+        UpperSongPhOpened.setImage(image);
+        UpperSongName.setText(song.Name);
+        UpperArtistName.setText(song.Artist);
+        UpperArtistName1.setText(song.Name);
+        UpperSongName1.setText(song.Artist);
+        SongTextArea.setText(" ");
+        currentLyrics = song.urlLyrics;
+        updateButtonVisibility();
+    }
+    public void nextSong() {
+        if (currentPlaylist != null && currentIndex < currentPlaylist.getSongs().size() - 1) {
+            currentIndex++;
+            playSongPl(currentPlaylist.getSongs().get(currentIndex), currentPlaylist);
+        }
+    }
+
+    public void previousSong() {
+        if (currentPlaylist != null && currentIndex > 0) {
+            currentIndex--;
+            playSongPl(currentPlaylist.getSongs().get(currentIndex), currentPlaylist);
+        }
+    }
+    public void SetupHome() {
+        ExampleTilePAne.setStyle("-fx-background-color: black;");
+        ExampleTilePAne.getChildren().clear();
+
+        // Устанавливаем количество столбцов для TilePane
+        PlaylistPane.setPrefColumns(3);  // Число столбцов
+
+        for (Playlists playlist : HomePlaylists) {
+            ImageView coverImageView = new ImageView(new Image(getClass().getResourceAsStream(playlist.getUrlPhoto())));
+            coverImageView.setFitHeight(200);  // Высота изображения
+            coverImageView.setFitWidth(200);   // Ширина изображения
+
+            // Создаем текст для кнопки
+            Label buttonText = new Label(playlist.getName());
+            buttonText.setFont(Font.font("PT Sans Bold", 35));
+            buttonText.setTextFill(Color.WHITE);
+
+            // Создаем VBox для размещения текста и изображения
+            VBox imageTextVBox = new VBox(20); // Увеличиваем промежуток между элементами в VBox
+            imageTextVBox.getChildren().addAll(buttonText, coverImageView);
+            imageTextVBox.setAlignment(Pos.CENTER);
+
+            // Создаем кнопку
+            Button playlistButton = new Button();
+            playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("-fx-background-color:  rgba(204, 204, 204, 0.5);"));
+            playlistButton.setOnMouseExited(e -> playlistButton.setStyle("-fx-background-color: transparent;"));
+            playlistButton.setGraphic(imageTextVBox); // Устанавливаем VBox как графическое содержимое кнопки
+            playlistButton.setStyle("-fx-background-color: transparent;"); // Прозрачный фон кнопки
+            playlistButton.setMaxWidth(Double.MAX_VALUE);
+
+            VBox outerVBox = new VBox(15);  // Внешний VBox для размещения кнопки с увеличенным отступом
+            outerVBox.setPadding(new Insets(20)); // Добавляем внешний отступ
+            outerVBox.getChildren().addAll(playlistButton); // Добавляем только кнопку
+            outerVBox.setAlignment(Pos.CENTER);  // Выравнивание элементов внутри VBox по центру
+
+            ExampleTilePAne.getChildren().add(outerVBox);  // Добавляем внешний VBox в TilePane
+
+            playlistButton.setOnAction(event -> OpenPlaylist(playlist));
+        }
+    }
+
+
+
+    public void ClosePlaylist(){
+    PlaylistScrollPane.setVisible(false);
+}
+
 }
 
