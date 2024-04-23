@@ -105,7 +105,7 @@
       </Pane>
       <ScrollPane fx:id="HomePage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="925.0" prefWidth="880.0" style="-fx-background-color: #000000;">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="925.0" prefWidth="880.0" style="-fx-background-color: #000000;" styleClass="HomePage">
                <children>
                   <HBox layoutX="50.0" layoutY="2.0" prefHeight="266.0" prefWidth="825.0">
                      <children>
@@ -275,7 +275,7 @@
          <children>
             <TextFlow fx:id="ArtistSongNameText" layoutX="-2.0" layoutY="535.0" prefHeight="65.0" prefWidth="908.0" textAlignment="CENTER" visible="false">
                <children>
-                  <Label fx:id="UpperArtistName1" alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="442.0" text="Алматынын Тундери Ай   " textAlignment="RIGHT" textFill="WHITE">
+                  <Label fx:id="UpperArtistName1" alignment="CENTER_RIGHT" prefHeight="39.0" prefWidth="442.0" text="Song" textAlignment="RIGHT" textFill="WHITE">
                      <font>
                         <Font name="PT Sans" size="30.0" />
                      </font>
@@ -285,7 +285,7 @@
                         <Font size="30.0" />
                      </font>
                   </Label>
-                  <Label fx:id="UpperSongName1" prefHeight="39.0" prefWidth="410.0" text="Кайрат Нуртас" textFill="#84817e">
+                  <Label fx:id="UpperSongName1" prefHeight="39.0" prefWidth="410.0" text="Artist" textFill="#84817e">
                      <font>
                         <Font name="PT Sans" size="30.0" />
                      </font>
@@ -302,7 +302,7 @@
             </TextArea>
             <ImageView fx:id="UpperSongPhOpened" fitHeight="441.0" fitWidth="444.0" layoutX="19.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
-                  <Image url="@../../../icons/Kazakh.jpg" />
+                  <Image url="@../../../images/5759b69c2046c155367151e4.png" />
                </image>
             </ImageView>
             <ImageView fx:id="UpperSongPh" fitHeight="60.0" fitWidth="60.0" layoutX="32.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">

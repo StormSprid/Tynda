@@ -53,3 +53,20 @@
     -fx-opacity: 0;
 }
 
+.scroll-bar .scroll-bar:vertical{
+    -fx-pref-width: 1;
+    -fx-opacity: 0;
+}
+.scroll-bar .scroll-bar{
+-fx-display:none;
+}
+
+.HomePage .scroll-bar:horizontal {
+    -fx-pref-height: 1;
+    -fx-opacity: 0;
+    -fx-overflow:hidden
+}
+.HomePage {
+-fx-background-color: transparent}
+
+

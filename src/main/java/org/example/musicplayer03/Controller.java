@@ -28,6 +28,7 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
 
+
     int currentSongid = 0;
 
     @FXML
@@ -108,6 +109,7 @@ public class Controller implements Initializable {
 
     @FXML
     private ScrollPane HomePage;
+
     @FXML
     private ScrollPane topSongsPage;
     @FXML
@@ -145,7 +147,7 @@ public class Controller implements Initializable {
 
         if (MusicLib.getTrackPositionToInt() == MusicLib.getTotalDuration() ){
             updateButtonVisibility();
-            stop();
+            MusicLib.stopDouble();
             playNextSong();
         }
 
@@ -158,10 +160,7 @@ public class Controller implements Initializable {
 //        }
 
     }
-//    @FXML
-//    protected   void playNextSong(){
-//        Player.playNextSong();
-//    }
+
 
 
 
@@ -252,6 +251,12 @@ public class Controller implements Initializable {
 
 
                     timerLabel.setText(MusicLib.secondsToString(MusicLib.getTrackPositionToInt()));
+
+                    if (MusicLib.getTrackPositionToInt() == MusicLib.getTotalDuration() ){
+                        updateButtonVisibility();
+
+                        playNextSong();
+                    }
 
 
                     int currentSecond = MusicLib.getTrackPositionToInt();
@@ -623,11 +628,7 @@ public class Controller implements Initializable {
 
         currentLyrics = song.urlLyrics;
         durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
-        if (MusicLib.getTrackPositionToInt() == MusicLib.getTotalDuration() ){
-            updateButtonVisibility();
-            MusicLib.stopDouble();
-            playNextSong();
-        }
+
 
     }
     @FXML
