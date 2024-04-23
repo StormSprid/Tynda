@@ -9,11 +9,13 @@ public class Player extends MusicLib {
 
 
 
+
     public static void playPlaylist(){
         for(Songs song : playlist){
             System.out.println(song.getUrlMusic() + song.getUrlVocal());
 //            playDouble(song.getUrlMusic(), song.getUrlVocal());
         }
+
     }
 
 

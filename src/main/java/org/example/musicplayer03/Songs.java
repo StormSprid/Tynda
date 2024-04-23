@@ -5,6 +5,7 @@ public class Songs {
     String Name;
     String Artist;
     String genre;
+
     String urlMusic;
     String urlVocal;
     String urlPhoto;
@@ -63,6 +64,7 @@ public class Songs {
         this.urlLyrics = urlLyrics;
     }
 
+
     public int getSongId() {
         return SongId;
     }
@@ -96,6 +98,5 @@ public class Songs {
     public void setCounter(int counter) {
         this.counter = counter;
     }
-
 
 }
