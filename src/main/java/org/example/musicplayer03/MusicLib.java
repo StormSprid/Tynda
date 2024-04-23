@@ -22,6 +22,9 @@ public class MusicLib {
     private static Timer sliderTimer;
     private static final int SLIDER_UPDATE_INTERVAL = 100;
 
+    private static FloatControl vocalControl;
+    private static FloatControl musicControl;
+
     public static void playDouble(String musicPath, String vocalsPath) {
         try {
             if (!isPlaying) {
@@ -38,7 +41,8 @@ public class MusicLib {
                 musicClip.start();
                 vocalsClip.start();
 
-
+                vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
+                musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
             }
 
         } catch (Exception e) {
@@ -107,13 +111,13 @@ public class MusicLib {
 
     public static void nonVocalMod(){
         if (vocalsClip!=null){
-            FloatControl vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
+
             vocalControl.setValue(-40);
         }
     }
     public static void vocalMod(){
         if (vocalsClip!=null){
-            FloatControl vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
+
             vocalControl.setValue(0);
         }
     }

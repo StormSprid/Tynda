@@ -280,21 +280,24 @@ private TilePane ExampleTilePAne;
                                 String time = parts[0];
                                 String text = parts[1];
 
+
                                 String[] timeParts = time.split(":");
                                 int minute = Integer.parseInt(timeParts[0]);
                                 int seconds = Integer.parseInt(timeParts[1]);
 
 
                                 if (currentSecond == (minute * 60 + seconds)) {
-                                    if (text.contains("сука")){
+                                    if (text.contains("сука") || text.contains("$")){
                                         MusicLib.nonVocalMod();
                                     }
                                     else{
                                         MusicLib.vocalMod();
                                     }
-                                    SongTextArea.appendText(text + "\n");
+                                    SongTextArea.appendText(text.replace("$","") + "\n");
                                 }
                             }
+
+
                         }
 
                         // Если не было найдено корректных строк, выводим соответствующее сообщение
