@@ -105,6 +105,19 @@ public class MusicLib {
         }
     }
 
+    public static void nonVocalMod(){
+        if (vocalsClip!=null){
+            FloatControl vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
+            vocalControl.setValue(-40);
+        }
+    }
+    public static void vocalMod(){
+        if (vocalsClip!=null){
+            FloatControl vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
+            vocalControl.setValue(0);
+        }
+    }
+
 
     public static void setTrackPosition(double position) {
         if (musicClip != null) {
@@ -145,9 +158,7 @@ public class MusicLib {
 
     }
 
-    public static boolean isSongLoaded() {
-        return musicClip != null && vocalsClip != null;
-    }
+
 
     public static String secondsToString(int seconds) {
         int minutes = seconds / 60;

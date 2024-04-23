@@ -175,15 +175,6 @@ private TilePane ExampleTilePAne;
 
 
 
-    @FXML
-    protected void stop() {
-        isPlaying = !isPlaying;
-        if (isPlaying) {
-            MusicLib.stopDouble();
-
-        }
-
-    }
 
 
 
@@ -293,14 +284,21 @@ private TilePane ExampleTilePAne;
                                 int minute = Integer.parseInt(timeParts[0]);
                                 int seconds = Integer.parseInt(timeParts[1]);
 
+
                                 if (currentSecond == (minute * 60 + seconds)) {
+                                    if (text.contains("сука")){
+                                        MusicLib.nonVocalMod();
+                                    }
+                                    else{
+                                        MusicLib.vocalMod();
+                                    }
                                     SongTextArea.appendText(text + "\n");
                                 }
                             }
                         }
 
                         // Если не было найдено корректных строк, выводим соответствующее сообщение
-                        if (!foundValidLines) {
+                        if (!foundValidLines || currentLyrics == null) {
                             SongTextArea.setText("Упс! Текст данной песни откроется на платной версии приложения!");
                         }
                     } catch (IOException e) {
@@ -324,16 +322,16 @@ private TilePane ExampleTilePAne;
 
 
         Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
-        Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "src/main/resources/icons/6480931.jpg", "src/Lyrics/rihanna.txt");
+        Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "/icons/6480931.jpg", "src/Lyrics/rihanna.txt");
         Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "/icons/roses.png", "src/Lyrics/roses.txt");
         Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "/icons/Смирись_и_расслабься!.jpg", "src/Lyrics/кайен.txt");
         Songs Kayrat_almaty = new Songs(5, "Алматынын тундеры", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/Алматынын тундеры/music.wav", "src/Music/Кайрош/Алматынын тундеры/vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/Алматынын тундеры.txt");
         Songs Kayrat_myUniverse = new Songs(6, "My universe", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/My Universe/My_Universe_music.wav", "src/Music/Кайрош/My Universe/My_Universe_vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/MyUniverse.txt");
-        Songs Rhapsody = new Songs(7,"Рапсодия конца света","GONE.fludd","Russia","src/Music/Рапсодия Конца Света/music.wav","src/Music/Рапсодия Конца Света/vocals.wav","icons/Rapsodiya_Konca_Sveta.jpeg","src/Lyrics/Rapsodiya.txt");
+        Songs Rhapsody = new Songs(7,"Рапсодия конца света","GONE.fludd","Russia","src/Music/Рапсодия Конца Света/music.wav","src/Music/Рапсодия Конца Света/vocals.wav","/icons/Rapsodiya_Konca_Sveta.png","src/Lyrics/Rapsodiya.txt");
+        Songs tesno = new Songs(8,"Тесно","Bushido Zho","Russia","src/Music/Тесно - Bushido ZHO/music.wav","src/Music/Тесно - Bushido ZHO/vocals.wav","/icons/Тесно.jpg","src/Lyrics/Тесно.txt");
 
 
-
-        playlist.add(Rhapsody);
+        ForYouPl.addSong(Rhapsody);
 
         ForYouPl.addSong(Lizer);
         ForYouPl.addSong(Rihanna);
@@ -341,6 +339,7 @@ private TilePane ExampleTilePAne;
         ForYouPl.addSong(Strykalo);
         ForYouPl.addSong(Kayrat_almaty);
         ForYouPl.addSong(Kayrat_myUniverse);
+        ForYouPl.addSong(tesno);
 
         playlist.add(Rhapsody);
         Playlists RockPl = new Playlists(2, "Rock", "/icons/rock.jpg");
@@ -657,7 +656,7 @@ private TilePane ExampleTilePAne;
         System.out.println(currentSongid);
         Songs song = playlist.get(currentSongid);
         MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
-        Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
+        Image image = new Image(new File("src/main/resources" + song.getUrlPhoto()).toURI().toString());
         UpperSongPh.setImage(image);
 
         UpperSongPhOpened.setImage(image);
@@ -680,60 +679,13 @@ private TilePane ExampleTilePAne;
     @FXML
     protected void playNextSong(){
 
-        currentSongid++;
-        if (currentSongid<playlist.size()) {
-
-            Songs song = playlist.get(currentSongid);
-            Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
-            UpperSongPh.setImage(image);
-            UpperSongPhOpened.setImage(image);
-
-            UpperSongName.setText(song.Name);
-            UpperArtistName.setText(song.Artist);
-
-
-            UpperArtistName1.setText(song.Name);
-            UpperSongName1.setText(song.Artist);
-            currentLyrics = song.urlLyrics;
-            SongTextArea.setText(" ");
-            durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
-
-            MusicLib.stopDouble();
-            MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
-            if (playButton.isVisible()) {
-                playButton.setVisible(false);
-                pauseButton.setVisible(true);
-            }
-        }
+        nextSong();
     }
 
 
     @FXML
     protected void playPreviousSong(){
-
-        currentSongid--;
-        if (currentSongid<playlist.size()) {
-
-            Songs song = playlist.get(currentSongid);
-            Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
-            UpperSongPh.setImage(image);
-            UpperSongPhOpened.setImage(image);
-
-            UpperSongName.setText(song.Name);
-            UpperArtistName.setText(song.Artist);
-            currentLyrics = song.urlLyrics;
-            SongTextArea.setText(" ");
-
-            UpperArtistName1.setText(song.Name);
-            UpperSongName1.setText(song.Artist);
-            durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
-            MusicLib.stopDouble();
-            MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
-            if (playButton.isVisible()) {
-                playButton.setVisible(false);
-                pauseButton.setVisible(true);
-            }
-        }
+        previousSong();
     }
     Playlists currentPlaylist;
 
@@ -798,7 +750,7 @@ private TilePane ExampleTilePAne;
             playSongPl(song, playlist);
         }
 
-        Image image = new Image(new File(song.getUrlPhoto()).toURI().toString());
+        Image image = new Image(new File("src/main/resources" + song.getUrlPhoto()).toURI().toString());
         UpperSongPh.setImage(image);
         UpperSongPhOpened.setImage(image);
         UpperSongName.setText(song.Name);
@@ -808,6 +760,7 @@ private TilePane ExampleTilePAne;
         SongTextArea.setText(" ");
         currentLyrics = song.urlLyrics;
         updateButtonVisibility();
+        durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
     }
     public void nextSong() {
         if (currentPlaylist != null && currentIndex < currentPlaylist.getSongs().size() - 1) {
