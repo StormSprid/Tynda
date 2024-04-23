@@ -2,6 +2,7 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
@@ -130,15 +131,13 @@
             </VBox>
             <HBox fx:id="SignInUpHbox" layoutX="7.0" layoutY="701.0" prefHeight="58.0" prefWidth="234.0">
                <children>
-                  <Button fx:id="SignInBtn" mnemonicParsing="false" prefHeight="61.0" prefWidth="111.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 30;" text="Sign in" textFill="#ffdcbd">
+                  <Button fx:id="button_logout" alignment="CENTER" mnemonicParsing="false" prefHeight="58.0" prefWidth="236.0" style="-fx-background-color: #ffdcbd;" text="Log Out" textFill="#1e1c23">
                      <font>
                         <Font name="PT Sans Bold" size="20.0" />
                      </font>
-                  </Button>
-                  <Button fx:id="button_logout" mnemonicParsing="false" prefHeight="62.0" prefWidth="125.0" style="-fx-background-color: #ffdcbd;" text="Log OUT" textFill="#1e1c23">
-                     <font>
-                        <Font name="PT Sans Bold" size="20.0" />
-                     </font>
+                     <HBox.margin>
+                        <Insets />
+                     </HBox.margin>
                   </Button>
                </children>
             </HBox>
