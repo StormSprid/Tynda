@@ -3,7 +3,9 @@ import javafx.application.Platform;
 
 import javax.sound.sampled.*;
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
 import javax.swing.Timer;
 
 
@@ -19,6 +21,9 @@ public class MusicLib {
     private static int songDuration;
     private static Timer sliderTimer;
     private static final int SLIDER_UPDATE_INTERVAL = 100;
+
+    private static FloatControl vocalControl;
+    private static FloatControl musicControl;
 
     public static void playDouble(String musicPath, String vocalsPath) {
         try {
@@ -36,7 +41,8 @@ public class MusicLib {
                 musicClip.start();
                 vocalsClip.start();
 
-
+                vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
+                musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
             }
 
         } catch (Exception e) {
@@ -49,6 +55,9 @@ public class MusicLib {
         isPlaying = false;
         musicClip.close();
         vocalsClip.close();
+        musicClip = null;
+        vocalsClip = null;
+
 
     }
 
@@ -73,7 +82,6 @@ public class MusicLib {
             FloatControl vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
             FloatControl musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
 
-            float maxVolume = Math.min(vocalControl.getMaximum(), musicControl.getMaximum());
             float minVolume = Math.min(vocalControl.getMinimum(), musicControl.getMinimum());
 
             // Изменение дБ относительно минимального значения
@@ -83,6 +91,34 @@ public class MusicLib {
 
             vocalControl.setValue(db);
             musicControl.setValue(db);
+        }
+    }
+
+    public static void setVocalVolume(double volume) {
+        if (vocalsClip != null) {
+
+            FloatControl vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
+            FloatControl musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
+
+            float minVolume = Math.min(vocalControl.getMinimum(), musicControl.getMinimum());
+            double dbChange = (volume / 100.0) * (6.0206 - (-80));
+            // Масштабирование и добавление минимального значения
+            float db = (float) (minVolume + dbChange);
+
+            vocalControl.setValue(db);
+        }
+    }
+
+    public static void nonVocalMod(){
+        if (vocalsClip!=null){
+
+            vocalControl.setValue(-40);
+        }
+    }
+    public static void vocalMod(){
+        if (vocalsClip!=null){
+
+            vocalControl.setValue(0);
         }
     }
 
@@ -104,22 +140,40 @@ public class MusicLib {
         return 0;
     }
 
+    public static int getTrackPositionToInt() {
+        if (musicClip != null) {
+            long clipPosition = musicClip.getMicrosecondPosition();
+            return (int) clipPosition / 1000000;
+        }
+        return 0;
+    }
+
     public static int getTotalDuration() {
-        return (int) musicClip.getMicrosecondLength();
+
+            return (int) musicClip.getMicrosecondLength() / 1000000;
+
+
     }
 
 
     public static boolean isTrackDone() {
-        if (musicClip != null) {
-            if (getTrackPosition() >= getTotalDuration() || getTrackPosition() == 0) {
-                return true;
-            } else {
-                return false;
-            }
-        }
-        return false;
+
+        return getTrackPosition() >= getTotalDuration() || getTrackPosition() == 0;
+
     }
 
+
+
+    public static String secondsToString(int seconds) {
+        int minutes = seconds / 60;
+        int remainingSeconds = seconds % 60;
+
+
+
+        return String.format("%02d:%02d", minutes, remainingSeconds);
+    }
+
+
+
+
 }
-
-

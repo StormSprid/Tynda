@@ -4,6 +4,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 
 
@@ -18,9 +19,14 @@ public class Main extends Application {
         Scene scene = new Scene(fxmlLoader.load());
 
 
+
+
+
         stage.setScene(scene);
-        stage.setTitle("Music Player");
+        stage.setTitle("Tynda");
         stage.setResizable(false);
+        stage.getIcons().add(new Image(getClass().getResourceAsStream("/icons/logo.png")));
+
         stage.show();
 
     }

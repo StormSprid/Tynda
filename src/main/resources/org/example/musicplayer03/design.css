@@ -7,16 +7,12 @@
     -fx-background-color: rgba(0,0,0,0.57); /* Consider changing the opacity if needed */
 }
 .Slider .track {
-    -fx-background-color: linear-gradient(to left, #ffdcbd, #ffdcbd);
+    -fx-background-color: #ffdcbd;
     -fx-pref-height: 1px;
 }
 .Slider .thumb {
     -fx-background-color: #ffdcbd
 
-}
-.left_menu_button:highlighted {
-    -fx-background-color: rgba(0, 0, 0, 0.57); /* Изменение цвета фона при нажатии */
-    -fx-background-radius: 30px; /* Применение радиуса для консистенции */
 }
 .scroll-pane > .viewport {
     -fx-background-color: #000000; /* Цвет фона контента */
@@ -24,3 +20,53 @@
 .scroll-bar:vertical {
     -fx-background-color: #000000; /* Цвет фона вертикальной полосы прокрутки */
 }
+.search {
+    -fx-text-fill: white;
+}
+.SongTextArea {
+-fx-padding:0;
+-fx-control-inner-background: #1e1c23;
+-fx-text-fill: #ffdcbd;
+-fx-border-color: #1e1c23;
+-fx-border-width: 1px;
+
+-fx-background-color: transparent;
+-fx-background: transparent;
+-fx-background-insets: 0;
+-fx-background-radius: 0;
+-fx-padding: 0;
+-fx-border-color: transparent;
+
+}
+.SongTextArea .scroll-bar:vertical .thumb {
+    -fx-background-color: #ffdcbd; /* Цвет ползунка */
+}
+.SongTextArea .scroll-bar:vertical {
+    -fx-background-color: #1e1c23; /* Цвет ползунка */
+}
+.SongTextArea .scroll-bar:vertical {
+    -fx-pref-width: 1;
+    -fx-opacity: 0;
+}
+.SongTextArea .scroll-bar:horizontal {
+    -fx-pref-height: 1;
+    -fx-opacity: 0;
+}
+
+.scroll-bar .scroll-bar:vertical{
+    -fx-pref-width: 1;
+    -fx-opacity: 0;
+}
+.scroll-bar .scroll-bar{
+-fx-display:none;
+}
+
+.HomePage .scroll-bar:horizontal {
+    -fx-pref-height: 1;
+    -fx-opacity: 0;
+    -fx-overflow:hidden
+}
+.HomePage {
+-fx-background-color: transparent}
+
+
