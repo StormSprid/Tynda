@@ -10,6 +10,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -159,15 +160,21 @@
                <font>
                   <Font size="25.0" />
                </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </TextArea>
             <ImageView fx:id="UpperSongPhOpened" fitHeight="441.0" fitWidth="444.0" layoutX="19.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
-                  <Image url="@../../../icons/Kazakh.jpg" />
+                  <Image url="@../../../images/5759b69c2046c155367151e4.png" />
                </image>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </ImageView>
             <ImageView fx:id="UpperSongPh" fitHeight="60.0" fitWidth="60.0" layoutX="32.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../icons/Kazakh.jpg" />
+                  <Image url="@../../../images/5759b69c2046c155367151e4.png" />
                </image>
             </ImageView>
             <Label fx:id="UpperSongName" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Song" textFill="WHITE">

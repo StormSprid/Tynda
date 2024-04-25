@@ -1,10 +1,13 @@
 package org.example.musicplayer03;
+import javafx.animation.RotateTransition;
+import javafx.scene.transform.Rotate;
 import javafx.animation.*;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
 import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
+import javafx.geometry.Rectangle2D;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -13,6 +16,7 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextFlow;
+import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 import java.io.File;
 import javafx.scene.control.Label;
@@ -28,7 +32,7 @@ import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
 
-
+    String[]  badWords = {"сука","Сука","бля","Бля","ебанной","ебанный","ёбаных","Жопа","жопа"};
     int currentSongid = 0;
 
     @FXML
@@ -146,30 +150,17 @@ private TilePane ExampleTilePAne;
 
     @FXML
     protected void play() {
-//        if (!MusicLib.isSongLoaded()) {
 
+            if (!MusicLib.isSongLoaded()) {
+                updateButtonVisibility();
 
-            isPlaying = true;
-
-            updateButtonVisibility();
-            timeline.play();
-            playPlaylist();
-            durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
-
-        if (MusicLib.getTrackPositionToInt() == MusicLib.getTotalDuration() ){
-            updateButtonVisibility();
-            MusicLib.stopDouble();
-            playNextSong();
-        }
-
-
-
-//        } else {
-//            pause();
-//
-//
-//        }
-
+                playSongPl(ForYouPl.getSongs().getFirst(), ForYouPl);
+                durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
+                timeline.play();
+                isPlaying = true;
+            }else {
+                pause();
+            }
     }
 
 
@@ -232,11 +223,10 @@ private TilePane ExampleTilePAne;
     }
 
     private void initializeTimeline() {
-        // Создание таймлайна для обновления слайдера каждую секунду
+
         timeline = new Timeline(
                 new KeyFrame(Duration.seconds(1), event -> {
-                    System.out.println(MusicLib.getTotalDuration());
-                    System.out.println(MusicLib.getTrackPositionToInt());
+
                     if (MusicLib.isTrackDone()){
                         updateButtonVisibility();
                     }
@@ -264,48 +254,54 @@ private TilePane ExampleTilePAne;
                     int currentSecond = MusicLib.getTrackPositionToInt();
                     String dir = currentLyrics;
                     boolean foundValidLines = false; // Флаг для отслеживания найденных корректных строк
-                    try (BufferedReader br = new BufferedReader(new FileReader(dir))) {
-                        String line;
-                        while ((line = br.readLine()) != null) {
-                            // Проверяем наличие нулевого байта в строке
-                            if (line.startsWith("\uFEFF")) {
-                                line = line.substring(1); // Удаляем нулевой байт из строки
-                            }
-
-                            String[] parts = line.split(";");
-                            // Проверяем количество частей после разделения строки
-                            if (parts.length == 2) {
-                                foundValidLines = true; // Устанавливаем флаг в true, если найдена корректная строка
-
-                                String time = parts[0];
-                                String text = parts[1];
-
-
-                                String[] timeParts = time.split(":");
-                                int minute = Integer.parseInt(timeParts[0]);
-                                int seconds = Integer.parseInt(timeParts[1]);
-
-
-                                if (currentSecond == (minute * 60 + seconds)) {
-                                    if (text.contains("сука") || text.contains("$")){
-                                        MusicLib.nonVocalMod();
-                                    }
-                                    else{
-                                        MusicLib.vocalMod();
-                                    }
-                                    SongTextArea.appendText(text.replace("$","") + "\n");
+                    if (dir!= null) {
+                        try (BufferedReader br = new BufferedReader(new FileReader(dir))) {
+                            String line;
+                            while ((line = br.readLine()) != null) {
+                                // Проверяем наличие нулевого байта в строке
+                                if (line.startsWith("\uFEFF")) {
+                                    line = line.substring(1); // Удаляем нулевой байт из строки
                                 }
+
+                                String[] parts = line.split(";");
+                                // Проверяем количество частей после разделения строки
+                                if (parts.length == 2) {
+                                    foundValidLines = true; // Устанавливаем флаг в true, если найдена корректная строка
+
+                                    String time = parts[0];
+                                    String text = parts[1];
+
+
+                                    String[] timeParts = time.split(":");
+                                    int minute = Integer.parseInt(timeParts[0]);
+                                    int seconds = Integer.parseInt(timeParts[1]);
+
+
+                                    if (currentSecond == (minute * 60 + seconds)) {
+                                        for (String badWord : badWords) {
+                                            if (text.contains(badWord) || text.contains("$")) {
+                                                MusicLib.nonVocalMod();
+                                            } else {
+                                                MusicLib.vocalMod();
+                                            }
+                                        }
+                                            SongTextArea.appendText(text.replace("$", "") + "\n");
+
+                                    }
+                                }
+
+
                             }
 
-
+                            // Если не было найдено корректных строк, выводим соответствующее сообщение
+                            if (!foundValidLines || currentLyrics == null) {
+                                SongTextArea.setText("Упс! Текст данной песни откроется на платной версии приложения!");
+                            }
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
-
-                        // Если не было найдено корректных строк, выводим соответствующее сообщение
-                        if (!foundValidLines || currentLyrics == null) {
-                            SongTextArea.setText("Упс! Текст данной песни откроется на платной версии приложения!");
-                        }
-                    } catch (IOException e) {
-                        e.printStackTrace();
+                    }else {
+                        SongTextArea.setText("Упс! Текст данной песни откроется на платной версии приложения!");
                     }
 
                 })
@@ -332,6 +328,10 @@ private TilePane ExampleTilePAne;
         Songs Kayrat_myUniverse = new Songs(6, "My universe", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/My Universe/My_Universe_music.wav", "src/Music/Кайрош/My Universe/My_Universe_vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/MyUniverse.txt");
         Songs Rhapsody = new Songs(7,"Рапсодия конца света","GONE.fludd","Russia","src/Music/Рапсодия Конца Света/music.wav","src/Music/Рапсодия Конца Света/vocals.wav","/icons/Rapsodiya_Konca_Sveta.png","src/Lyrics/Rapsodiya.txt");
         Songs tesno = new Songs(8,"Тесно","Bushido Zho","Russia","src/Music/Тесно - Bushido ZHO/music.wav","src/Music/Тесно - Bushido ZHO/vocals.wav","/icons/Тесно.jpg","src/Lyrics/Тесно.txt");
+        Songs domino = new Songs(9,"Домино","FACE","Russia","src/Music/Face - Домино/music.wav","src/Music/Face - Домино/vocals.wav","/icons/FACE.png","src/Lyrics/домино.txt");
+        Songs MenSeniSuyemin = new Songs(10,"Men Seni Suyemin","Son Paskal","Kazakh","src/Music/Son Paskal - Men Seni Suyemin/music.wav","src/Music/Son Paskal - Men Seni Suyemin/vocals.wav","/icons/artworks-JwNW6K1GR42s-0-t500x500.jpg","src/Lyrics/men seni suyemin.txt");
+        Songs Mechty = new Songs(11,"Мечты","Aarne,Feduk,Scally Milano","Russian","src/Music/Мечты - Aarne/music.wav","src/Music/Мечты - Aarne/vocal.wav","/icons/Тесно.jpg","src/Lyrics/Мечты - Aarne.txt");
+        Songs ComeAsYouAre = new Songs(12,"Come as you are","Nivana","Rock","src/Music/Nirvana - Come As you are/Nirvana-Come-As-You-Are-.wav",null,"/icons/Nevermind-compressed.jpg",null);
 
 
         ForYouPl.addSong(Rhapsody);
@@ -343,8 +343,10 @@ private TilePane ExampleTilePAne;
         ForYouPl.addSong(Kayrat_almaty);
         ForYouPl.addSong(Kayrat_myUniverse);
         ForYouPl.addSong(tesno);
+        ForYouPl.addSong(domino);
 
-        playlist.add(Rhapsody);
+
+
         Playlists RockPl = new Playlists(2, "Rock", "/icons/rock.jpg");
         Playlists HipHopPl = new Playlists(3, "Hip-hop", "/icons/HipHop.jpg" );
         Playlists KazakhPl = new Playlists(4, "Kazakh music", "/icons/Kazakh.jpg");
@@ -356,9 +358,22 @@ private TilePane ExampleTilePAne;
         HomePlaylists.add(KazakhPl);
         HomePlaylists.add(RussianPl);
         HomePlaylists.add(FromUsPl);
-        RockPl.addSong(Kayrat_almaty);
-        RockPl.addSong(Kayrat_myUniverse);
-        RockPl.addSong(Lizer);
+
+
+        KazakhPl.addSong(Kayrat_almaty);
+        KazakhPl.addSong(Kayrat_myUniverse);
+        KazakhPl.addSong(MenSeniSuyemin);
+
+
+        RussianPl.addSong(Lizer);
+        RussianPl.addSong(domino);
+        RussianPl.addSong(Rhapsody);
+
+
+        RockPl.addSong(ComeAsYouAre);
+
+
+        FromUsPl.addSong(Mechty);
 
 
 
@@ -637,48 +652,26 @@ private TilePane ExampleTilePAne;
     // Чтение текста из файла и установка его в TextArea
     @FXML
     public void loadText(String path ) {
-        try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-            StringBuilder content = new StringBuilder();
-            String line;
+        if (path!= null) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+                StringBuilder content = new StringBuilder();
+                String line;
 
-            // Читаем файл построчно
-            while ((line = reader.readLine()) != null) {
-                content.append(line).append("\n");
+                // Читаем файл построчно
+                while ((line = reader.readLine()) != null) {
+                    content.append(line).append("\n");
+                }
+
+
+            } catch (IOException e) {
+                // Обработка ошибок чтения файла
+                System.err.println("Error reading file: " + e.getMessage());
             }
-
-
-
-        } catch (IOException e) {
-            // Обработка ошибок чтения файла
-            System.err.println("Error reading file: " + e.getMessage());
         }
-    }
-
-
-    public void playPlaylist(){
-        System.out.println(currentSongid);
-        Songs song = playlist.get(currentSongid);
-        MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
-        Image image = new Image(new File("src/main/resources" + song.getUrlPhoto()).toURI().toString());
-        UpperSongPh.setImage(image);
-
-        UpperSongPhOpened.setImage(image);
-
-        UpperSongName.setText(song.Name);
-        UpperArtistName.setText(song.Artist);
-
-
-
-        UpperArtistName1.setText(song.Name);
-        UpperSongName1.setText(song.Artist);
-        SongTextArea.setText(" ");
-
-
-        currentLyrics = song.urlLyrics;
-        durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
 
 
     }
+
     @FXML
     protected void playNextSong(){
 
@@ -754,6 +747,10 @@ private TilePane ExampleTilePAne;
         }
 
         Image image = new Image(new File("src/main/resources" + song.getUrlPhoto()).toURI().toString());
+
+
+
+
         UpperSongPh.setImage(image);
         UpperSongPhOpened.setImage(image);
         UpperSongName.setText(song.Name);
@@ -764,10 +761,24 @@ private TilePane ExampleTilePAne;
         currentLyrics = song.urlLyrics;
         updateButtonVisibility();
         durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
+
+
     }
     public void nextSong() {
         if (currentPlaylist != null && currentIndex < currentPlaylist.getSongs().size() - 1) {
             currentIndex++;
+
+
+            RotateTransition rotate = new RotateTransition();
+            rotate.setDuration(Duration.millis(500));
+            rotate.setAxis(Rotate.Y_AXIS);
+            rotate.setCycleCount(1);
+            rotate.setNode(UpperSongPhOpened);
+            rotate.setByAngle(360);
+            rotate.play();
+
+
+
             playSongPl(currentPlaylist.getSongs().get(currentIndex), currentPlaylist);
         }
     }
@@ -775,6 +786,13 @@ private TilePane ExampleTilePAne;
     public void previousSong() {
         if (currentPlaylist != null && currentIndex > 0) {
             currentIndex--;
+            RotateTransition rotate = new RotateTransition();
+            rotate.setDuration(Duration.millis(500));
+            rotate.setAxis(Rotate.Y_AXIS);
+            rotate.setCycleCount(1);
+            rotate.setNode(UpperSongPhOpened);
+            rotate.setByAngle(-360);
+            rotate.play();
             playSongPl(currentPlaylist.getSongs().get(currentIndex), currentPlaylist);
         }
     }
