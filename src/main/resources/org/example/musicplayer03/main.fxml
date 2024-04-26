@@ -117,21 +117,21 @@
                </children></AnchorPane>
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="HomePage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" visible="false">
+      <ScrollPane fx:id="HomePage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
          <content>
             <TilePane fx:id="ExampleTilePAne" prefHeight="865.0" prefWidth="880.0" />
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="PlaylistScrollPane" layoutX="293.0" layoutY="130.0" prefHeight="640.0" prefWidth="884.0" style="-fx-background-color: #000000;" styleClass="scroll-bar" stylesheets="@design.css">
+      <ScrollPane fx:id="PlaylistScrollPane" layoutX="293.0" layoutY="116.0" prefHeight="654.0" prefWidth="884.0" style="-fx-background-color: #000000;" stylesheets="@design.css">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="797.0" prefWidth="859.0" style="-fx-background-color: #000000;">
+            <AnchorPane fx:id="PlAnchor" minHeight="0.0" minWidth="0.0" prefWidth="859.0" style="-fx-background-color: #000000;">
                <children>
                   <Button fx:id="ClosePlbtn" mnemonicParsing="false" onAction="#ClosePlaylist" style="-fx-background-color: transparent;">
                      <graphic>
                         <FontAwesomeIconView fill="GREY" glyphName="ARROW_LEFT" size="20" />
                      </graphic>
                   </Button>
-                  <TilePane fx:id="PlaylistPane" layoutX="26.0" layoutY="33.0" prefHeight="787.0" prefWidth="798.0" style="-fx-background-color: #000000;" />
+                  <TilePane fx:id="PlaylistPane" layoutX="26.0" layoutY="33.0" prefWidth="798.0" style="-fx-background-color: #000000;" />
                </children></AnchorPane>
          </content>
       </ScrollPane>
@@ -190,7 +190,7 @@
             <Slider fx:id="trackSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" onDragDetected="#setTrackPosition" onDragDone="#setTrackPosition" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
             <HBox fx:id="UpperButtonsHBox" alignment="TOP_CENTER" layoutX="330.0" layoutY="42.0" prefHeight="27.0" prefWidth="264.0">
                <children>
-                  <Button fx:id="resetButton" mnemonicParsing="false" onAction="#previousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                  <Button fx:id="resetButton" mnemonicParsing="false" onAction="#previousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" styleClass="PrevNextBtn" stylesheets="@design.css">
                      <graphic>
                         <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="20" text="" />
                      </graphic>
@@ -209,7 +209,7 @@
                         </Button>
                      </children>
                   </StackPane>
-                  <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#nextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
+                  <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#nextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" styleClass="PrevNextBtn" stylesheets="@design.css" textFill="#1e1c23">
                      <graphic>
                         <FontAwesomeIconView fill="#ffdcbd" glyphName="FORWARD" size="20" wrappingWidth="22.363237380981445" />
                      </graphic>
@@ -238,7 +238,7 @@
                   </VBox>
                   <HBox alignment="TOP_CENTER" prefHeight="62.0" prefWidth="315.0">
                      <children>
-                        <Button fx:id="startPlay1" mnemonicParsing="false" onAction="#playPreviousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                        <Button fx:id="startPlay1" mnemonicParsing="false" onAction="#playPreviousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" styleClass="PrevNextBtn" stylesheets="@design.css">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="30" />
                            </graphic>
@@ -257,7 +257,7 @@
                               </Button>
                            </children>
                         </StackPane>
-                        <Button fx:id="forwardButton1" mnemonicParsing="false" onAction="#playNextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
+                        <Button fx:id="forwardButton1" mnemonicParsing="false" onAction="#playNextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" styleClass="PrevNextBtn" stylesheets="@design.css" textFill="#1e1c23">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="FORWARD" size="30" wrappingWidth="22.363237380981445" />
                            </graphic>

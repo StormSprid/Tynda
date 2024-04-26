@@ -68,5 +68,16 @@
 }
 .HomePage {
 -fx-background-color: transparent}
+ .PrevNextBtn .glyph-icon{
+ -fx-fill: #ffdcbd;
+ }
+ .PrevNextBtn:pressed .glyph-icon{
+  -fx-fill: gray;
+  }
+  .scroll-pane {
+      -fx-hbar-policy: never; /* Никогда не показывать горизонтальную полосу прокрутки */
+      -fx-vbar-policy: never; /* Никогда не показывать вертикальную полосу прокрутки */
+  }
+
 
 
