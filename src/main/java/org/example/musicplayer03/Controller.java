@@ -27,6 +27,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import java.util.ResourceBundle;
 public class Controller implements Initializable {
@@ -150,17 +151,11 @@ private TilePane ExampleTilePAne;
 
     @FXML
     protected void play() {
+        if (!MusicLib.isSongLoaded()) {
 
-            if (!MusicLib.isSongLoaded()) {
-                updateButtonVisibility();
-
-                playSongPl(ForYouPl.getSongs().getFirst(), ForYouPl);
-                durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
-                timeline.play();
-                isPlaying = true;
-            }else {
-                pause();
-            }
+        } else {
+            pause();
+        }
     }
 
 
@@ -736,6 +731,7 @@ private TilePane ExampleTilePAne;
 
 
     public void playSongPl(Songs song, Playlists playlist){
+            timeline.play();
         if(!isPlaying){
             isPlaying = true;
         MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());

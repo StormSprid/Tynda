@@ -192,12 +192,12 @@
                <children>
                   <Button fx:id="resetButton" mnemonicParsing="false" onAction="#previousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                      <graphic>
-                        <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="20" />
+                        <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="20" text="" />
                      </graphic>
                   </Button>
                   <StackPane prefHeight="29.0" prefWidth="102.0">
                      <children>
-                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="PLAY" size="20" smooth="false" wrappingWidth="14.006094932556152" />
                            </graphic>
