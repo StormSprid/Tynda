@@ -45,7 +45,11 @@ public class Controller implements Initializable {
     @FXML
     private Button TopSongsBtn;
     @FXML
+    private Button MySongsBtn;
+    @FXML
     private Button playButton;
+    @FXML
+    private ScrollPane MySongsScrollPane;
 
     @FXML
     private Button pauseButton;
@@ -306,15 +310,13 @@ private TilePane ExampleTilePAne;
         timeline.setCycleCount(Timeline.INDEFINITE);
 
     }
-
-    private List<Songs> playlist;
     public List<Playlists> HomePlaylists = new ArrayList<>();
 
     Playlists ForYouPl = new Playlists(1, "For you", "/icons/radio.jpg");
 
 
     private void initializePlaylist(){
-        playlist = new ArrayList<>();
+
 
 
         Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
@@ -427,6 +429,7 @@ private TilePane ExampleTilePAne;
         PressButton(HomeBtn);
         PlaylistScrollPane.setVisible(false);
         HomePage.setVisible(true);
+        MySongsScrollPane.setVisible(false);
         // добавить для других панелей
     }
 
@@ -435,10 +438,20 @@ private TilePane ExampleTilePAne;
        HomePage.setVisible(false);
         PlaylistScrollPane.setVisible(false);
         topSongsPage.setVisible(true);
+        MySongsScrollPane.setVisible(false);
         PressButton(TopSongsBtn);
 
         // добавить для других панелей
     }
+    @FXML
+    private void showMySongs(){
+        HomePage.setVisible(false);
+        PlaylistScrollPane.setVisible(false);
+        topSongsPage.setVisible(false);
+        MySongsScrollPane.setVisible(true);
+        PressButton(MySongsBtn);
+    }
+
 
 
 

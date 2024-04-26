@@ -62,7 +62,7 @@
                         <FontAwesomeIconView glyphName="FIRE" size="35" />
                      </graphic>
                   </Button>
-                  <Button fx:id="MySongsBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="My songs" textFill="#1e1c23">
+                  <Button fx:id="MySongsBtn" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#showMySongs" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="My songs" textFill="#1e1c23">
                      <font>
                         <Font name="PT Sans Bold" size="25.0" />
                      </font>
@@ -122,7 +122,16 @@
             <TilePane fx:id="ExampleTilePAne" prefHeight="865.0" prefWidth="880.0" />
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="PlaylistScrollPane" layoutX="293.0" layoutY="116.0" prefHeight="654.0" prefWidth="884.0" style="-fx-background-color: #000000;" stylesheets="@design.css">
+      <ScrollPane fx:id="MySongsScrollPane" layoutX="303.0" layoutY="126.0" prefHeight="654.0" prefWidth="884.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
+         <content>
+            <AnchorPane fx:id="MySongsAnchor" minHeight="0.0" minWidth="0.0" prefWidth="859.0" style="-fx-background-color: #000000;">
+               <children>
+                  <TilePane fx:id="MySongsPane" layoutX="26.0" layoutY="33.0" prefWidth="798.0" style="-fx-background-color: #000000;" />
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+      <ScrollPane fx:id="PlaylistScrollPane" layoutX="293.0" layoutY="116.0" prefHeight="654.0" prefWidth="884.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
          <content>
             <AnchorPane fx:id="PlAnchor" minHeight="0.0" minWidth="0.0" prefWidth="859.0" style="-fx-background-color: #000000;">
                <children>
