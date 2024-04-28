@@ -45,7 +45,8 @@ public class MusicLib {
                     vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
                     musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
                 }
-            }else {
+            }
+            if(vocalsPath==null){
                 File musicFile = new File(musicPath);
                 musicClip = AudioSystem.getClip();
                 musicClip.open(AudioSystem.getAudioInputStream(musicFile));
@@ -62,10 +63,16 @@ public class MusicLib {
 
     public static void stopDouble() {
         isPlaying = false;
-        musicClip.close();
-        vocalsClip.close();
-        musicClip = null;
-        vocalsClip = null;
+        if (musicClip != null && vocalsClip !=null) {
+            musicClip.close();
+            vocalsClip.close();
+            musicClip = null;
+            vocalsClip = null;
+        }
+        if(musicClip!=null && vocalsClip == null){
+            musicClip.close();
+            musicClip = null;
+        }
 
 
     }
