@@ -27,27 +27,36 @@ public class MusicLib {
 
     public static void playDouble(String musicPath, String vocalsPath) {
         try {
-            if (!isPlaying) {
-                File musicFile = new File(musicPath);
-                File vocalsFile = new File(vocalsPath);
+            if (vocalsPath != null) {
+                if (!isPlaying) {
+                    File musicFile = new File(musicPath);
+                    File vocalsFile = new File(vocalsPath);
 
+                    musicClip = AudioSystem.getClip();
+                    musicClip.open(AudioSystem.getAudioInputStream(musicFile));
+
+                    vocalsClip = AudioSystem.getClip();
+                    vocalsClip.open(AudioSystem.getAudioInputStream(vocalsFile));
+
+
+                    musicClip.start();
+                    vocalsClip.start();
+
+                    vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
+                    musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
+                }
+            }else {
+                File musicFile = new File(musicPath);
                 musicClip = AudioSystem.getClip();
                 musicClip.open(AudioSystem.getAudioInputStream(musicFile));
-
-                vocalsClip = AudioSystem.getClip();
-                vocalsClip.open(AudioSystem.getAudioInputStream(vocalsFile));
-
-
                 musicClip.start();
-                vocalsClip.start();
-
-                vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
                 musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
+
         isPlaying = true;
     }
 
@@ -173,7 +182,9 @@ public class MusicLib {
         return String.format("%02d:%02d", minutes, remainingSeconds);
     }
 
-
+public static boolean isSongLoaded(){
+    return musicClip != null;
+}
 
 
 }

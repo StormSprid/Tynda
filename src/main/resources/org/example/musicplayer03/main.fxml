@@ -11,6 +11,7 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.InnerShadow?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -42,48 +43,68 @@
             <FontAwesomeIconView fill="WHITE" glyphName="SEARCH" layoutX="28.0" layoutY="106.0" selectionFill="#ffdcbd" />
             <VBox fx:id="LeftPaneButtonsVBox" layoutX="10.0" layoutY="157.0" prefHeight="537.0" prefWidth="250.0" spacing="8.0">
                <children>
-                  <Button fx:id="HomeBtn" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#showHome" prefHeight="60.0" prefWidth="239.0" stylesheets="@design.css" text="  Home" textFill="#1e1c23">
+                  <Button fx:id="HomeBtn" alignment="TOP_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#showHome" prefHeight="60.0" prefWidth="239.0" stylesheets="@design.css" text="Home" textFill="#1e1c23">
                      <font>
                         <Font name="PT Sans Bold" size="25.0" />
                      </font>
-                     <graphic>
-                        <FontAwesomeIconView glyphName="HOME" size="35" wrappingWidth="28.071428298950195" />
-                     </graphic>
                      <styleClass>
                         <String fx:value="PressedButton" />
                         <String fx:value="left_menu_button" />
                      </styleClass>
-                  </Button>
-                  <Button fx:id="TopSongsBtn" alignment="TOP_LEFT" mnemonicParsing="false" onAction="#showTopSongs" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="Top songs">
-                     <font>
-                        <Font name="PT Sans Bold" size="25.0" />
-                     </font>
                      <graphic>
-                        <FontAwesomeIconView glyphName="FIRE" size="35" />
+                        <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="35.0">
+                           <children>
+                              <FontAwesomeIconView glyphName="HOME" size="35" wrappingWidth="28.071428298950195" />
+                           </children>
+                        </HBox>
                      </graphic>
                   </Button>
-                  <Button fx:id="MySongsBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="My songs" textFill="#1e1c23">
+                  <Button fx:id="TopSongsBtn" alignment="TOP_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#showTopSongs" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="Top songs">
                      <font>
                         <Font name="PT Sans Bold" size="25.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView glyphName="HEART" size="35" />
+                        <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="35.0">
+                           <children>
+                              <FontAwesomeIconView glyphName="FIRE" size="35" />
+                           </children>
+                        </HBox>
                      </graphic>
                   </Button>
-                  <Button fx:id="PlaylistBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="  Your playlists">
+                  <Button fx:id="MySongsBtn" alignment="TOP_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#showMySongs" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="My songs" textFill="#1e1c23">
                      <font>
                         <Font name="PT Sans Bold" size="25.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView glyphName="MUSIC" size="35" />
+                        <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="35.0">
+                           <children>
+                              <FontAwesomeIconView glyphName="HEART" size="35" />
+                           </children>
+                        </HBox>
                      </graphic>
                   </Button>
-                  <Button fx:id="ForChildrenBtn" alignment="TOP_LEFT" mnemonicParsing="false" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="  For children" textFill="#1e1c23">
+                  <Button fx:id="PlaylistBtn" alignment="TOP_LEFT" graphicTextGap="20.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="Your playlists">
                      <font>
                         <Font name="PT Sans Bold" size="25.0" />
                      </font>
                      <graphic>
-                        <FontAwesomeIconView glyphName="CHILD" size="35" />
+                        <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="35.0">
+                           <children>
+                              <FontAwesomeIconView glyphName="MUSIC" size="35" />
+                           </children>
+                        </HBox>
+                     </graphic>
+                  </Button>
+                  <Button fx:id="AddSongBtn" alignment="TOP_LEFT" graphicTextGap="20.0" mnemonicParsing="false" onAction="#showAddSong" prefHeight="60.0" prefWidth="239.0" styleClass="left_menu_button" stylesheets="@design.css" text="Add song" textFill="#1e1c23">
+                     <font>
+                        <Font name="PT Sans Bold" size="25.0" />
+                     </font>
+                     <graphic>
+                        <HBox alignment="TOP_CENTER" prefHeight="35.0" prefWidth="35.0">
+                           <children>
+                              <FontAwesomeIconView glyphName="PLUS" size="35" wrappingWidth="25.0" />
+                           </children>
+                        </HBox>
                      </graphic>
                   </Button>
                   <Label fx:id="label_welcome" text="Welcome" />
@@ -115,24 +136,34 @@
                </children></AnchorPane>
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="HomePage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" visible="false">
+      <ScrollPane fx:id="HomePage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
          <content>
             <TilePane fx:id="ExampleTilePAne" prefHeight="865.0" prefWidth="880.0" />
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="PlaylistScrollPane" layoutX="293.0" layoutY="130.0" prefHeight="640.0" prefWidth="884.0" style="-fx-background-color: #000000;" styleClass="scroll-bar" stylesheets="@design.css">
+      <ScrollPane fx:id="MySongsScrollPane" layoutX="303.0" layoutY="126.0" prefHeight="654.0" prefWidth="884.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="797.0" prefWidth="859.0" style="-fx-background-color: #000000;">
+            <AnchorPane fx:id="MySongsAnchor" minHeight="0.0" minWidth="0.0" prefWidth="859.0" style="-fx-background-color: #000000;">
+               <children>
+                  <TilePane fx:id="MySongsPane" layoutX="26.0" layoutY="33.0" prefWidth="798.0" style="-fx-background-color: #000000;" />
+               </children>
+            </AnchorPane>
+         </content>
+      </ScrollPane>
+      <ScrollPane fx:id="PlaylistScrollPane" layoutX="293.0" layoutY="116.0" prefHeight="654.0" prefWidth="884.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
+         <content>
+            <AnchorPane fx:id="PlAnchor" minHeight="0.0" minWidth="0.0" prefWidth="859.0" style="-fx-background-color: #000000;">
                <children>
                   <Button fx:id="ClosePlbtn" mnemonicParsing="false" onAction="#ClosePlaylist" style="-fx-background-color: transparent;">
                      <graphic>
                         <FontAwesomeIconView fill="GREY" glyphName="ARROW_LEFT" size="20" />
                      </graphic>
                   </Button>
-                  <TilePane fx:id="PlaylistPane" layoutX="26.0" layoutY="33.0" prefHeight="787.0" prefWidth="798.0" style="-fx-background-color: #000000;" />
+                  <TilePane fx:id="PlaylistPane" layoutX="26.0" layoutY="33.0" prefWidth="798.0" style="-fx-background-color: #000000;" />
                </children></AnchorPane>
          </content>
       </ScrollPane>
+      <AnchorPane fx:id="AddSongPage" layoutX="291.0" layoutY="127.0" prefHeight="656.0" prefWidth="898.0" />
       <Pane fx:id="Shtorka" focusTraversable="true" layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
          <children>
             <TextFlow fx:id="ArtistSongNameText" layoutX="-2.0" layoutY="535.0" prefHeight="65.0" prefWidth="908.0" textAlignment="CENTER" visible="false">
@@ -158,15 +189,21 @@
                <font>
                   <Font size="25.0" />
                </font>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </TextArea>
             <ImageView fx:id="UpperSongPhOpened" fitHeight="441.0" fitWidth="444.0" layoutX="19.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
-                  <Image url="@../../../icons/Kazakh.jpg" />
+                  <Image url="@../../../images/5759b69c2046c155367151e4.png" />
                </image>
+               <effect>
+                  <InnerShadow />
+               </effect>
             </ImageView>
             <ImageView fx:id="UpperSongPh" fitHeight="60.0" fitWidth="60.0" layoutX="32.0" layoutY="13.0" pickOnBounds="true" preserveRatio="true">
                <image>
-                  <Image url="@../../../icons/Kazakh.jpg" />
+                  <Image url="@../../../images/5759b69c2046c155367151e4.png" />
                </image>
             </ImageView>
             <Label fx:id="UpperSongName" layoutX="108.0" layoutY="14.0" prefHeight="26.0" prefWidth="185.0" text="Song" textFill="WHITE">
@@ -182,14 +219,14 @@
             <Slider fx:id="trackSlider" layoutX="325.0" layoutY="19.0" majorTickUnit="100.0" minorTickCount="1" onDragDetected="#setTrackPosition" onDragDone="#setTrackPosition" prefHeight="15.0" prefWidth="274.0" style="-fx-background-radius: 40;" styleClass="Slider" stylesheets="@design.css" />
             <HBox fx:id="UpperButtonsHBox" alignment="TOP_CENTER" layoutX="330.0" layoutY="42.0" prefHeight="27.0" prefWidth="264.0">
                <children>
-                  <Button fx:id="resetButton" mnemonicParsing="false" onAction="#previousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                  <Button fx:id="resetButton" mnemonicParsing="false" onAction="#previousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" styleClass="PrevNextBtn" stylesheets="@design.css">
                      <graphic>
-                        <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="20" />
+                        <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="20" text="" />
                      </graphic>
                   </Button>
                   <StackPane prefHeight="29.0" prefWidth="102.0">
                      <children>
-                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#play" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                        <Button fx:id="playButton" mnemonicParsing="false" onAction="#pause" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="PLAY" size="20" smooth="false" wrappingWidth="14.006094932556152" />
                            </graphic>
@@ -201,7 +238,7 @@
                         </Button>
                      </children>
                   </StackPane>
-                  <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#nextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
+                  <Button fx:id="forwardButton" mnemonicParsing="false" onAction="#nextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" styleClass="PrevNextBtn" stylesheets="@design.css" textFill="#1e1c23">
                      <graphic>
                         <FontAwesomeIconView fill="#ffdcbd" glyphName="FORWARD" size="20" wrappingWidth="22.363237380981445" />
                      </graphic>
@@ -230,7 +267,7 @@
                   </VBox>
                   <HBox alignment="TOP_CENTER" prefHeight="62.0" prefWidth="315.0">
                      <children>
-                        <Button fx:id="startPlay1" mnemonicParsing="false" onAction="#playPreviousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;">
+                        <Button fx:id="startPlay1" mnemonicParsing="false" onAction="#playPreviousSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" styleClass="PrevNextBtn" stylesheets="@design.css">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="BACKWARD" size="30" />
                            </graphic>
@@ -249,7 +286,7 @@
                               </Button>
                            </children>
                         </StackPane>
-                        <Button fx:id="forwardButton1" mnemonicParsing="false" onAction="#playNextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" textFill="#1e1c23">
+                        <Button fx:id="forwardButton1" mnemonicParsing="false" onAction="#playNextSong" prefHeight="27.0" prefWidth="60.0" style="-fx-background-color: #1e1c23;" styleClass="PrevNextBtn" stylesheets="@design.css" textFill="#1e1c23">
                            <graphic>
                               <FontAwesomeIconView fill="#ffdcbd" glyphName="FORWARD" size="30" wrappingWidth="22.363237380981445" />
                            </graphic>
