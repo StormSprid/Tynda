@@ -27,7 +27,7 @@ public class Playlistinitializer {
         Songs Mechty = new Songs(11,"Мечты","Aarne,Feduk,Scally Milano","Russian","src/Music/Мечты - Aarne/music.wav","src/Music/Мечты - Aarne/vocal.wav","/icons/Тесно.jpg","src/Lyrics/Мечты - Aarne.txt");
         Songs ComeAsYouAre = new Songs(12,"Come as you are","Nirvana","Rock","src/Music/Nirvana - Come As you are/Nirvana-Come-As-You-Are-.wav",null,"/icons/Nevermind-compressed.jpg",null);
         Songs MyEyes = new Songs(13,"My Eyes","Travis Scott","Pop","src/Music/Travis Scott - My eyes/music.wav","src/Music/Travis Scott - My eyes/vocal.wav","/icons/utopia.jpg","src/Lyrics/My eyes.txt");
-
+        Songs Pustota = new Songs(14,"Пустота","GONE.fludd","Russia","src/Music/GONE.fludd- Пустота/music.wav","src/Music/GONE.fludd- Пустота/vocal.wav","/icons/Суперчуитс.jpg","src/Lyrics/пустота.txt");
 
 
 
@@ -72,6 +72,7 @@ public class Playlistinitializer {
 
         FromUsPl.addSong(Mechty);
         FromUsPl.addSong(MyEyes);
+        FromUsPl.addSong(Pustota);
 
 
 
