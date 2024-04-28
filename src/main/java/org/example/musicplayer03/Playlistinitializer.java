@@ -16,7 +16,7 @@ public class Playlistinitializer {
 
         Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
         Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "/icons/6480931.jpg", "src/Lyrics/rihanna.txt");
-        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "/icons/roses.png", "src/Lyrics/roses.txt");
+        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "/icons/roses.png", null);
         Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "/icons/Смирись_и_расслабься!.jpg", "src/Lyrics/кайен.txt");
         Songs Kayrat_almaty = new Songs(5, "Алматынын тундеры", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/Алматынын тундеры/music.wav", "src/Music/Кайрош/Алматынын тундеры/vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/Алматынын тундеры.txt");
         Songs Kayrat_myUniverse = new Songs(6, "My universe", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/My Universe/My_Universe_music.wav", "src/Music/Кайрош/My Universe/My_Universe_vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/MyUniverse.txt");

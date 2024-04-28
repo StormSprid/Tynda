@@ -1,6 +1,7 @@
 package org.example.musicplayer03;
 
 import javafx.animation.RotateTransition;
+import javafx.scene.control.Button;
 import javafx.scene.image.ImageView;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
@@ -16,4 +17,6 @@ public static void rotateImage(ImageView place,double value){
     rotate.setByAngle(value);
     rotate.play();
 }
+
+
 }

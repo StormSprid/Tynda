@@ -34,7 +34,6 @@ public class Controller implements Initializable {
 
 
     String[]  badWords = {"сука","Сука","бля","Бля","ебанной","ебанный","ёбаных","Жопа","жопа"};
-    int currentSongid = 0;
 
     @FXML
     private Label label_welcome;
@@ -253,64 +252,13 @@ private TilePane ExampleTilePAne;
                     timerLabel.setText(MusicLib.secondsToString(MusicLib.getTrackPositionToInt()));
 
                     if (MusicLib.getTrackPositionToInt() == MusicLib.getTotalDuration() ){
-                        updateButtonVisibility();
 
                         playNextSong();
+
                     }
 
 
-                    int currentSecond = MusicLib.getTrackPositionToInt();
-                    String dir = currentLyrics;
-                    boolean foundValidLines = false; // Флаг для отслеживания найденных корректных строк
-                    if (dir!= null) {
-                        try (BufferedReader br = new BufferedReader(new FileReader(dir))) {
-                            String line;
-                            while ((line = br.readLine()) != null) {
-                                // Проверяем наличие нулевого байта в строке
-                                if (line.startsWith("\uFEFF")) {
-                                    line = line.substring(1); // Удаляем нулевой байт из строки
-                                }
-
-                                String[] parts = line.split(";");
-                                // Проверяем количество частей после разделения строки
-                                if (parts.length == 2) {
-                                    foundValidLines = true; // Устанавливаем флаг в true, если найдена корректная строка
-
-                                    String time = parts[0];
-                                    String text = parts[1];
-
-
-                                    String[] timeParts = time.split(":");
-                                    int minute = Integer.parseInt(timeParts[0]);
-                                    int seconds = Integer.parseInt(timeParts[1]);
-
-
-                                    if (currentSecond == (minute * 60 + seconds)) {
-                                        for (String badWord : badWords) {
-                                            if (text.contains(badWord) || text.contains("$")) {
-                                                MusicLib.nonVocalMod();
-                                            } else {
-                                                MusicLib.vocalMod();
-                                            }
-                                        }
-                                            SongTextArea.appendText(text.replace("$", "") + "\n");
-
-                                    }
-                                }
-
-
-                            }
-
-                            // Если не было найдено корректных строк, выводим соответствующее сообщение
-                            if (!foundValidLines || currentLyrics == null) {
-                                SongTextArea.setText("Упс! Текст данной песни откроется на платной версии приложения!");
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }else {
-                        SongTextArea.setText("Упс! Текст данной песни откроется на платной версии приложения!");
-                    }
+                    Settings.setTextOnTextArea(currentLyrics,SongTextArea);
 
                 })
         );
@@ -469,7 +417,7 @@ private TilePane ExampleTilePAne;
     }
 
     private void animateSize() {
-        Timeline timeline = new Timeline();
+        Timeline timelineAnimation = new Timeline();
 
         KeyValue kvWidth;
         KeyValue kvHeight;
@@ -485,8 +433,8 @@ private TilePane ExampleTilePAne;
         }
 
         KeyFrame kfSize = new KeyFrame(Duration.seconds(0.6), kvWidth, kvHeight);
-        timeline.getKeyFrames().add(kfSize);
-        timeline.play(); // Запуск анимации изменения размеров
+        timelineAnimation.getKeyFrames().add(kfSize);
+        timelineAnimation.play(); // Запуск анимации изменения размеров
     }
 
     private void animateImage() {
@@ -706,6 +654,7 @@ private TilePane ExampleTilePAne;
     public void playSongPl(Songs song, Playlists playlist){
             timeline.play();
         if(!isPlaying){
+            MusicLib.stopDouble();
             isPlaying = true;
         MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
             currentIndex = playlist.getSongs().indexOf(song);;
