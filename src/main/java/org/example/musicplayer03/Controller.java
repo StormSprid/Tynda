@@ -49,6 +49,10 @@ public class Controller implements Initializable {
     @FXML
     private Button playButton;
     @FXML
+    private Button AddSongBtn;
+    @FXML
+    private AnchorPane AddSongPage;
+    @FXML
     private ScrollPane MySongsScrollPane;
 
     @FXML
@@ -440,6 +444,7 @@ private TilePane ExampleTilePAne;
         topSongsPage.setVisible(true);
         MySongsScrollPane.setVisible(false);
         PressButton(TopSongsBtn);
+        AddSongPage.setVisible(false);
 
         // добавить для других панелей
     }
@@ -449,7 +454,17 @@ private TilePane ExampleTilePAne;
         PlaylistScrollPane.setVisible(false);
         topSongsPage.setVisible(false);
         MySongsScrollPane.setVisible(true);
+        AddSongPage.setVisible(false);
         PressButton(MySongsBtn);
+    }
+    @FXML
+    private void showAddSong(){
+        HomePage.setVisible(false);
+        PlaylistScrollPane.setVisible(false);
+        topSongsPage.setVisible(false);
+        MySongsScrollPane.setVisible(false);
+        PressButton(AddSongBtn);
+        AddSongPage.setVisible(true);
     }
 
 
@@ -461,11 +476,15 @@ private TilePane ExampleTilePAne;
             UnpressButton(currentActiveButton);
         }
         button.setStyle("-fx-background-color: rgba(0, 0, 0, 0.57);");
+        button.setOnMouseEntered(null);
+        button.setOnMouseExited(null);
         currentActiveButton = button;
     }
 
     private void UnpressButton(Button button) {
         button.setStyle("-fx-background-color: #ffdcbd;");
+        button.setOnMouseEntered(e -> button.setStyle("-fx-background-color:  rgba(0,0,0,0.57);"));
+        button.setOnMouseExited(e -> button.setStyle("-fx-background-color: #ffdcbd;"));
     }
 
 
