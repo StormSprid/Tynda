@@ -137,6 +137,8 @@ private TilePane ExampleTilePAne;
     @FXML
     private ScrollPane topSongsPage;
     @FXML
+    private TilePane TopSongsTilePane;
+    @FXML
     private TextField lyricsField;
     private boolean isPlaying = false;
     private Button currentActiveButton = null;
@@ -323,18 +325,18 @@ private TilePane ExampleTilePAne;
 
 
 
-        Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
-        Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "/icons/6480931.jpg", "src/Lyrics/rihanna.txt");
-        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "/icons/roses.png", "src/Lyrics/roses.txt");
-        Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "/icons/Смирись_и_расслабься!.jpg", "src/Lyrics/кайен.txt");
-        Songs Kayrat_almaty = new Songs(5, "Алматынын тундеры", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/Алматынын тундеры/music.wav", "src/Music/Кайрош/Алматынын тундеры/vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/Алматынын тундеры.txt");
-        Songs Kayrat_myUniverse = new Songs(6, "My universe", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/My Universe/My_Universe_music.wav", "src/Music/Кайрош/My Universe/My_Universe_vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/MyUniverse.txt");
-        Songs Rhapsody = new Songs(7,"Рапсодия конца света","GONE.Fludd","Russia","src/Music/Рапсодия Конца Света/music.wav","src/Music/Рапсодия Конца Света/vocals.wav","/icons/Rapsodiya_Konca_Sveta.png","src/Lyrics/Rapsodiya.txt");
-        Songs tesno = new Songs(8,"Тесно","Bushido Zho","Russia","src/Music/Тесно - Bushido ZHO/music.wav","src/Music/Тесно - Bushido ZHO/vocals.wav","/icons/Тесно.jpg","src/Lyrics/Тесно.txt");
-        Songs domino = new Songs(9,"Домино","FACE","Russia","src/Music/Face - Домино/music.wav","src/Music/Face - Домино/vocals.wav","/icons/FACE.png","src/Lyrics/домино.txt");
-        Songs MenSeniSuyemin = new Songs(10,"Men Seni Suyemin","Son Paskal","Kazakh","src/Music/Son Paskal - Men Seni Suyemin/music.wav","src/Music/Son Paskal - Men Seni Suyemin/vocals.wav","/icons/artworks-JwNW6K1GR42s-0-t500x500.jpg","src/Lyrics/men seni suyemin.txt");
-        Songs Mechty = new Songs(11,"Мечты","Aarne,Feduk,Scally Milano","Russian","src/Music/Мечты - Aarne/music.wav","src/Music/Мечты - Aarne/vocal.wav","/icons/Тесно.jpg","src/Lyrics/Мечты - Aarne.txt");
-        Songs ComeAsYouAre = new Songs(12,"Come as you are","Nivana","Rock","src/Music/Nirvana - Come As you are/Nirvana-Come-As-You-Are-.wav",null,"/icons/Nevermind-compressed.jpg",null);
+        Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "/icons/Лизер.jpg", "src/Lyrics/Гори.txt", 0);
+        Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "/icons/6480931.jpg", "src/Lyrics/rihanna.txt", 0);
+        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "/icons/roses.png", "src/Lyrics/roses.txt",0);
+        Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "/icons/Смирись_и_расслабься!.jpg", "src/Lyrics/кайен.txt", 0);
+        Songs Kayrat_almaty = new Songs(5, "Алматынын тундеры", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/Алматынын тундеры/music.wav", "src/Music/Кайрош/Алматынын тундеры/vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/Алматынын тундеры.txt",5);
+        Songs Kayrat_myUniverse = new Songs(6, "My universe", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/My Universe/My_Universe_music.wav", "src/Music/Кайрош/My Universe/My_Universe_vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/MyUniverse.txt", 1);
+        Songs Rhapsody = new Songs(7,"Рапсодия конца света","GONE.Fludd","Russia","src/Music/Рапсодия Конца Света/music.wav","src/Music/Рапсодия Конца Света/vocals.wav","/icons/Rapsodiya_Konca_Sveta.png","src/Lyrics/Rapsodiya.txt", 10);
+        Songs tesno = new Songs(8,"Тесно","Bushido Zho","Russia","src/Music/Тесно - Bushido ZHO/music.wav","src/Music/Тесно - Bushido ZHO/vocals.wav","/icons/Тесно.jpg","src/Lyrics/Тесно.txt", 4);
+        Songs domino = new Songs(9,"Домино","FACE","Russia","src/Music/Face - Домино/music.wav","src/Music/Face - Домино/vocals.wav","/icons/FACE.png","src/Lyrics/домино.txt", 6);
+        Songs MenSeniSuyemin = new Songs(10,"Men Seni Suyemin","Son Paskal","Kazakh","src/Music/Son Paskal - Men Seni Suyemin/music.wav","src/Music/Son Paskal - Men Seni Suyemin/vocals.wav","/icons/artworks-JwNW6K1GR42s-0-t500x500.jpg","src/Lyrics/men seni suyemin.txt",0);
+        Songs Mechty = new Songs(11,"Мечты","Aarne,Feduk,Scally Milano","Russian","src/Music/Мечты - Aarne/music.wav","src/Music/Мечты - Aarne/vocal.wav","/icons/Тесно.jpg","src/Lyrics/Мечты - Aarne.txt",0);
+        Songs ComeAsYouAre = new Songs(12,"Come as you are","Nivana","Rock","src/Music/Nirvana - Come As you are/Nirvana-Come-As-You-Are-.wav",null,"/icons/Nevermind-compressed.jpg",null,0);
 
 
         ForYouPl.addSong(Rhapsody);
@@ -428,12 +430,12 @@ private TilePane ExampleTilePAne;
 
     @FXML
     private void showHome() {
-        SetupHome();
         topSongsPage.setVisible(false);
         PressButton(HomeBtn);
         PlaylistScrollPane.setVisible(false);
         HomePage.setVisible(true);
         MySongsScrollPane.setVisible(false);
+        SetupHome();
         // добавить для других панелей
     }
 
@@ -501,7 +503,9 @@ private TilePane ExampleTilePAne;
         initializeSliders();
         initializeTimeline();
         initializePlaylist();
-        showHome();
+        showMySongs();
+
+
     }
 
     public void setUserInformation(String username) {
@@ -718,7 +722,6 @@ private TilePane ExampleTilePAne;
         // Создаем блок VBox для каждой песни
         public void OpenPlaylist(Playlists playlist) {
             PlaylistPane.getChildren().removeIf(node -> node != ClosePlbtn);
-            currentPlaylist = playlist;
             PlaylistScrollPane.setVisible(true);
 
             for (int i = 0; i < playlist.getSongs().size(); i++) {
@@ -773,6 +776,8 @@ private TilePane ExampleTilePAne;
             isPlaying = true;
         MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
             currentIndex = playlist.getSongs().indexOf(song);;
+            currentPlaylist = playlist;
+            song.addCounter();
         }
         else{
             pause();
@@ -853,8 +858,6 @@ private TilePane ExampleTilePAne;
 
             // Создаем кнопку
             Button playlistButton = new Button();
-            playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("-fx-background-color:  rgba(204, 204, 204, 0.5);"));
-            playlistButton.setOnMouseExited(e -> playlistButton.setStyle("-fx-background-color: transparent;"));
             playlistButton.setGraphic(imageTextVBox); // Устанавливаем VBox как графическое содержимое кнопки
             playlistButton.setStyle("-fx-background-color: transparent;"); // Прозрачный фон кнопки
             playlistButton.setMaxWidth(Double.MAX_VALUE);
@@ -867,14 +870,24 @@ private TilePane ExampleTilePAne;
             ExampleTilePAne.getChildren().add(outerVBox);  // Добавляем внешний VBox в TilePane
 
             playlistButton.setOnAction(event -> OpenPlaylist(playlist));
+
+            // Устанавливаем обработчики событий после добавления кнопки в родительский контейнер
+            // Это гарантирует, что кнопка уже существует в момент установки обработчиков
+            playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("-fx-background-color:  rgba(204, 204, 204, 0.5);"));
+            playlistButton.setOnMouseExited(e -> playlistButton.setStyle("-fx-background-color: transparent;"));
         }
     }
+
 
 
 
     public void ClosePlaylist(){
     PlaylistScrollPane.setVisible(false);
 }
+public void SetupTopSongs(){
+
+}
+
 
 }
 

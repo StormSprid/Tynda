@@ -125,15 +125,11 @@
             </HBox>
          </children>
       </Pane>
-      <ScrollPane fx:id="topSongsPage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
+      <ScrollPane fx:id="topSongsPage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css">
          <content>
-            <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="749.0" prefWidth="879.0" style="-fx-background-color: #000000;">
+            <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="897.0" style="-fx-background-color: #000000;">
                <children>
-                  <Label text="ТОП СОНГС" textFill="WHITE">
-                     <font>
-                        <Font size="96.0" />
-                     </font>
-                  </Label>
+                  <TilePane fx:id="TopSongsTilePane" prefWidth="897.0" />
                </children></AnchorPane>
          </content>
       </ScrollPane>
@@ -142,7 +138,7 @@
             <TilePane fx:id="ExampleTilePAne" prefHeight="865.0" prefWidth="880.0" />
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="MySongsScrollPane" layoutX="303.0" layoutY="126.0" prefHeight="654.0" prefWidth="884.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
+      <ScrollPane fx:id="MySongsScrollPane" layoutX="303.0" layoutY="126.0" prefHeight="654.0" prefWidth="884.0" style="-fx-background-color: #000000;" stylesheets="@design.css">
          <content>
             <AnchorPane fx:id="MySongsAnchor" minHeight="0.0" minWidth="0.0" prefWidth="859.0" style="-fx-background-color: #000000;">
                <children>
