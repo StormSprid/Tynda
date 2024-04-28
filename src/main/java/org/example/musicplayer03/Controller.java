@@ -425,7 +425,7 @@ private TilePane ExampleTilePAne;
 
 
 
-    @Override
+  @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         button_logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -738,13 +738,7 @@ private TilePane ExampleTilePAne;
             currentIndex++;
 
 
-            RotateTransition rotate = new RotateTransition();
-            rotate.setDuration(Duration.millis(500));
-            rotate.setAxis(Rotate.Y_AXIS);
-            rotate.setCycleCount(1);
-            rotate.setNode(UpperSongPhOpened);
-            rotate.setByAngle(360);
-            rotate.play();
+            Animations.rotateImage(UpperSongPhOpened,360);
 
 
 
@@ -755,13 +749,7 @@ private TilePane ExampleTilePAne;
     public void previousSong() {
         if (currentPlaylist != null && currentIndex > 0) {
             currentIndex--;
-            RotateTransition rotate = new RotateTransition();
-            rotate.setDuration(Duration.millis(500));
-            rotate.setAxis(Rotate.Y_AXIS);
-            rotate.setCycleCount(1);
-            rotate.setNode(UpperSongPhOpened);
-            rotate.setByAngle(-360);
-            rotate.play();
+            Animations.rotateImage(UpperSongPhOpened,-360);
             playSongPl(currentPlaylist.getSongs().get(currentIndex), currentPlaylist);
         }
     }
