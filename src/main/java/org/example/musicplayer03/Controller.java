@@ -280,35 +280,23 @@ private TilePane ExampleTilePAne;
 
     @FXML
     protected void setVolume() {
-        MusicLib.setVolume(volumeSlider.getValue());
-        MusicLib.setVolume(volumeSliderShtorka.getValue());
+        double currentVolume = volumeSlider.getValue();
+        MusicLib.setVolume(currentVolume);
+
+        volumeLabel.setText(String.format("%.0f%%", currentVolume));
 
         if (volumeSlider.isValueChanging()) {
-            double currentVolume = volumeSlider.getValue();
-
             volumeSlider.setValue(currentVolume);
             volumeSliderShtorka.setValue(currentVolume);
-
-            volumeLabel.setText(String.format("%.0f%%", currentVolume));
-            volumeLabelShtorka.setText(String.format("%.0f%%", currentVolume));
-
-
-        } else if (volumeSliderShtorka.isValueChanging()){
-            double currentVolume = volumeSliderShtorka.getValue();
-
-            volumeSlider.setValue(currentVolume);
-            volumeSliderShtorka.setValue(currentVolume);
-
-            volumeLabel.setText(String.format("%.0f%%", currentVolume));
-            volumeLabelShtorka.setText(String.format("%.0f%%", currentVolume));
         }
     }
     @FXML
-    protected void setKaraokeVolume(){
-        MusicLib.setVocalVolume(karaokeSlider.getValue());
+    protected void setKaraokeVolume() {
         double currentVolume = karaokeSlider.getValue();
-        karaokeLabel.setText(String.format("%.0f%%",currentVolume));
+        MusicLib.setVocalVolume(currentVolume);
+        karaokeLabel.setText(String.format("%.0f%%", currentVolume));
     }
+
 
     @FXML
     private void showHome() {
