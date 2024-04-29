@@ -30,7 +30,7 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
-import java.security.cert.PolicyNode;
+
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.IllegalFormatCodePointException;
@@ -144,6 +144,8 @@ private TilePane ExampleTilePAne;
     @FXML
     private ScrollPane topSongsPage;
     @FXML
+    private TilePane TopSongsTilePane;
+    @FXML
     private TextField lyricsField;
     private boolean isPlaying = false;
     private Button currentActiveButton = null;
@@ -151,7 +153,22 @@ private TilePane ExampleTilePAne;
     String currentLyrics = " ";
     private int currentIndex = 0; // Индекс текущей песни
     private Playlistinitializer playlistinitializer;
+    private Connection connection;
 
+    // Метод для установления соединения с базой данных
+    public void connectToDatabase() throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/javafx-tynda";
+        String username = "root";
+        String password = "admin";
+        connection = DriverManager.getConnection(url, username, password);
+    }
+
+    // Метод для закрытия соединения с базой данных
+    public void closeConnection() throws SQLException {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
+    }
 
     public Controller(){
         this.playlistinitializer = new Playlistinitializer();
@@ -308,13 +325,15 @@ private TilePane ExampleTilePAne;
 
     @FXML
     private void showHome() {
-        SetupHome();
         topSongsPage.setVisible(false);
         PressButton(HomeBtn);
         PlaylistScrollPane.setVisible(false);
         HomePage.setVisible(true);
         MySongsScrollPane.setVisible(false);
+
         AddSongPage.setVisible(false);
+        SetupHome();
+
         // добавить для других панелей
     }
 
@@ -379,11 +398,22 @@ private TilePane ExampleTilePAne;
                 DBUtils.changeScene(event, "login.fxml", null);
             }
         });
+
+
+      // Попытка установить соединение с базой данных
+      try {
+          connectToDatabase();
+          System.out.println("Соединение с базой данных установлено!");
+      } catch (SQLException e) {
+          System.out.println("Ошибка при установлении соединения с базой данных: " + e.getMessage());
+      }
+
         updateButtonVisibility(); // Установка начального состояния кнопок
         initializeSliders();
         initializeTimeline();
        playlistinitializer. initializePlaylist();
         showMySongs();
+
     }
 
     public void setUserInformation(String username) {
@@ -594,112 +624,205 @@ private TilePane ExampleTilePAne;
     protected void playPreviousSong(){
         previousSong();
     }
-    Playlists currentPlaylist;
+    int currentPlaylistId = -1;
 
 
-        // Создаем блок VBox для каждой песни
-        public void OpenPlaylist(Playlists playlist) {
+
+        public void OpenPlaylist(int playlistId) {
             PlaylistPane.getChildren().removeIf(node -> node != ClosePlbtn);
-            currentPlaylist = playlist;
             PlaylistScrollPane.setVisible(true);
 
-            for (int i = 0; i < playlist.getSongs().size(); i++) {
-                Songs song = playlist.getSongs().get(i);
+            String query = "SELECT s.song_id, s.title, a.name AS artist, s.urlPhoto\n" +
+                    "FROM Songs s\n" +
+                    "JOIN Artists a ON s.artist_id = a.artist_id\n" +
+                    "JOIN Playlist_Songs ps ON s.song_id = ps.song_id\n" +
+                    "WHERE ps.playlist_id = ?";
 
-                HBox songBox = new HBox(10); // HBox с отступом между элементами
-                songBox.setAlignment(Pos.CENTER_LEFT); // Выравнивание элементов внутри HBox
-                songBox.setPadding(new Insets(5, 10, 5, 10)); // Отступы внутри HBox
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setInt(1, playlistId);
+                ResultSet rs = stmt.executeQuery();
 
-                ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(song.getUrlPhoto())));
-                imageView.setFitHeight(70);
-                imageView.setFitWidth(70);
+                while (rs.next()) {
+                    String songName = rs.getString("title");
+                    String artistName = rs.getString("artist");
+                    String urlPhoto = rs.getString("urlPhoto");
+                    int songId = rs.getInt("song_id");
 
-                Label nameLabel = new Label(song.getName());
-                nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 22;");
 
-                Label artistLabel = new Label(song.getArtist());
-                artistLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 19;");
+                    HBox songBox = new HBox(10);
+                    songBox.setAlignment(Pos.CENTER_LEFT);
+                    songBox.setPadding(new Insets(5, 10, 5, 10));
 
-                VBox textVBox = new VBox(nameLabel, artistLabel);
-                textVBox.setAlignment(Pos.CENTER_LEFT);
+                    ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(urlPhoto)));
+                    imageView.setFitHeight(70);
+                    imageView.setFitWidth(70);
 
-                songBox.getChildren().addAll(imageView, textVBox);
+                    Label nameLabel = new Label(songName);
+                    nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 22;");
 
-                VBox container = new VBox(songBox); // Контейнер для HBox и, возможно, линии-разделителя
-                Line separator = new Line(0, 0, 790, 0); // Линия длиной в ширину TilePane
-                separator.setStrokeWidth(0.5);
-                separator.setStroke(Color.GRAY);
-                VBox.setMargin(separator, new Insets(10, 0, 2, 0)); // Отступ для линии
-                container.getChildren().add(separator);
+                    Label artistLabel = new Label(artistName);
+                    artistLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 19;");
 
-                Button songButton = new Button();
-                songButton.setGraphic(container);
-                songButton.setOnMouseEntered(e -> songBox.setStyle("-fx-background-color:  rgba(204, 204, 204, 0.5);"));
-                songButton.setOnMouseExited(e -> songBox.setStyle("-fx-background-color: transparent;"));
-                songButton.setStyle("-fx-background-color: transparent;");
-                songButton.setOnAction(event -> playSongPl(song, playlist));
+                    VBox textVBox = new VBox(nameLabel, artistLabel);
+                    textVBox.setAlignment(Pos.CENTER_LEFT);
 
-                PlaylistPane.getChildren().add(songButton);
+                    songBox.getChildren().addAll(imageView, textVBox);
+
+                    VBox container = new VBox(songBox);
+                    Line separator = new Line(0, 0, 790, 0);
+                    separator.setStrokeWidth(0.5);
+                    separator.setStroke(Color.GRAY);
+                    VBox.setMargin(separator, new Insets(10, 0, 2, 0));
+                    container.getChildren().add(separator);
+
+                    Button songButton = new Button();
+                    songButton.setGraphic(container);
+                    songButton.setOnMouseEntered(e -> songBox.setStyle("-fx-background-color: rgba(204, 204, 204, 0.5);"));
+                    songButton.setOnMouseExited(e -> songBox.setStyle("-fx-background-color: transparent;"));
+                    songButton.setStyle("-fx-background-color: transparent;");
+                    songButton.setOnAction(event -> playSongPl(songId, playlistId));  // Adjust playSongPl method to handle songName or songId
+
+                    PlaylistPane.getChildren().add(songButton);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+
+public void playSongPl(int songId, int playlistId) {
+    try {
+
+        // Подготавливаем SQL запрос для получения информации о песне по ее идентификатору
+        String sql = "SELECT s.*, a.name AS artist, ps.order_number\n" +
+                "FROM Songs s\n" +
+                "JOIN Artists a ON s.artist_id = a.artist_id\n" +
+                "JOIN playlist_songs ps ON s.song_id = ps.song_id\n" +
+                "WHERE s.song_id = ? AND ps.playlist_id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(2, playlistId);
+        statement.setInt(1, songId);
+
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            // Создаем объект песни на основе данных из базы данных
+            Songs song = new Songs(
+                    resultSet.getInt("song_id"),
+                    resultSet.getString("title"),
+                    resultSet.getString("artist"),
+                    resultSet.getString("genre"),
+                    resultSet.getString("urlMusic"),
+                    resultSet.getString("urlVocal"),
+                    resultSet.getString("urlPhoto"),
+                    resultSet.getString("urlLyric")
+            );
+
+            // Здесь продолжайте ваш код воспроизведения песни с использованием объекта song
+            timeline.play();
+            if (!isPlaying) {
+                MusicLib.stopDouble();
+                isPlaying = true;
+                MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
+                currentIndex = resultSet.getInt("order_number");
+                currentPlaylistId = playlistId; // Сохраняем идентификатор текущего плейлиста
+                song.addCounter();
+
+            } else {
+                pause();
+                playSongPl(songId, playlistId);
             }
 
-
-
+            Image image = new Image(new File("src/main/resources" + song.getUrlPhoto()).toURI().toString());
+            UpperSongPh.setImage(image);
+            UpperSongPhOpened.setImage(image);
+            UpperSongName.setText(song.getName());
+            UpperArtistName.setText(song.getArtist());
+            UpperArtistName1.setText(song.getName());
+            UpperSongName1.setText(song.getArtist());
+            SongTextArea.setText(" ");
+            currentLyrics = song.getUrlLyrics();
+            updateButtonVisibility();
+            durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
+        } else {
+            System.out.println("Песня с songId " + songId + " не найдена в базе данных.");
         }
 
-
-
-
-    public void playSongPl(Songs song, Playlists playlist){
-            timeline.play();
-        if(!isPlaying){
-            MusicLib.stopDouble();
-            isPlaying = true;
-        MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
-            currentIndex = playlist.getSongs().indexOf(song);;
-        }
-        else{
-            pause();
-            playSongPl(song, playlist);
-        }
-
-        Image image = new Image(new File("src/main/resources" + song.getUrlPhoto()).toURI().toString());
-
-
-
-
-        UpperSongPh.setImage(image);
-        UpperSongPhOpened.setImage(image);
-        UpperSongName.setText(song.Name);
-        UpperArtistName.setText(song.Artist);
-        UpperArtistName1.setText(song.Name);
-        UpperSongName1.setText(song.Artist);
-        SongTextArea.setText(" ");
-        currentLyrics = song.urlLyrics;
-        updateButtonVisibility();
-        durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
-
-
+        // Закрываем ресурсы
+        resultSet.close();
+        statement.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-    public void nextSong() {
-        if (currentPlaylist != null && currentIndex < currentPlaylist.getSongs().size() - 1) {
-            currentIndex++;
+}
 
-
-            Animations.rotateImage(UpperSongPhOpened,360);
-
-
-
-            playSongPl(currentPlaylist.getSongs().get(currentIndex), currentPlaylist);
-        }
+public void nextSong() {
+    if (currentPlaylistId >0 && currentIndex < getMaxIndex(currentPlaylistId)) {
+        currentIndex++;
+        Animations.rotateImage(UpperSongPhOpened, 360);
+        int songId = getSongIdByIndex(currentIndex, currentPlaylistId); // Получаем ID песни по порядковому номеру
+        playSongPl(songId, currentPlaylistId);
     }
+}
 
     public void previousSong() {
-        if (currentPlaylist != null && currentIndex > 0) {
+        if (currentPlaylistId >0 && currentIndex > 0) {
             currentIndex--;
-            Animations.rotateImage(UpperSongPhOpened,-360);
-            playSongPl(currentPlaylist.getSongs().get(currentIndex), currentPlaylist);
+            Animations.rotateImage(UpperSongPhOpened, -360);
+            int songId = getSongIdByIndex(currentIndex, currentPlaylistId); // Получаем ID песни по порядковому номеру
+            playSongPl(songId, currentPlaylistId);
         }
     }
+    private int getSongIdByIndex(int index, int playlistId) {
+        int songId = -1;  // Инициализируем переменную для ID песни
+        try {
+            // Подготавливаем SQL запрос для получения ID песни по порядковому номеру и ID плейлиста
+            String sql = "SELECT song_id FROM playlist_songs WHERE playlist_id = ? AND order_number = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, playlistId);
+            statement.setInt(2, index);
+
+            // Выполняем запрос и обрабатываем результаты
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                songId = resultSet.getInt("song_id");
+            }
+
+            // Закрываем ресурсы
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return songId;  // Возвращаем ID песни
+    }
+    private int getMaxIndex(int playlistId) {
+        int maxIndex = -1; // Инициализация с -1 для случая, когда запрос не возвращает результатов
+        try {
+            String sql = "SELECT MAX(order_number) AS max_order FROM playlist_songs WHERE playlist_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, playlistId);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                maxIndex = resultSet.getInt("max_order");
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maxIndex;
+    }
+
+
+
+
     public void SetupHome() {
         ExampleTilePAne.setStyle("-fx-background-color: black;");
         ExampleTilePAne.getChildren().clear();
@@ -707,37 +830,59 @@ private TilePane ExampleTilePAne;
         // Устанавливаем количество столбцов для TilePane
         PlaylistPane.setPrefColumns(3);  // Число столбцов
 
-        for (Playlists playlist : Playlistinitializer.getHomePlaylists()) {
-            ImageView coverImageView = new ImageView(new Image(getClass().getResourceAsStream(playlist.getUrlPhoto())));
-            coverImageView.setFitHeight(200);  // Высота изображения
-            coverImageView.setFitWidth(200);   // Ширина изображения
+        try {
+            // Запрос на получение плейлистов с user_id = 1
+            String query = "SELECT * FROM playlists WHERE user_id = ?";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, 1); // Пользователь с user_id = 1
 
-            // Создаем текст для кнопки
-            Label buttonText = new Label(playlist.getName());
-            buttonText.setFont(Font.font("PT Sans Bold", 35));
-            buttonText.setTextFill(Color.WHITE);
+            ResultSet rs = stmt.executeQuery();
 
-            // Создаем VBox для размещения текста и изображения
-            VBox imageTextVBox = new VBox(20); // Увеличиваем промежуток между элементами в VBox
-            imageTextVBox.getChildren().addAll(buttonText, coverImageView);
-            imageTextVBox.setAlignment(Pos.CENTER);
+            while (rs.next()) {
+                int playlistId = rs.getInt("playlist_id");
+                String playlistName = rs.getString("title");
+                String urlPhoto = rs.getString("urlPhoto");
 
-            // Создаем кнопку
-            Button playlistButton = new Button();
-            playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("-fx-background-color:  rgba(204, 204, 204, 0.5);"));
-            playlistButton.setOnMouseExited(e -> playlistButton.setStyle("-fx-background-color: transparent;"));
-            playlistButton.setGraphic(imageTextVBox); // Устанавливаем VBox как графическое содержимое кнопки
-            playlistButton.setStyle("-fx-background-color: transparent;"); // Прозрачный фон кнопки
-            playlistButton.setMaxWidth(Double.MAX_VALUE);
+                ImageView coverImageView = new ImageView(new Image(getClass().getResourceAsStream(urlPhoto)));
+                coverImageView.setFitHeight(200);  // Высота изображения
+                coverImageView.setFitWidth(200);   // Ширина изображения
 
-            VBox outerVBox = new VBox(15);  // Внешний VBox для размещения кнопки с увеличенным отступом
-            outerVBox.setPadding(new Insets(30)); // Добавляем внешний отступ
-            outerVBox.getChildren().addAll(playlistButton); // Добавляем только кнопку
-            outerVBox.setAlignment(Pos.CENTER);  // Выравнивание элементов внутри VBox по центру
+                // Создаем текст для кнопки
+                Label buttonText = new Label(playlistName);
+                buttonText.setFont(Font.font("PT Sans Bold", 35));
+                buttonText.setTextFill(Color.WHITE);
 
-            ExampleTilePAne.getChildren().add(outerVBox);  // Добавляем внешний VBox в TilePane
+                // Создаем VBox для размещения текста и изображения
+                VBox imageTextVBox = new VBox(20); // Увеличиваем промежуток между элементами в VBox
+                imageTextVBox.getChildren().addAll(buttonText, coverImageView);
+                imageTextVBox.setAlignment(Pos.CENTER);
 
-            playlistButton.setOnAction(event -> OpenPlaylist(playlist));
+                // Создаем кнопку
+                Button playlistButton = new Button();
+                playlistButton.setGraphic(imageTextVBox); // Устанавливаем VBox как графическое содержимое кнопки
+                playlistButton.setStyle("-fx-background-color: transparent;"); // Прозрачный фон кнопки
+                playlistButton.setMaxWidth(Double.MAX_VALUE);
+
+                VBox outerVBox = new VBox(15);  // Внешний VBox для размещения кнопки с увеличенным отступом
+                outerVBox.setPadding(new Insets(30)); // Добавляем внешний отступ
+                outerVBox.getChildren().addAll(playlistButton); // Добавляем только кнопку
+                outerVBox.setAlignment(Pos.CENTER);  // Выравнивание элементов внутри VBox по центру
+
+                ExampleTilePAne.getChildren().add(outerVBox);  // Добавляем внешний VBox в TilePane
+
+                playlistButton.setOnAction(event -> OpenPlaylist(playlistId));
+
+                // Устанавливаем обработчики событий после добавления кнопки в родительский контейнер
+                // Это гарантирует, что кнопка уже существует в момент установки обработчиков
+                playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("-fx-background-color:  rgba(204, 204, 204, 0.5);"));
+                playlistButton.setOnMouseExited(e -> playlistButton.setStyle("-fx-background-color: transparent;"));
+            }
+
+            // Закрываем ресурсы
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -746,6 +891,10 @@ private TilePane ExampleTilePAne;
     public void ClosePlaylist(){
     PlaylistScrollPane.setVisible(false);
 }
+public void SetupTopSongs(){
+
+}
+
 
     @FXML
     protected  TextField searchField;

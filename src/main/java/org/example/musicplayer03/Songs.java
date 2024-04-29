@@ -98,5 +98,8 @@ public class Songs {
     public void setCounter(int counter) {
         this.counter = counter;
     }
+    public void addCounter(){
+        counter += 1;
+    }
 
 }
