@@ -23,6 +23,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.ResourceBundle;
@@ -30,7 +31,6 @@ public class Controller implements Initializable {
 
 
     String[]  badWords = {"сука","Сука","бля","Бля","ебанной","ебанный","ёбаных","Жопа","жопа"};
-    int currentSongid = 0;
 
     @FXML
     private Label label_welcome;
@@ -133,16 +133,40 @@ public class Controller implements Initializable {
     @FXML
     private ScrollPane topSongsPage;
     @FXML
+    private TilePane TopSongsTilePane;
+    @FXML
     private TextField lyricsField;
     private boolean isPlaying = false;
     private Button currentActiveButton = null;
 
     String currentLyrics = " ";
     private int currentIndex = 0; // Индекс текущей песни
+    private Playlistinitializer playlistinitializer;
+    private Connection connection;
+
+    // Метод для установления соединения с базой данных
+    public void connectToDatabase() throws SQLException {
+        String url = "jdbc:mysql://localhost:3306/example";
+        String username = "root";
+        String password = "admin";
+        connection = DriverManager.getConnection(url, username, password);
+    }
 
 
     @FXML
     private AnchorPane MySongsAnchor;
+
+    // Метод для закрытия соединения с базой данных
+    public void closeConnection() throws SQLException {
+        if (connection != null && !connection.isClosed()) {
+            connection.close();
+        }
+    }
+
+    public Controller(){
+        this.playlistinitializer = new Playlistinitializer();
+    }
+
 
 
 
@@ -247,138 +271,20 @@ public class Controller implements Initializable {
                     timerLabel.setText(MusicLib.secondsToString(MusicLib.getTrackPositionToInt()));
 
                     if (MusicLib.getTrackPositionToInt() == MusicLib.getTotalDuration() ){
-                        updateButtonVisibility();
 
                         playNextSong();
+
                     }
 
 
-                    int currentSecond = MusicLib.getTrackPositionToInt();
-                    String dir = currentLyrics;
-                    boolean foundValidLines = false; // Флаг для отслеживания найденных корректных строк
-                    if (dir!= null) {
-                        try (BufferedReader br = new BufferedReader(new FileReader(dir))) {
-                            String line;
-                            while ((line = br.readLine()) != null) {
-                                // Проверяем наличие нулевого байта в строке
-                                if (line.startsWith("\uFEFF")) {
-                                    line = line.substring(1); // Удаляем нулевой байт из строки
-                                }
-
-                                String[] parts = line.split(";");
-                                // Проверяем количество частей после разделения строки
-                                if (parts.length == 2) {
-                                    foundValidLines = true; // Устанавливаем флаг в true, если найдена корректная строка
-
-                                    String time = parts[0];
-                                    String text = parts[1];
-
-
-                                    String[] timeParts = time.split(":");
-                                    int minute = Integer.parseInt(timeParts[0]);
-                                    int seconds = Integer.parseInt(timeParts[1]);
-
-
-                                    if (currentSecond == (minute * 60 + seconds)) {
-                                        for (String badWord : badWords) {
-                                            if (text.contains(badWord) || text.contains("$")) {
-                                                MusicLib.nonVocalMod();
-                                            } else {
-                                                MusicLib.vocalMod();
-                                            }
-                                        }
-                                            SongTextArea.appendText(text.replace("$", "") + "\n");
-
-                                    }
-                                }
-
-
-                            }
-
-                            // Если не было найдено корректных строк, выводим соответствующее сообщение
-                            if (!foundValidLines || currentLyrics == null) {
-                                SongTextArea.setText("Упс! Текст данной песни откроется на платной версии приложения!");
-                            }
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        }
-                    }else {
-                        SongTextArea.setText("Упс! Текст данной песни откроется на платной версии приложения!");
-                    }
+                    Settings.setTextOnTextArea(currentLyrics,SongTextArea);
 
                 })
         );
         timeline.setCycleCount(Timeline.INDEFINITE);
 
     }
-    public List<Playlists> HomePlaylists = new ArrayList<>();
 
-    Playlists ForYouPl = new Playlists(1, "For you", "/icons/radio.jpg");
-
-
-    private void initializePlaylist(){
-
-
-
-        Songs Lizer = new Songs(1, "Гори", "LIZER", "Russia", "src/Music/LIZER/music.wav", "src/Music/LIZER/vocals.wav", "/icons/Лизер.jpg", "src/Lyrics/Гори.txt");
-        Songs Rihanna = new Songs(2, "Don't stop the music", "Rihanna", "Pop", "src/Music/Rihanna - Don't stop the music/music.wav", "src/Music/Rihanna - Don't stop the music/vocals.wav", "/icons/6480931.jpg", "src/Lyrics/rihanna.txt");
-        Songs roses = new Songs(3, "Roses", "Imanbek", "Pop", "src/Music/roses/music.wav", "src/Music/roses/vocals.wav", "/icons/roses.png", "src/Lyrics/roses.txt");
-        Songs Strykalo = new Songs(4, "Kayen", "Strykalo", "Pop", "src/Music/Стрыкало/music.wav", "src/Music/Стрыкало/vocal.wav", "/icons/Смирись_и_расслабься!.jpg", "src/Lyrics/кайен.txt");
-        Songs Kayrat_almaty = new Songs(5, "Алматынын тундеры", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/Алматынын тундеры/music.wav", "src/Music/Кайрош/Алматынын тундеры/vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/Алматынын тундеры.txt");
-        Songs Kayrat_myUniverse = new Songs(6, "My universe", "Кайрат Нуртас", "Pop", "src/Music/Кайрош/My Universe/My_Universe_music.wav", "src/Music/Кайрош/My Universe/My_Universe_vocals.wav", "/icons/Kazakh.jpg", "src/Lyrics/MyUniverse.txt");
-        Songs Rhapsody = new Songs(7,"Рапсодия конца света","GONE.Fludd","Russia","src/Music/Рапсодия Конца Света/music.wav","src/Music/Рапсодия Конца Света/vocals.wav","/icons/Rapsodiya_Konca_Sveta.png","src/Lyrics/Rapsodiya.txt");
-        Songs tesno = new Songs(8,"Тесно","Bushido Zho","Russia","src/Music/Тесно - Bushido ZHO/music.wav","src/Music/Тесно - Bushido ZHO/vocals.wav","/icons/Тесно.jpg","src/Lyrics/Тесно.txt");
-        Songs domino = new Songs(9,"Домино","FACE","Russia","src/Music/Face - Домино/music.wav","src/Music/Face - Домино/vocals.wav","/icons/FACE.png","src/Lyrics/домино.txt");
-        Songs MenSeniSuyemin = new Songs(10,"Men Seni Suyemin","Son Paskal","Kazakh","src/Music/Son Paskal - Men Seni Suyemin/music.wav","src/Music/Son Paskal - Men Seni Suyemin/vocals.wav","/icons/artworks-JwNW6K1GR42s-0-t500x500.jpg","src/Lyrics/men seni suyemin.txt");
-        Songs Mechty = new Songs(11,"Мечты","Aarne,Feduk,Scally Milano","Russian","src/Music/Мечты - Aarne/music.wav","src/Music/Мечты - Aarne/vocal.wav","/icons/Тесно.jpg","src/Lyrics/Мечты - Aarne.txt");
-        Songs ComeAsYouAre = new Songs(12,"Come as you are","Nivana","Rock","src/Music/Nirvana - Come As you are/Nirvana-Come-As-You-Are-.wav",null,"/icons/Nevermind-compressed.jpg",null);
-
-
-        ForYouPl.addSong(Rhapsody);
-
-        ForYouPl.addSong(Lizer);
-        ForYouPl.addSong(Rihanna);
-        ForYouPl.addSong(roses);
-        ForYouPl.addSong(Strykalo);
-        ForYouPl.addSong(Kayrat_almaty);
-        ForYouPl.addSong(Kayrat_myUniverse);
-        ForYouPl.addSong(tesno);
-        ForYouPl.addSong(domino);
-
-
-
-        Playlists RockPl = new Playlists(2, "Rock", "/icons/rock.jpg");
-        Playlists HipHopPl = new Playlists(3, "Hip-hop", "/icons/HipHop.jpg" );
-        Playlists KazakhPl = new Playlists(4, "Kazakh music", "/icons/Kazakh.jpg");
-        Playlists RussianPl = new Playlists(5, "Russian music", "/icons/Russia.jpg");
-        Playlists FromUsPl = new Playlists(6, "From us", "/icons/FromUs.jpg");
-        HomePlaylists.add(ForYouPl);
-        HomePlaylists.add(RockPl);
-        HomePlaylists.add(HipHopPl);
-        HomePlaylists.add(KazakhPl);
-        HomePlaylists.add(RussianPl);
-        HomePlaylists.add(FromUsPl);
-
-
-        KazakhPl.addSong(Kayrat_almaty);
-        KazakhPl.addSong(Kayrat_myUniverse);
-        KazakhPl.addSong(MenSeniSuyemin);
-
-
-        RussianPl.addSong(Lizer);
-        RussianPl.addSong(domino);
-        RussianPl.addSong(Rhapsody);
-
-
-        RockPl.addSong(ComeAsYouAre);
-
-
-        FromUsPl.addSong(Mechty);
-
-
-
-
-    }
 
 
 
@@ -425,12 +331,12 @@ public class Controller implements Initializable {
 
     @FXML
     private void showHome() {
-        SetupHome();
         topSongsPage.setVisible(false);
         PressButton(HomeBtn);
         PlaylistScrollPane.setVisible(false);
         HomePage.setVisible(true);
         MySongsScrollPane.setVisible(false);
+        SetupHome();
         // добавить для других панелей
     }
 
@@ -486,7 +392,7 @@ public class Controller implements Initializable {
 
 
 
-    @Override
+  @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         button_logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -494,11 +400,22 @@ public class Controller implements Initializable {
                 DBUtils.changeScene(event, "login.fxml", null);
             }
         });
+
+
+      // Попытка установить соединение с базой данных
+      try {
+          connectToDatabase();
+          System.out.println("Соединение с базой данных установлено!");
+      } catch (SQLException e) {
+          System.out.println("Ошибка при установлении соединения с базой данных: " + e.getMessage());
+      }
+
         updateButtonVisibility(); // Установка начального состояния кнопок
         initializeSliders();
         initializeTimeline();
-        initializePlaylist();
-        showHome();
+       playlistinitializer. initializePlaylist();
+        showMySongs();
+
     }
 
     public void setUserInformation(String username) {
@@ -530,7 +447,7 @@ public class Controller implements Initializable {
     }
 
     private void animateSize() {
-        Timeline timeline = new Timeline();
+        Timeline timelineAnimation = new Timeline();
 
         KeyValue kvWidth;
         KeyValue kvHeight;
@@ -546,8 +463,8 @@ public class Controller implements Initializable {
         }
 
         KeyFrame kfSize = new KeyFrame(Duration.seconds(0.6), kvWidth, kvHeight);
-        timeline.getKeyFrames().add(kfSize);
-        timeline.play(); // Запуск анимации изменения размеров
+        timelineAnimation.getKeyFrames().add(kfSize);
+        timelineAnimation.play(); // Запуск анимации изменения размеров
     }
 
     private void animateImage() {
@@ -709,123 +626,205 @@ public class Controller implements Initializable {
     protected void playPreviousSong(){
         previousSong();
     }
-    Playlists currentPlaylist;
+    int currentPlaylistId = -1;
 
 
-        // Создаем блок VBox для каждой песни
-        public void OpenPlaylist(Playlists playlist) {
+
+        public void OpenPlaylist(int playlistId) {
             PlaylistPane.getChildren().removeIf(node -> node != ClosePlbtn);
-            currentPlaylist = playlist;
             PlaylistScrollPane.setVisible(true);
 
-            for (int i = 0; i < playlist.getSongs().size(); i++) {
-                Songs song = playlist.getSongs().get(i);
+            String query = "SELECT s.song_id, s.title, a.name AS artist, s.urlPhoto\n" +
+                    "FROM Songs s\n" +
+                    "JOIN Artists a ON s.artist_id = a.artist_id\n" +
+                    "JOIN Playlist_Songs ps ON s.song_id = ps.song_id\n" +
+                    "WHERE ps.playlist_id = ?";
 
-                HBox songBox = new HBox(10); // HBox с отступом между элементами
-                songBox.setAlignment(Pos.CENTER_LEFT); // Выравнивание элементов внутри HBox
-                songBox.setPadding(new Insets(5, 10, 5, 10)); // Отступы внутри HBox
+            try (PreparedStatement stmt = connection.prepareStatement(query)) {
+                stmt.setInt(1, playlistId);
+                ResultSet rs = stmt.executeQuery();
 
-                ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(song.getUrlPhoto())));
-                imageView.setFitHeight(70);
-                imageView.setFitWidth(70);
+                while (rs.next()) {
+                    String songName = rs.getString("title");
+                    String artistName = rs.getString("artist");
+                    String urlPhoto = rs.getString("urlPhoto");
+                    int songId = rs.getInt("song_id");
 
-                Label nameLabel = new Label(song.getName());
-                nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 22;");
 
-                Label artistLabel = new Label(song.getArtist());
-                artistLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 19;");
+                    HBox songBox = new HBox(10);
+                    songBox.setAlignment(Pos.CENTER_LEFT);
+                    songBox.setPadding(new Insets(5, 10, 5, 10));
 
-                VBox textVBox = new VBox(nameLabel, artistLabel);
-                textVBox.setAlignment(Pos.CENTER_LEFT);
+                    ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(urlPhoto)));
+                    imageView.setFitHeight(70);
+                    imageView.setFitWidth(70);
 
-                songBox.getChildren().addAll(imageView, textVBox);
+                    Label nameLabel = new Label(songName);
+                    nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 22;");
 
-                VBox container = new VBox(songBox); // Контейнер для HBox и, возможно, линии-разделителя
-                Line separator = new Line(0, 0, 790, 0); // Линия длиной в ширину TilePane
-                separator.setStrokeWidth(0.5);
-                separator.setStroke(Color.GRAY);
-                VBox.setMargin(separator, new Insets(10, 0, 2, 0)); // Отступ для линии
-                container.getChildren().add(separator);
+                    Label artistLabel = new Label(artistName);
+                    artistLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 19;");
 
-                Button songButton = new Button();
-                songButton.setGraphic(container);
-                songButton.setOnMouseEntered(e -> songBox.setStyle("-fx-background-color:  rgba(204, 204, 204, 0.5);"));
-                songButton.setOnMouseExited(e -> songBox.setStyle("-fx-background-color: transparent;"));
-                songButton.setStyle("-fx-background-color: transparent;");
-                songButton.setOnAction(event -> playSongPl(song, playlist));
+                    VBox textVBox = new VBox(nameLabel, artistLabel);
+                    textVBox.setAlignment(Pos.CENTER_LEFT);
 
-                PlaylistPane.getChildren().add(songButton);
+                    songBox.getChildren().addAll(imageView, textVBox);
+
+                    VBox container = new VBox(songBox);
+                    Line separator = new Line(0, 0, 790, 0);
+                    separator.setStrokeWidth(0.5);
+                    separator.setStroke(Color.GRAY);
+                    VBox.setMargin(separator, new Insets(10, 0, 2, 0));
+                    container.getChildren().add(separator);
+
+                    Button songButton = new Button();
+                    songButton.setGraphic(container);
+                    songButton.setOnMouseEntered(e -> songBox.setStyle("-fx-background-color: rgba(204, 204, 204, 0.5);"));
+                    songButton.setOnMouseExited(e -> songBox.setStyle("-fx-background-color: transparent;"));
+                    songButton.setStyle("-fx-background-color: transparent;");
+                    songButton.setOnAction(event -> playSongPl(songId, playlistId));  // Adjust playSongPl method to handle songName or songId
+
+                    PlaylistPane.getChildren().add(songButton);
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+        }
+
+
+
+
+
+public void playSongPl(int songId, int playlistId) {
+    try {
+
+        // Подготавливаем SQL запрос для получения информации о песне по ее идентификатору
+        String sql = "SELECT s.*, a.name AS artist, ps.order_number\n" +
+                "FROM Songs s\n" +
+                "JOIN Artists a ON s.artist_id = a.artist_id\n" +
+                "JOIN playlist_songs ps ON s.song_id = ps.song_id\n" +
+                "WHERE s.song_id = ? AND ps.playlist_id = ?";
+        PreparedStatement statement = connection.prepareStatement(sql);
+        statement.setInt(2, playlistId);
+        statement.setInt(1, songId);
+
+
+        ResultSet resultSet = statement.executeQuery();
+
+        if (resultSet.next()) {
+            // Создаем объект песни на основе данных из базы данных
+            Songs song = new Songs(
+                    resultSet.getInt("song_id"),
+                    resultSet.getString("title"),
+                    resultSet.getString("artist"),
+                    resultSet.getString("genre"),
+                    resultSet.getString("urlMusic"),
+                    resultSet.getString("urlVocal"),
+                    resultSet.getString("urlPhoto"),
+                    resultSet.getString("urlLyric")
+            );
+
+            // Здесь продолжайте ваш код воспроизведения песни с использованием объекта song
+            timeline.play();
+            if (!isPlaying) {
+                MusicLib.stopDouble();
+                isPlaying = true;
+                MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
+                currentIndex = resultSet.getInt("order_number");
+                currentPlaylistId = playlistId; // Сохраняем идентификатор текущего плейлиста
+                song.addCounter();
+
+            } else {
+                pause();
+                playSongPl(songId, playlistId);
             }
 
-
-
+            Image image = new Image(new File("src/main/resources" + song.getUrlPhoto()).toURI().toString());
+            UpperSongPh.setImage(image);
+            UpperSongPhOpened.setImage(image);
+            UpperSongName.setText(song.getName());
+            UpperArtistName.setText(song.getArtist());
+            UpperArtistName1.setText(song.getName());
+            UpperSongName1.setText(song.getArtist());
+            SongTextArea.setText(" ");
+            currentLyrics = song.getUrlLyrics();
+            updateButtonVisibility();
+            durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
+        } else {
+            System.out.println("Песня с songId " + songId + " не найдена в базе данных.");
         }
 
-
-
-
-    public void playSongPl(Songs song, Playlists playlist){
-            timeline.play();
-        if(!isPlaying){
-            isPlaying = true;
-        MusicLib.playDouble(song.getUrlMusic(),song.getUrlVocal());
-            currentIndex = playlist.getSongs().indexOf(song);;
-        }
-        else{
-            pause();
-            playSongPl(song, playlist);
-        }
-
-        Image image = new Image(new File("src/main/resources" + song.getUrlPhoto()).toURI().toString());
-
-
-
-
-        UpperSongPh.setImage(image);
-        UpperSongPhOpened.setImage(image);
-        UpperSongName.setText(song.Name);
-        UpperArtistName.setText(song.Artist);
-        UpperArtistName1.setText(song.Name);
-        UpperSongName1.setText(song.Artist);
-        SongTextArea.setText(" ");
-        currentLyrics = song.urlLyrics;
-        updateButtonVisibility();
-        durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
-
-
+        // Закрываем ресурсы
+        resultSet.close();
+        statement.close();
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
-    public void nextSong() {
-        if (currentPlaylist != null && currentIndex < currentPlaylist.getSongs().size() - 1) {
-            currentIndex++;
+}
 
-
-            RotateTransition rotate = new RotateTransition();
-            rotate.setDuration(Duration.millis(500));
-            rotate.setAxis(Rotate.Y_AXIS);
-            rotate.setCycleCount(1);
-            rotate.setNode(UpperSongPhOpened);
-            rotate.setByAngle(360);
-            rotate.play();
-
-
-
-            playSongPl(currentPlaylist.getSongs().get(currentIndex), currentPlaylist);
-        }
+public void nextSong() {
+    if (currentPlaylistId >0 && currentIndex < getMaxIndex(currentPlaylistId)) {
+        currentIndex++;
+        Animations.rotateImage(UpperSongPhOpened, 360);
+        int songId = getSongIdByIndex(currentIndex, currentPlaylistId); // Получаем ID песни по порядковому номеру
+        playSongPl(songId, currentPlaylistId);
     }
+}
 
     public void previousSong() {
-        if (currentPlaylist != null && currentIndex > 0) {
+        if (currentPlaylistId >0 && currentIndex > 0) {
             currentIndex--;
-            RotateTransition rotate = new RotateTransition();
-            rotate.setDuration(Duration.millis(500));
-            rotate.setAxis(Rotate.Y_AXIS);
-            rotate.setCycleCount(1);
-            rotate.setNode(UpperSongPhOpened);
-            rotate.setByAngle(-360);
-            rotate.play();
-            playSongPl(currentPlaylist.getSongs().get(currentIndex), currentPlaylist);
+            Animations.rotateImage(UpperSongPhOpened, -360);
+            int songId = getSongIdByIndex(currentIndex, currentPlaylistId); // Получаем ID песни по порядковому номеру
+            playSongPl(songId, currentPlaylistId);
         }
     }
+    private int getSongIdByIndex(int index, int playlistId) {
+        int songId = -1;  // Инициализируем переменную для ID песни
+        try {
+            // Подготавливаем SQL запрос для получения ID песни по порядковому номеру и ID плейлиста
+            String sql = "SELECT song_id FROM playlist_songs WHERE playlist_id = ? AND order_number = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, playlistId);
+            statement.setInt(2, index);
+
+            // Выполняем запрос и обрабатываем результаты
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                songId = resultSet.getInt("song_id");
+            }
+
+            // Закрываем ресурсы
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return songId;  // Возвращаем ID песни
+    }
+    private int getMaxIndex(int playlistId) {
+        int maxIndex = -1; // Инициализация с -1 для случая, когда запрос не возвращает результатов
+        try {
+            String sql = "SELECT MAX(order_number) AS max_order FROM playlist_songs WHERE playlist_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, playlistId);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                maxIndex = resultSet.getInt("max_order");
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maxIndex;
+    }
+
+
+
+
     public void SetupHome() {
         ExampleTilePAne.setStyle("-fx-background-color: black;");
         ExampleTilePAne.getChildren().clear();
@@ -833,37 +832,59 @@ public class Controller implements Initializable {
         // Устанавливаем количество столбцов для TilePane
         PlaylistPane.setPrefColumns(3);  // Число столбцов
 
-        for (Playlists playlist : HomePlaylists) {
-            ImageView coverImageView = new ImageView(new Image(getClass().getResourceAsStream(playlist.getUrlPhoto())));
-            coverImageView.setFitHeight(200);  // Высота изображения
-            coverImageView.setFitWidth(200);   // Ширина изображения
+        try {
+            // Запрос на получение плейлистов с user_id = 1
+            String query = "SELECT * FROM playlists WHERE user_id = ?";
+            PreparedStatement stmt = connection.prepareStatement(query);
+            stmt.setInt(1, 1); // Пользователь с user_id = 1
 
-            // Создаем текст для кнопки
-            Label buttonText = new Label(playlist.getName());
-            buttonText.setFont(Font.font("PT Sans Bold", 35));
-            buttonText.setTextFill(Color.WHITE);
+            ResultSet rs = stmt.executeQuery();
 
-            // Создаем VBox для размещения текста и изображения
-            VBox imageTextVBox = new VBox(20); // Увеличиваем промежуток между элементами в VBox
-            imageTextVBox.getChildren().addAll(buttonText, coverImageView);
-            imageTextVBox.setAlignment(Pos.CENTER);
+            while (rs.next()) {
+                int playlistId = rs.getInt("playlist_id");
+                String playlistName = rs.getString("title");
+                String urlPhoto = rs.getString("urlPhoto");
 
-            // Создаем кнопку
-            Button playlistButton = new Button();
-            playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("-fx-background-color:  rgba(204, 204, 204, 0.5);"));
-            playlistButton.setOnMouseExited(e -> playlistButton.setStyle("-fx-background-color: transparent;"));
-            playlistButton.setGraphic(imageTextVBox); // Устанавливаем VBox как графическое содержимое кнопки
-            playlistButton.setStyle("-fx-background-color: transparent;"); // Прозрачный фон кнопки
-            playlistButton.setMaxWidth(Double.MAX_VALUE);
+                ImageView coverImageView = new ImageView(new Image(getClass().getResourceAsStream(urlPhoto)));
+                coverImageView.setFitHeight(200);  // Высота изображения
+                coverImageView.setFitWidth(200);   // Ширина изображения
 
-            VBox outerVBox = new VBox(15);  // Внешний VBox для размещения кнопки с увеличенным отступом
-            outerVBox.setPadding(new Insets(30)); // Добавляем внешний отступ
-            outerVBox.getChildren().addAll(playlistButton); // Добавляем только кнопку
-            outerVBox.setAlignment(Pos.CENTER);  // Выравнивание элементов внутри VBox по центру
+                // Создаем текст для кнопки
+                Label buttonText = new Label(playlistName);
+                buttonText.setFont(Font.font("PT Sans Bold", 35));
+                buttonText.setTextFill(Color.WHITE);
 
-            ExampleTilePAne.getChildren().add(outerVBox);  // Добавляем внешний VBox в TilePane
+                // Создаем VBox для размещения текста и изображения
+                VBox imageTextVBox = new VBox(20); // Увеличиваем промежуток между элементами в VBox
+                imageTextVBox.getChildren().addAll(buttonText, coverImageView);
+                imageTextVBox.setAlignment(Pos.CENTER);
 
-            playlistButton.setOnAction(event -> OpenPlaylist(playlist));
+                // Создаем кнопку
+                Button playlistButton = new Button();
+                playlistButton.setGraphic(imageTextVBox); // Устанавливаем VBox как графическое содержимое кнопки
+                playlistButton.setStyle("-fx-background-color: transparent;"); // Прозрачный фон кнопки
+                playlistButton.setMaxWidth(Double.MAX_VALUE);
+
+                VBox outerVBox = new VBox(15);  // Внешний VBox для размещения кнопки с увеличенным отступом
+                outerVBox.setPadding(new Insets(30)); // Добавляем внешний отступ
+                outerVBox.getChildren().addAll(playlistButton); // Добавляем только кнопку
+                outerVBox.setAlignment(Pos.CENTER);  // Выравнивание элементов внутри VBox по центру
+
+                ExampleTilePAne.getChildren().add(outerVBox);  // Добавляем внешний VBox в TilePane
+
+                playlistButton.setOnAction(event -> OpenPlaylist(playlistId));
+
+                // Устанавливаем обработчики событий после добавления кнопки в родительский контейнер
+                // Это гарантирует, что кнопка уже существует в момент установки обработчиков
+                playlistButton.setOnMouseEntered(e -> playlistButton.setStyle("-fx-background-color:  rgba(204, 204, 204, 0.5);"));
+                playlistButton.setOnMouseExited(e -> playlistButton.setStyle("-fx-background-color: transparent;"));
+            }
+
+            // Закрываем ресурсы
+            rs.close();
+            stmt.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
     }
 
@@ -872,6 +893,10 @@ public class Controller implements Initializable {
     public void ClosePlaylist(){
     PlaylistScrollPane.setVisible(false);
 }
+public void SetupTopSongs(){
+
+}
+
 
 
 

@@ -46,8 +46,10 @@ public class DBUtils {
         ResultSet resultSet = null;
 
         try {
+
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/example", "root", "admin");
             psCheckUserExsits = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
+
             psCheckUserExsits.setString(1, username);
             resultSet = psCheckUserExsits.executeQuery();
 
@@ -57,7 +59,7 @@ public class DBUtils {
                 alert.setContentText("You cannot use this username.");
                 alert.show();
             }else {
-                psInsert = connection.prepareStatement("INSERT INTO users (username, password) VALUES (?, ?) ");
+                psInsert = connection.prepareStatement("INSERT INTO Users (username, password) VALUES (?, ?) ");
                 psInsert.setString(1,username);
                 psInsert.setString(2, password);
                 psInsert.executeUpdate();
@@ -103,8 +105,10 @@ public class DBUtils {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
         try {
+
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/example", "root", "admin");
             preparedStatement = connection.prepareStatement("SELECT password FROM users WHERE username = ?");
+
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();
 
