@@ -314,6 +314,7 @@ private TilePane ExampleTilePAne;
         PlaylistScrollPane.setVisible(false);
         HomePage.setVisible(true);
         MySongsScrollPane.setVisible(false);
+        AddSongPage.setVisible(false);
         // добавить для других панелей
     }
 
