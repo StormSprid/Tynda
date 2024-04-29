@@ -8,8 +8,6 @@
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
-<?import javafx.scene.control.TableColumn?>
-<?import javafx.scene.control.TableView?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.effect.InnerShadow?>
@@ -30,7 +28,7 @@
          <children>
             <Pane fx:id="searchPane" layoutX="12.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;">
                <children>
-                  <TextField fx:id="searchField" layoutX="30.0" layoutY="6.0" onKeyPressed="#keyListenerAddSong" prefHeight="26.0" prefWidth="164.0" promptText="Search" style="-fx-background-color: transparent;" styleClass="search" stylesheets="@design.css" />
+                  <TextField fx:id="searchField" layoutX="30.0" layoutY="6.0" onKeyPressed="#keyListenerSearch" prefHeight="26.0" prefWidth="164.0" promptText="Search" style="-fx-background-color: transparent;" styleClass="search" stylesheets="@design.css" />
                </children></Pane>
             <ImageView fitHeight="56.0" fitWidth="188.0" layoutX="16.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
 
@@ -111,6 +109,15 @@
                   <Label fx:id="label_welcome" text="Welcome" />
                </children>
             </VBox>
+            <ScrollPane fx:id="searchScrollPane" layoutX="7.0" layoutY="124.0" prefHeight="577.0" prefWidth="239.0" style="-fx-background-color: #ffdcbd; -fx-border-color: #ffdcbd;" styleClass="searchBatya" stylesheets="@design.css" visible="false">
+              <content>
+                <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="575.0" prefWidth="244.0" style="-fx-background-color: #ffdcbd;" styleClass="searchPane" stylesheets="@design.css">
+                     <children>
+                        <VBox fx:id="searchVBox" prefHeight="570.0" prefWidth="246.0" />
+                     </children>
+                  </AnchorPane>
+              </content>
+            </ScrollPane>
             <HBox fx:id="SignInUpHbox" layoutX="7.0" layoutY="701.0" prefHeight="58.0" prefWidth="234.0">
                <children>
                   <Button fx:id="SignInBtn" mnemonicParsing="false" prefHeight="61.0" prefWidth="111.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 30;" text="Sign in" textFill="#ffdcbd">
@@ -164,18 +171,6 @@
       </ScrollPane>
       <AnchorPane fx:id="AddSongPage" layoutX="291.0" layoutY="127.0" prefHeight="656.0" prefWidth="898.0">
          <children>
-            <VBox fx:id="searchResultsContainer" layoutY="6.0" prefHeight="371.0" prefWidth="290.0">
-               <children>
-                  <Label fx:id="searchName" text="Label" textFill="#fcfcfc" />
-                  <ImageView fx:id="searchImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
-                  <TableView fx:id="songTableView" prefHeight="200.0" prefWidth="200.0">
-                    <columns>
-                      <TableColumn prefWidth="75.0" text="C1" />
-                      <TableColumn prefWidth="75.0" text="C2" />
-                    </columns>
-                  </TableView>
-               </children>
-            </VBox>
             <TextField fx:id="songNameField" layoutX="300.0" layoutY="35.0" promptText="Song name" />
             <TextField fx:id="ArtistNameIdField" layoutX="300.0" layoutY="88.0" promptText=" Artist Name id" />
             <TextField fx:id="genreField" layoutX="300.0" layoutY="145.0" promptText="Genre" />

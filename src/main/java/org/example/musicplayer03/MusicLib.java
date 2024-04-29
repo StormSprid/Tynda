@@ -162,10 +162,14 @@ public class MusicLib {
 
 
     public static void setTrackPosition(double position) {
-        if (musicClip != null) {
+        if (musicClip != null && vocalsClip!=null) {
             long clipPosition = (long) (position * musicClip.getMicrosecondLength() / 100);
             musicClip.setMicrosecondPosition(clipPosition);
             vocalsClip.setMicrosecondPosition(clipPosition);
+        }
+        if (musicClip!=null && vocalsClip == null){
+            long clipPosition = (long) (position * musicClip.getMicrosecondLength() / 100);
+            musicClip.setMicrosecondPosition(clipPosition);
         }
     }
 

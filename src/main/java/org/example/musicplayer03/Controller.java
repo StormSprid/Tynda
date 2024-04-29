@@ -32,10 +32,10 @@ import java.io.IOException;
 import java.net.URL;
 
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
-import java.util.List;
-import java.util.ResourceBundle;
+import java.util.*;
+
+import static javafx.scene.input.KeyCode.L;
+
 public class Controller implements Initializable {
 
 
@@ -677,6 +677,7 @@ private TilePane ExampleTilePAne;
 
                     Button songButton = new Button();
                     songButton.setGraphic(container);
+
                     songButton.setOnMouseEntered(e -> songBox.setStyle("-fx-background-color: rgba(204, 204, 204, 0.5);"));
                     songButton.setOnMouseExited(e -> songBox.setStyle("-fx-background-color: transparent;"));
                     songButton.setStyle("-fx-background-color: transparent;");
@@ -898,6 +899,8 @@ public void SetupTopSongs(){
 
     @FXML
     protected  TextField searchField;
+
+        @FXML protected ScrollPane searchScrollPane;
     @FXML
     private TableView<Songs> songTableView;
     @FXML
@@ -906,44 +909,79 @@ public void SetupTopSongs(){
     private  VBox searchResultsContainer;
     @FXML
     private ImageView searchImage;
-    public void keyListenerAddSong(KeyEvent event){
-        if(event.getCode() == KeyCode.ENTER){
+    @FXML
+    private VBox LeftPaneButtonsVBox;
+    @FXML
+    private VBox searchVBox;
+    public void keyListenerSearch(KeyEvent event) throws SQLException {
+        if (event.getCode() == KeyCode.ENTER) {
+            LeftPaneButtonsVBox.setVisible(false);
+            searchScrollPane.setVisible(true);
             String searchText = searchField.getText();
+            if (!searchText.isEmpty()) {
+                try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda", "root", "admin")) {
+                    String sql = "SELECT * FROM SONGS s JOIN ARTISTS a ON s.artist_id = a.artist_id WHERE s.title LIKE CONCAT('%', ?, '%')";
+                    try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                        statement.setString(1, searchText);
+                        try (ResultSet resultSet = statement.executeQuery()) {
 
-            try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda","root","admin")){
-                String sql = "SELECT * FROM SONGS WHERE title LIKE ?";
-                try(PreparedStatement statement = connection.prepareStatement(sql)){
-                    statement.setString(1,"%" + searchText + "%");
-                    try(ResultSet resultSet = statement.executeQuery()){
-                        songTableView.getItems().clear();
-                        searchResultsContainer.getChildren().clear();
+                            searchVBox.getChildren().clear();
 
-                        while (resultSet.next()){
-                            String songName = resultSet.getString("title");
-
-                            String photoUrl = resultSet.getString("UrlPhoto");
-
-                            // Создание графических элементов для каждой строки результата
-                            Label searchName = new Label(songName);
-
-                            searchImage = new ImageView(new Image(new File("src/main/resources" +photoUrl).toURI().toString()));
+                            // Создаем элементы контейнера и разделителя один раз перед циклом
+                            VBox container = new VBox();
+                            Line separator = new Line(0, 0, 790, 0);
+                            separator.setStrokeWidth(0.5);
+                            separator.setStroke(Color.GRAY);
+                            VBox.setMargin(separator, new Insets(10, 0, 2, 0));
 
 
-                            VBox songBox = new VBox();
-                            searchImage.setFitHeight(100);
-                            searchImage.setFitWidth(100);
-                            songBox.getChildren().addAll(searchName, searchImage);
-                            searchResultsContainer.getChildren().add(songBox);
+                            while (resultSet.next()) {
+                                String urlPhoto = resultSet.getString("s.urlPhoto");
+                                String title = resultSet.getString("s.title");
+                                String artist = resultSet.getString("a.name");
+                                int songId = resultSet.getInt("song_id");
 
-                        }
+                                ImageView imageView = new ImageView(new Image(new File("src/main/resources" + urlPhoto).toURI().toString()));
+                                imageView.setFitHeight(70);
+                                imageView.setFitWidth(70);
+
+                                Label nameLabel = new Label(title);
+                                nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 22;");
+
+                                Label artistLabel = new Label(artist);
+                                artistLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 19;");
+
+                                VBox textVBox = new VBox(nameLabel, artistLabel);
+                                textVBox.setAlignment(Pos.CENTER_LEFT);
+
+                                VBox songBox = new VBox(imageView, textVBox);
+                                songBox.setAlignment(Pos.CENTER_LEFT);
+                                songBox.setPadding(new Insets(5, 10, 5, 10));
+                                Button songButton = new Button();
+                                songButton.setGraphic(songBox);
+
+                                songButton.setOnMouseEntered(e -> songBox.setStyle("-fx-background-color: rgba(204, 204, 204, 0.5);"));
+                                songButton.setOnMouseExited(e -> songBox.setStyle("-fx-background-color: transparent;"));
+                                songButton.setStyle("-fx-background-color: transparent;");
+                                songButton.setOnAction(e -> playSongPl(songId, 6));
+                                container.getChildren().addAll(songButton, new Line(0, 0, 790, 0)); // Добавляем кнопку и линию после неё
+                            }
+
+                            searchVBox.getChildren().add(container); // Добавляем container в searchVBox
+                        } catch (SQLException e) {
+                            e.printStackTrace();
                         }
                     }
                 }
-                catch (SQLException e){
-                    e.printStackTrace();
-                }
+            } else {
+                LeftPaneButtonsVBox.setVisible(true);
+                searchScrollPane.setVisible(false);
             }
         }
+    }
+
+
+
     @FXML
     javafx.scene.control.TextField songNameField;
     @FXML
