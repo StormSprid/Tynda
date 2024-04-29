@@ -1,13 +1,12 @@
 package org.example.musicplayer03;
-import javafx.animation.RotateTransition;
-import javafx.scene.transform.Rotate;
+
 import javafx.animation.*;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -18,16 +17,13 @@ import javafx.scene.text.Font;
 import javafx.scene.text.TextFlow;
 import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import java.io.File;
-import javafx.scene.control.Label;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
 import java.util.List;
 import java.util.ResourceBundle;
 public class Controller implements Initializable {
@@ -123,10 +119,10 @@ public class Controller implements Initializable {
     private AnchorPane PlAnchor;
     @FXML
     private ScrollPane ExamplePAne;
-@FXML
-private Button ClosePlbtn;
-@FXML
-private TilePane ExampleTilePAne;
+    @FXML
+    private Button ClosePlbtn;
+    @FXML
+    private TilePane ExampleTilePAne;
     private Timeline timeline;
 
 
@@ -145,7 +141,8 @@ private TilePane ExampleTilePAne;
     private int currentIndex = 0; // Индекс текущей песни
 
 
-
+    @FXML
+    private AnchorPane MySongsAnchor;
 
 
 
@@ -875,6 +872,8 @@ private TilePane ExampleTilePAne;
     public void ClosePlaylist(){
     PlaylistScrollPane.setVisible(false);
 }
+
+
 
 }
 

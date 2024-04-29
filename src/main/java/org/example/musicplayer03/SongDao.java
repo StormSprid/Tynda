@@ -1,25 +1,47 @@
 package org.example.musicplayer03;
 
+import java.sql.*;
+import java.util.ArrayList;
+import java.util.List;
 
-import javafx.fxml.FXML;
-import javafx.fxml.Initializable;
-import javafx.scene.layout.AnchorPane;
-import javafx.scene.layout.TilePane;
+public class SongDao {
 
-import java.net.URL;
-import java.util.ResourceBundle;
+    // Метод для получения списка песен пользователя по его идентификатору
+    public List<Song> getSongsByUserId(int userId) {
+        List<Song> songs = new ArrayList<>();
 
-public class MySongs implements Initializable {
+        // Указать параметры подключения к базе данных
+        String url = "jdbc:mysql://localhost/example";
+        String username = "root";
+        String password = "admin";
 
-    @FXML
-    private AnchorPane MySongsAnchor;
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            // Создание объекта PreparedStatement для выполнения параметризованного SQL запроса
+            String query = "SELECT * FROM Songs WHERE song_id IN (SELECT song_id FROM Playlist_Songs " +
+                    "WHERE playlist_id IN (SELECT playlist_id FROM playlists WHERE user_id = ?))";
+            PreparedStatement preparedStatement = connection.prepareStatement(query);
+            preparedStatement.setInt(1, userId);
 
-    @FXML
-    private TilePane MySongsPane;
+            // Выполнение запроса
+            ResultSet resultSet = preparedStatement.executeQuery();
 
-    @Override
-    public void initialize(URL location, ResourceBundle resources) {
-        // Здесь вы можете добавить логику инициализации, например, загрузку списка песен пользователя
-        // и отображение их в MySongsPane
+            // Обработка результатов запроса
+            while (resultSet.next()) {
+                int songId = resultSet.getInt("song_id");
+                String title = resultSet.getString("title");
+                int artistId = resultSet.getInt("artist_id");
+                String duration = resultSet.getString("duration");
+                // Другие поля из таблицы Songs
+
+                // Создание объекта Song и добавление в список
+                Song song = new Song(songId, title, artistId, duration);
+                songs.add(song);
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Ошибка при выполнении запроса: " + e.getMessage());
+        }
+
+        return songs;
     }
 }

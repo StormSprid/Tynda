@@ -143,9 +143,9 @@
       </ScrollPane>
       <ScrollPane fx:id="MySongsScrollPane" layoutX="303.0" layoutY="126.0" prefHeight="654.0" prefWidth="884.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
          <content>
-            <AnchorPane fx:id="MySongsAnchor" minHeight="0.0" minWidth="0.0" prefWidth="859.0" style="-fx-background-color: #000000;">
+            <AnchorPane fx:id="MySongsAnchor"  minHeight="0.0" minWidth="0.0" prefWidth="859.0" style="-fx-background-color: #000000;" >
                <children>
-                  <TilePane fx:id="MySongsPane" layoutX="26.0" layoutY="33.0" prefWidth="798.0" style="-fx-background-color: #000000;" />
+                  <TilePane fx:id="MySongsPane"  layoutX="26.0" layoutY="33.0" prefWidth="798.0" style="-fx-background-color: #000000;" />
                </children>
             </AnchorPane>
          </content>
