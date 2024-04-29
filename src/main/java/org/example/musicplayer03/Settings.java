@@ -10,7 +10,7 @@ import java.io.IOException;
 public class Settings {
 
 
-    static String[] badWords = {"сука", "Сука", "бля", "Бля", "ебанной", "ебанный", "ёбаных", "Жопа", "жопа"};
+    static String[] badWords = {"сука", "Сука", "бля", "Бля", "ебанной", "ебанный", "ёбаных", "Жопа", "жопа","сук","Сук","Трахать","трахать"};
 
     public static void setTextOnTextArea(String currentLyrics, TextArea SongTextArea) {
         int currentSecond = MusicLib.getTrackPositionToInt();
