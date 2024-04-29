@@ -13,7 +13,7 @@ public class Songs {
 
     int counter;
 
-    public Songs(int songId, String name, String artist, String genre, String urlMusic, String urlVocal, String urlPhoto, String urlLyrics, int counter) {
+    public Songs(int songId, String name, String artist, String genre, String urlMusic, String urlVocal, String urlPhoto, String urlLyrics) {
         SongId = songId;
         Name = name;
         Artist = artist;
@@ -22,7 +22,6 @@ public class Songs {
         this.urlVocal = urlVocal;
         this.urlPhoto = urlPhoto;
         this.urlLyrics = urlLyrics;
-        this.counter = counter;
     }
 
     public String getArtist() {

@@ -39,6 +39,7 @@ public class Playlists {
         this.name = name;
     }
     public void addSong(Songs song) {
+
         songs.add(song);
     }
 
