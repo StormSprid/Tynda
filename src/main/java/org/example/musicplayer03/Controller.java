@@ -35,6 +35,7 @@ import java.sql.*;
 import java.util.*;
 
 import static javafx.scene.input.KeyCode.L;
+import static javafx.scene.input.KeyCode.S;
 
 public class Controller implements Initializable {
 
@@ -632,7 +633,7 @@ private TilePane ExampleTilePAne;
             PlaylistPane.getChildren().removeIf(node -> node != ClosePlbtn);
             PlaylistScrollPane.setVisible(true);
 
-            String query = "SELECT s.song_id, s.title, a.name AS artist, s.urlPhoto\n" +
+            String query = "SELECT s.song_id, s.title, a.name AS artist, s.urlPhoto, s.duration\n" +
                     "FROM Songs s\n" +
                     "JOIN Artists a ON s.artist_id = a.artist_id\n" +
                     "JOIN Playlist_Songs ps ON s.song_id = ps.song_id\n" +
@@ -646,6 +647,7 @@ private TilePane ExampleTilePAne;
                     String songName = rs.getString("title");
                     String artistName = rs.getString("artist");
                     String urlPhoto = rs.getString("urlPhoto");
+                    String duration = rs.getString("duration");
                     int songId = rs.getInt("song_id");
 
 
@@ -660,11 +662,15 @@ private TilePane ExampleTilePAne;
                     Label nameLabel = new Label(songName);
                     nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 22;");
 
+                    Label durationLabel = new Label(duration);
+                    durationLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 22;");
+
                     Label artistLabel = new Label(artistName);
                     artistLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 19;");
 
-                    VBox textVBox = new VBox(nameLabel, artistLabel);
+                    VBox textVBox = new VBox(nameLabel, artistLabel,durationLabel);
                     textVBox.setAlignment(Pos.CENTER_LEFT);
+
 
                     songBox.getChildren().addAll(imageView, textVBox);
 
