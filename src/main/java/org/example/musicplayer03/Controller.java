@@ -1,5 +1,9 @@
 package org.example.musicplayer03;
 import javafx.animation.RotateTransition;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.animation.*;
 import javafx.fxml.FXML;
@@ -26,6 +30,8 @@ import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
+import java.security.cert.PolicyNode;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.IllegalFormatCodePointException;
 import java.util.List;
@@ -122,6 +128,8 @@ public class Controller implements Initializable {
     private AnchorPane PlAnchor;
     @FXML
     private ScrollPane ExamplePAne;
+    @FXML
+    private Pane searchPane;
 @FXML
 private Button ClosePlbtn;
 @FXML
@@ -363,6 +371,7 @@ private TilePane ExampleTilePAne;
 
   @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         button_logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -737,5 +746,55 @@ private TilePane ExampleTilePAne;
     PlaylistScrollPane.setVisible(false);
 }
 
-}
+    @FXML
+    protected  TextField searchField;
+    @FXML
+    private TableView<Songs> songTableView;
+    @FXML
+    private searchController searcher;
+    @FXML
+    private  VBox searchResultsContainer;
+    @FXML
+    private ImageView searchImage;
+    public void keyListenerAddSong(KeyEvent event){
+        if(event.getCode() == KeyCode.ENTER){
+            String searchText = searchField.getText();
+
+            try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda","root","admin")){
+                String sql = "SELECT * FROM SONGS WHERE title LIKE ?";
+                try(PreparedStatement statement = connection.prepareStatement(sql)){
+                    statement.setString(1,"%" + searchText + "%");
+                    try(ResultSet resultSet = statement.executeQuery()){
+                        songTableView.getItems().clear();
+                        searchResultsContainer.getChildren().clear();
+
+                        while (resultSet.next()){
+                            String songName = resultSet.getString("title");
+
+                            String photoUrl = resultSet.getString("UrlPhoto");
+
+                            // Создание графических элементов для каждой строки результата
+                            Label searchName = new Label(songName);
+
+                            searchImage = new ImageView(new Image(new File("src/main/resources" +photoUrl).toURI().toString()));
+
+
+                            VBox songBox = new VBox();
+                            searchImage.setFitHeight(100);
+                            searchImage.setFitWidth(100);
+                            songBox.getChildren().addAll(searchName, searchImage);
+                            searchResultsContainer.getChildren().add(songBox);
+
+                        }
+                        }
+                    }
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
+
 
