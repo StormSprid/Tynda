@@ -794,6 +794,56 @@ private TilePane ExampleTilePAne;
                 }
             }
         }
+    @FXML
+    javafx.scene.control.TextField songNameField;
+    @FXML
+    javafx.scene.control.TextField ArtistNameIdField;
+    @FXML
+    javafx.scene.control.TextField genreField;
+    @FXML
+    javafx.scene.control.TextField urlPhotoField;
+    @FXML
+    javafx.scene.control.TextField urlMusicField;
+    @FXML
+    javafx.scene.control.TextField urlVocalField;
+    @FXML
+    javafx.scene.control.TextField urlLyricsField;
+    @FXML
+    javafx.scene.control.TextField durationField;
+    @FXML
+    private void confirmButtonSendToSqlServer(ActionEvent event){
+        String songName = songNameField.getText();
+        String artistId = ArtistNameIdField.getText();
+
+        String genre = genreField.getText();
+        String urlMusic = urlMusicField.getText();
+        String urlVocal = urlVocalField.getText();
+        String urlPhoto = urlPhotoField.getText();
+        String urlLyric = urlLyricsField.getText();
+        String duration = durationField.getText();
+
+        try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda","root","admin")){
+            String sql = "INSERT INTO songs (title,artist_id,urlMusic,urlVocal,genre,duration,urlPhoto,urlLyric) VALUES (?,?,?,?,?,?,?,?)";
+            try(PreparedStatement statement = connection.prepareStatement(sql)){
+                statement.setString(1,songName);
+                statement.setString(2,artistId);
+                statement.setString(3,urlMusic);
+                statement.setString(4,urlVocal);
+                statement.setString(5,genre);
+                statement.setString(6,duration);
+                statement.setString(7,urlPhoto);
+                statement.setString(8,urlLyric);
+                int rowsInserted = statement.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Запись успешно добавлена в базу данных.");
+                }
+
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.err.println("Ошибка добавления");
+        }
+    }
     }
 
 
