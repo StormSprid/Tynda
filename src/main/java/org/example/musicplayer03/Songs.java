@@ -1,5 +1,10 @@
 package org.example.musicplayer03;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+
 public class Songs {
     int SongId;
     String Name;
@@ -98,8 +103,36 @@ public class Songs {
     public void setCounter(int counter) {
         this.counter = counter;
     }
-    public void addCounter(){
-        counter += 1;
+    public void addCounter(int songId){
+        Connection connection = null; // Здесь должен быть ваш способ подключения к базе данных
+        PreparedStatement statement = null;
+        try {
+            // Открываем подключение к базе данных
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda", "root", "admin");
+
+            // Подготавливаем SQL запрос для обновления счетчика песни
+            String sql = "UPDATE Songs SET counter = counter + 1 WHERE song_id = ?";
+            statement = connection.prepareStatement(sql);
+            statement.setInt(1, songId);
+
+            // Выполнение SQL запроса
+            int rowsAffected = statement.executeUpdate();
+            if (rowsAffected > 0) {
+                System.out.println("Counter updated successfully for song ID: " + songId);
+            } else {
+                System.out.println("No rows updated, check if song ID: " + songId + " exists.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            // Закрытие ресурсов
+            try {
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
     }
 
 }
