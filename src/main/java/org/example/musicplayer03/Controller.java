@@ -1017,7 +1017,7 @@ public void SetupTopSongs(){
     @FXML
     private void confirmButtonSendToSqlServer(ActionEvent event){
         String songName = songNameField.getText();
-        String artistId = ArtistNameIdField.getText();
+        Stringgit artistId = ArtistNameIdField.getText();
 
         String genre = genreField.getText();
         String urlMusic = urlMusicField.getText();
@@ -1027,7 +1027,7 @@ public void SetupTopSongs(){
         String duration = durationField.getText();
 
         try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda","root","admin")){
-            String sql = "INSERT INTO songs (title,artist_id,urlMusic,urlVocal,genre,duration,urlPhoto,urlLyric) VALUES (?,?,?,?,?,?,?,?)";
+            String sql = "INSERT INTO songs (title,artist_id,urlMusic,urlVocal,genre,duration,urlPhoto,urlLyric,counter) VALUES (?,?,?,?,?,?,?,?,?)";
             try(PreparedStatement statement = connection.prepareStatement(sql)){
                 if (urlVocal.isEmpty()){
                     urlVocal = null;
@@ -1036,13 +1036,14 @@ public void SetupTopSongs(){
                     urlLyric =null;
                 }
                 statement.setString(1,songName);
-                statement.setString(2,artistId);
+                statement.setInt(2,artistId);
                 statement.setString(3,urlMusic);
                 statement.setString(4,urlVocal);
                 statement.setString(5,genre);
                 statement.setString(6,duration);
                 statement.setString(7,urlPhoto);
                 statement.setString(8,urlLyric);
+                statement.setInt(9,0);
                 int rowsInserted = statement.executeUpdate();
                 if (rowsInserted > 0) {
                     System.out.println("Запись успешно добавлена в базу данных.");

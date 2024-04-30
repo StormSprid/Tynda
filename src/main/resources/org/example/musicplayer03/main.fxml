@@ -4,8 +4,8 @@
 <?import java.lang.String?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
@@ -169,17 +169,17 @@
                </children></AnchorPane>
          </content>
       </ScrollPane>
-      <AnchorPane fx:id="AddSongPage" layoutX="291.0" layoutY="127.0" prefHeight="656.0" prefWidth="898.0" visible="false">
+      <AnchorPane fx:id="AddSongPage" layoutX="291.0" layoutY="127.0" prefHeight="656.0" prefWidth="898.0">
          <children>
-            <TextField fx:id="songNameField" layoutX="300.0" layoutY="35.0" promptText="Song name" />
-            <TextField fx:id="ArtistNameIdField" layoutX="300.0" layoutY="88.0" promptText=" Artist Name id" />
-            <TextField fx:id="genreField" layoutX="300.0" layoutY="145.0" promptText="Genre" />
-            <TextField fx:id="urlPhotoField" layoutX="300.0" layoutY="200.0" promptText="URL Photo" />
-            <TextField fx:id="urlMusicField" layoutX="300.0" layoutY="251.0" promptText="URL MUSIC" />
-            <TextField fx:id="urlVocalField" layoutX="300.0" layoutY="315.0" promptText="URL VOCAL(if needed)" />
-            <Button fx:id="confirmButton" layoutX="345.0" layoutY="468.0" mnemonicParsing="false" onAction="#confirmButtonSendToSqlServer" text="Confirm" />
-            <TextField fx:id="urlLyricsField" layoutX="300.0" layoutY="364.0" promptText="URL LYRICSL(if needed)" />
-            <TextField fx:id="durationField" layoutX="300.0" layoutY="415.0" promptText="duration" />
+            <TextField fx:id="songNameField" layoutX="375.0" layoutY="35.0" promptText="Song name" />
+            <TextField fx:id="genreField" layoutX="374.0" layoutY="145.0" promptText="Genre" />
+            <Button fx:id="confirmButton" layoutX="418.0" layoutY="471.0" mnemonicParsing="false" onAction="#confirmButtonSendToSqlServer" text="Confirm" />
+            <TextField fx:id="durationField" layoutX="373.0" layoutY="413.0" promptText="duration" />
+            <Button fx:id="chooseMusic" layoutX="413.0" layoutY="253.0" mnemonicParsing="false" onAction="#fileChooser" text="Add Music" />
+            <Button fx:id="chooseVocal" layoutX="412.0" layoutY="315.0" mnemonicParsing="false" onAction="#fileChooser" text="Add Vocal" />
+            <Button fx:id="chooseMusic1" layoutX="411.0" layoutY="200.0" mnemonicParsing="false" onAction="#fileChooser" text="Add Photo" />
+            <Button fx:id="chooseLyric" layoutX="413.0" layoutY="366.0" mnemonicParsing="false" onAction="#fileChooser" text="Add Vocal" />
+            <ComboBox fx:id="artistSelector" layoutX="374.0" layoutY="85.0" prefWidth="150.0" promptText="Select Artist" />
          </children></AnchorPane>
       <Pane fx:id="Shtorka" focusTraversable="true" layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
          <children>
@@ -271,7 +271,7 @@
             </Label>
             <HBox fx:id="OpenedButtonsHBox" layoutX="115.0" layoutY="622.0" prefHeight="100.0" prefWidth="765.0" visible="false">
                <children>
-                  <VBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="195.0">
+                  <VBox fx:id="karaokeVbox" alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="195.0">
                      <children>
                         <Slider fx:id="karaokeSlider" onDragDetected="#setKaraokeVolume" onDragDone="#setKaraokeVolume" onMouseClicked="#setKaraokeVolume" onMouseDragEntered="#setTrackPosition" onMouseDragged="#setKaraokeVolume" onMousePressed="#setKaraokeVolume" prefHeight="42.0" prefWidth="241.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
                         <Label fx:id="karaokeLabel" alignment="CENTER" prefHeight="26.0" prefWidth="248.0" text="Karaoke" textFill="#ffdcbd">
@@ -279,7 +279,6 @@
                               <Font name="PT Sans Bold" size="20.0" />
                            </font>
                         </Label>
-                        <RadioButton mnemonicParsing="false" text="Child Mode" />
                      </children>
                   </VBox>
                   <HBox alignment="TOP_CENTER" prefHeight="62.0" prefWidth="315.0">
