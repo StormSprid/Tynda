@@ -334,7 +334,6 @@ public boolean isChildModeActive = false;
 
         AddSongPage.setVisible(false);
         SetupHome();
-
         // добавить для других панелей
     }
 
@@ -1017,7 +1016,7 @@ public void SetupTopSongs(){
     @FXML
     private void confirmButtonSendToSqlServer(ActionEvent event){
         String songName = songNameField.getText();
-        Stringgit artistId = ArtistNameIdField.getText();
+        String artistId = ArtistNameIdField.getText();
 
         String genre = genreField.getText();
         String urlMusic = urlMusicField.getText();
@@ -1026,8 +1025,10 @@ public void SetupTopSongs(){
         String urlLyric = urlLyricsField.getText();
         String duration = durationField.getText();
 
+
         try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda","root","admin")){
             String sql = "INSERT INTO songs (title,artist_id,urlMusic,urlVocal,genre,duration,urlPhoto,urlLyric,counter) VALUES (?,?,?,?,?,?,?,?,?)";
+
             try(PreparedStatement statement = connection.prepareStatement(sql)){
                 if (urlVocal.isEmpty()){
                     urlVocal = null;
@@ -1036,7 +1037,7 @@ public void SetupTopSongs(){
                     urlLyric =null;
                 }
                 statement.setString(1,songName);
-                statement.setInt(2,artistId);
+                statement.setString(2,artistId);
                 statement.setString(3,urlMusic);
                 statement.setString(4,urlVocal);
                 statement.setString(5,genre);

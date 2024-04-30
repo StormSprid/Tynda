@@ -175,10 +175,6 @@
             <TextField fx:id="genreField" layoutX="374.0" layoutY="145.0" promptText="Genre" />
             <Button fx:id="confirmButton" layoutX="418.0" layoutY="471.0" mnemonicParsing="false" onAction="#confirmButtonSendToSqlServer" text="Confirm" />
             <TextField fx:id="durationField" layoutX="373.0" layoutY="413.0" promptText="duration" />
-            <Button fx:id="chooseMusic" layoutX="413.0" layoutY="253.0" mnemonicParsing="false" onAction="#fileChooser" text="Add Music" />
-            <Button fx:id="chooseVocal" layoutX="412.0" layoutY="315.0" mnemonicParsing="false" onAction="#fileChooser" text="Add Vocal" />
-            <Button fx:id="chooseMusic1" layoutX="411.0" layoutY="200.0" mnemonicParsing="false" onAction="#fileChooser" text="Add Photo" />
-            <Button fx:id="chooseLyric" layoutX="413.0" layoutY="366.0" mnemonicParsing="false" onAction="#fileChooser" text="Add Vocal" />
             <ComboBox fx:id="artistSelector" layoutX="374.0" layoutY="85.0" prefWidth="150.0" promptText="Select Artist" />
          </children></AnchorPane>
       <Pane fx:id="Shtorka" focusTraversable="true" layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
