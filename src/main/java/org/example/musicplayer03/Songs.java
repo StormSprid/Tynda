@@ -1,5 +1,8 @@
 package org.example.musicplayer03;
 
+import javafx.scene.control.Slider;
+import javafx.scene.layout.VBox;
+
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -134,5 +137,11 @@ public class Songs {
             }
         }
     }
-
+    public void updateKaraokeVisbility(VBox box, String vocal){
+        if (vocal!=null){
+            box.setVisible(true);
+        }else {
+            box.setVisible(false);
+        }
+    }
 }

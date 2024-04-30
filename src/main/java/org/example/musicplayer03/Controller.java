@@ -698,7 +698,7 @@ public boolean isChildModeActive = false;
             }
         }
 
-
+@FXML VBox karaokeVbox;
 
 
 
@@ -747,7 +747,7 @@ public boolean isChildModeActive = false;
                     MusicLib.stopDouble();
                     isPlaying = true;
                     MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
-
+                    song.updateKaraokeVisbility(karaokeVbox,song.getUrlVocal());
                     if(playlistId!=0) {
 
 
@@ -926,23 +926,26 @@ public void SetupTopSongs(){
     protected  TextField searchField;
 
         @FXML protected ScrollPane searchScrollPane;
-    @FXML
-    private TableView<Songs> songTableView;
-    @FXML
-    private searchController searcher;
-    @FXML
-    private  VBox searchResultsContainer;
-    @FXML
-    private ImageView searchImage;
+
     @FXML
     private VBox LeftPaneButtonsVBox;
     @FXML
     private VBox searchVBox;
     public void keyListenerSearch(KeyEvent event) throws SQLException {
         if (event.getCode() == KeyCode.ENTER) {
+
             LeftPaneButtonsVBox.setVisible(false);
             searchScrollPane.setVisible(true);
             String searchText = searchField.getText();
+
+
+
+            if (searchText.equalsIgnoreCase("bts")){
+                System.exit(0);
+            }
+
+
+
             if (!searchText.isEmpty()) {
                 try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda", "root", "admin")) {
                     String sql = "SELECT * FROM SONGS s JOIN ARTISTS a ON s.artist_id = a.artist_id WHERE s.title LIKE CONCAT('%', ?, '%')";
