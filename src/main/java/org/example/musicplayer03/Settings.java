@@ -12,7 +12,8 @@ public class Settings {
 
     static String[] badWords = {"сука", "Сука", "бля", "Бля", "ебанной", "ебанный", "ёбаных", "Жопа", "жопа","сук","Сук","Трахать","трахать"};
 
-    public static void setTextOnTextArea(String currentLyrics, TextArea SongTextArea) {
+    public static void setTextOnTextArea(String currentLyrics, TextArea SongTextArea,boolean isChildModeActive) {
+
         int currentSecond = MusicLib.getTrackPositionToInt();
         String dir = currentLyrics;
         boolean foundValidLines = false; // Флаг для отслеживания найденных корректных строк
@@ -40,11 +41,13 @@ public class Settings {
 
 
                         if (currentSecond == (minute * 60 + seconds)) {
-                            for (String badWord : badWords) {
-                                if (text.contains(badWord) || text.contains("$")) {
-                                    MusicLib.nonVocalMod();
-                                } else {
-                                    MusicLib.vocalMod();
+                            if (isChildModeActive) {
+                                for (String badWord : badWords) {
+                                    if (text.contains(badWord) || text.contains("$")) {
+                                        MusicLib.nonVocalMod();
+                                    } else {
+                                        MusicLib.vocalMod();
+                                    }
                                 }
                             }
                             SongTextArea.appendText(text.replace("$", "") + "\n");
