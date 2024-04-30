@@ -47,8 +47,10 @@ public class DBUtils {
 
         try {
 
+
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tynda", "root", "admin");
             psCheckUserExsits = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
+
 
             psCheckUserExsits.setString(1, username);
             resultSet = psCheckUserExsits.executeQuery();
@@ -106,8 +108,10 @@ public class DBUtils {
         ResultSet resultSet = null;
         try {
 
+
             connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tynda", "root", "admin");
             preparedStatement = connection.prepareStatement("SELECT password FROM users WHERE username = ?");
+
 
             preparedStatement.setString(1, username);
             resultSet = preparedStatement.executeQuery();

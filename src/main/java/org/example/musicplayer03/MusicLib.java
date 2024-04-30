@@ -90,22 +90,44 @@ public class MusicLib {
                 vocalsClip.start();
             }
         }
+        if(musicClip!=null && vocalsClip==null){
+            isPlaying = !isPlaying;
+            if (!isPlaying) {
+                musicClip.stop();
+
+            } else {
+                musicClip.start();
+
+            }
+
+        }
     }
 
 
     public static void setVolume(double volume) {
         if (musicClip != null && vocalsClip != null) {
-            FloatControl vocalControl = (FloatControl) vocalsClip.getControl(FloatControl.Type.MASTER_GAIN);
-            FloatControl musicControl = (FloatControl) musicClip.getControl(FloatControl.Type.MASTER_GAIN);
+
 
             float minVolume = Math.min(vocalControl.getMinimum(), musicControl.getMinimum());
 
-            // Изменение дБ относительно минимального значения
+
             double dbChange = (volume / 100.0) * (6.0206 - (-80));
-            // Масштабирование и добавление минимального значения
+
             float db = (float) (minVolume + dbChange);
 
             vocalControl.setValue(db);
+            musicControl.setValue(db);
+        }
+        if (musicClip!=null && vocalsClip == null){
+
+            float minVolume = musicControl.getMinimum();
+
+
+            double dbChange = (volume / 100.0) * (6.0206 - (-80));
+
+            float db = (float) (minVolume + dbChange);
+
+
             musicControl.setValue(db);
         }
     }
@@ -140,10 +162,14 @@ public class MusicLib {
 
 
     public static void setTrackPosition(double position) {
-        if (musicClip != null) {
+        if (musicClip != null && vocalsClip!=null) {
             long clipPosition = (long) (position * musicClip.getMicrosecondLength() / 100);
             musicClip.setMicrosecondPosition(clipPosition);
             vocalsClip.setMicrosecondPosition(clipPosition);
+        }
+        if (musicClip!=null && vocalsClip == null){
+            long clipPosition = (long) (position * musicClip.getMicrosecondLength() / 100);
+            musicClip.setMicrosecondPosition(clipPosition);
         }
     }
 
