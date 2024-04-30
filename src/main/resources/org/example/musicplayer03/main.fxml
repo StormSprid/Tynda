@@ -26,9 +26,9 @@
    <children>
       <Pane layoutX="10.0" layoutY="10.0" prefHeight="780.0" prefWidth="250.0" style="-fx-background-color: #ffdcbd; -fx-background-radius: 30;">
          <children>
-            <Pane layoutX="12.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;">
+            <Pane fx:id="searchPane" layoutX="12.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;">
                <children>
-                  <TextField layoutX="30.0" layoutY="6.0" prefHeight="26.0" prefWidth="164.0" promptText="Search" style="-fx-background-color: transparent;" styleClass="search" stylesheets="@design.css" />
+                  <TextField fx:id="searchField" layoutX="30.0" layoutY="6.0" onKeyPressed="#keyListenerAddSong" prefHeight="26.0" prefWidth="164.0" promptText="Search" style="-fx-background-color: transparent;" styleClass="search" stylesheets="@design.css" />
                </children></Pane>
             <ImageView fitHeight="56.0" fitWidth="188.0" layoutX="16.0" layoutY="9.0" pickOnBounds="true" preserveRatio="true">
 
@@ -160,7 +160,24 @@
                </children></AnchorPane>
          </content>
       </ScrollPane>
-      <AnchorPane fx:id="AddSongPage" layoutX="291.0" layoutY="127.0" prefHeight="656.0" prefWidth="898.0" />
+      <AnchorPane fx:id="AddSongPage" layoutX="291.0" layoutY="127.0" prefHeight="656.0" prefWidth="898.0">
+         <children>
+            <VBox fx:id="searchResultsContainer" layoutY="6.0" prefHeight="371.0" prefWidth="290.0">
+               <children>
+                  <Label fx:id="searchName" text="Label" textFill="#fcfcfc" />
+                  <ImageView fx:id="searchImage" fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" />
+               </children>
+            </VBox>
+            <TextField fx:id="songNameField" layoutX="300.0" layoutY="35.0" promptText="Song name" />
+            <TextField fx:id="ArtistNameIdField" layoutX="300.0" layoutY="88.0" promptText=" Artist Name id" />
+            <TextField fx:id="genreField" layoutX="300.0" layoutY="145.0" promptText="Genre" />
+            <TextField fx:id="urlPhotoField" layoutX="300.0" layoutY="200.0" promptText="URL Photo" />
+            <TextField fx:id="urlMusicField" layoutX="300.0" layoutY="251.0" promptText="URL MUSIC" />
+            <TextField fx:id="urlVocalField" layoutX="300.0" layoutY="315.0" promptText="URL VOCAL(if needed)" />
+            <Button fx:id="confirmButton" layoutX="345.0" layoutY="468.0" mnemonicParsing="false" onAction="#confirmButtonSendToSqlServer" text="Confirm" />
+            <TextField fx:id="urlLyricsField" layoutX="300.0" layoutY="364.0" promptText="URL LYRICSL(if needed)" />
+            <TextField fx:id="durationField" layoutX="300.0" layoutY="415.0" promptText="duration" />
+         </children></AnchorPane>
       <Pane fx:id="Shtorka" focusTraversable="true" layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
          <children>
             <TextFlow fx:id="ArtistSongNameText" layoutX="-2.0" layoutY="535.0" prefHeight="65.0" prefWidth="908.0" textAlignment="CENTER" visible="false">
@@ -243,7 +260,7 @@
                </children>
             </HBox>
 
-            <Slider fx:id="volumeSlider" layoutX="724.0" layoutY="19.0" onDragDetected="#setVolume" onDragDone="#setVolume" onMouseClicked="#setVolume" onMouseDragReleased="#setVolume" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
+            <Slider fx:id="volumeSlider" blockIncrement="0.0" layoutX="724.0" layoutY="19.0" onDragDetected="#setVolume" onDragDone="#setVolume" onMouseClicked="#setVolume" onMouseDragReleased="#setVolume" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
             <Label fx:id="volumeLabel" layoutX="754.0" layoutY="46.0" onDragExited="#setVolume" onDragOver="#setVolume" text="100%" textFill="#ffdcbd">
                <graphic>
                   <FontAwesomeIconView fx:id="volume" fill="#ffdcbd" glyphName="VOLUME_UP" size="20" />

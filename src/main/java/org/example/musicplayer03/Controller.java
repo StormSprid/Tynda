@@ -1,5 +1,9 @@
 package org.example.musicplayer03;
 import javafx.animation.RotateTransition;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
+import javafx.scene.text.Text;
 import javafx.scene.transform.Rotate;
 import javafx.animation.*;
 import javafx.fxml.FXML;
@@ -123,6 +127,8 @@ public class Controller implements Initializable {
     private AnchorPane PlAnchor;
     @FXML
     private ScrollPane ExamplePAne;
+    @FXML
+    private Pane searchPane;
 @FXML
 private Button ClosePlbtn;
 @FXML
@@ -298,35 +304,23 @@ private TilePane ExampleTilePAne;
 
     @FXML
     protected void setVolume() {
-        MusicLib.setVolume(volumeSlider.getValue());
-        MusicLib.setVolume(volumeSliderShtorka.getValue());
+        double currentVolume = volumeSlider.getValue();
+        MusicLib.setVolume(currentVolume);
+
+        volumeLabel.setText(String.format("%.0f%%", currentVolume));
 
         if (volumeSlider.isValueChanging()) {
-            double currentVolume = volumeSlider.getValue();
-
             volumeSlider.setValue(currentVolume);
             volumeSliderShtorka.setValue(currentVolume);
-
-            volumeLabel.setText(String.format("%.0f%%", currentVolume));
-            volumeLabelShtorka.setText(String.format("%.0f%%", currentVolume));
-
-
-        } else if (volumeSliderShtorka.isValueChanging()){
-            double currentVolume = volumeSliderShtorka.getValue();
-
-            volumeSlider.setValue(currentVolume);
-            volumeSliderShtorka.setValue(currentVolume);
-
-            volumeLabel.setText(String.format("%.0f%%", currentVolume));
-            volumeLabelShtorka.setText(String.format("%.0f%%", currentVolume));
         }
     }
     @FXML
-    protected void setKaraokeVolume(){
-        MusicLib.setVocalVolume(karaokeSlider.getValue());
+    protected void setKaraokeVolume() {
         double currentVolume = karaokeSlider.getValue();
-        karaokeLabel.setText(String.format("%.0f%%",currentVolume));
+        MusicLib.setVocalVolume(currentVolume);
+        karaokeLabel.setText(String.format("%.0f%%", currentVolume));
     }
+
 
     @FXML
     private void showHome() {
@@ -336,6 +330,7 @@ private TilePane ExampleTilePAne;
         HomePage.setVisible(true);
         MySongsScrollPane.setVisible(false);
         SetupHome();
+        AddSongPage.setVisible(false);
         // добавить для других панелей
     }
 
@@ -393,6 +388,7 @@ private TilePane ExampleTilePAne;
 
   @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
+
         button_logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -897,5 +893,105 @@ public void SetupTopSongs(){
 }
 
 
-}
+    @FXML
+    protected  TextField searchField;
+    @FXML
+    private TableView<Songs> songTableView;
+    @FXML
+    private searchController searcher;
+    @FXML
+    private  VBox searchResultsContainer;
+    @FXML
+    private ImageView searchImage;
+    public void keyListenerAddSong(KeyEvent event){
+        if(event.getCode() == KeyCode.ENTER){
+            String searchText = searchField.getText();
+
+            try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda","root","admin")){
+                String sql = "SELECT * FROM SONGS WHERE title LIKE ?";
+                try(PreparedStatement statement = connection.prepareStatement(sql)){
+                    statement.setString(1,"%" + searchText + "%");
+                    try(ResultSet resultSet = statement.executeQuery()){
+                        songTableView.getItems().clear();
+                        searchResultsContainer.getChildren().clear();
+
+                        while (resultSet.next()){
+                            String songName = resultSet.getString("title");
+
+                            String photoUrl = resultSet.getString("UrlPhoto");
+
+                            // Создание графических элементов для каждой строки результата
+                            Label searchName = new Label(songName);
+
+                            searchImage = new ImageView(new Image(new File("src/main/resources" +photoUrl).toURI().toString()));
+
+
+                            VBox songBox = new VBox();
+                            searchImage.setFitHeight(100);
+                            searchImage.setFitWidth(100);
+                            songBox.getChildren().addAll(searchName, searchImage);
+                            searchResultsContainer.getChildren().add(songBox);
+
+                        }
+                        }
+                    }
+                }
+                catch (SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        }
+    @FXML
+    javafx.scene.control.TextField songNameField;
+    @FXML
+    javafx.scene.control.TextField ArtistNameIdField;
+    @FXML
+    javafx.scene.control.TextField genreField;
+    @FXML
+    javafx.scene.control.TextField urlPhotoField;
+    @FXML
+    javafx.scene.control.TextField urlMusicField;
+    @FXML
+    javafx.scene.control.TextField urlVocalField;
+    @FXML
+    javafx.scene.control.TextField urlLyricsField;
+    @FXML
+    javafx.scene.control.TextField durationField;
+    @FXML
+    private void confirmButtonSendToSqlServer(ActionEvent event){
+        String songName = songNameField.getText();
+        String artistId = ArtistNameIdField.getText();
+
+        String genre = genreField.getText();
+        String urlMusic = urlMusicField.getText();
+        String urlVocal = urlVocalField.getText();
+        String urlPhoto = urlPhotoField.getText();
+        String urlLyric = urlLyricsField.getText();
+        String duration = durationField.getText();
+
+        try(Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Tynda","root","Adlet998")){
+            String sql = "INSERT INTO songs (title,artist_id,urlMusic,urlVocal,genre,duration,urlPhoto,urlLyric) VALUES (?,?,?,?,?,?,?,?)";
+            try(PreparedStatement statement = connection.prepareStatement(sql)){
+                statement.setString(1,songName);
+                statement.setString(2,artistId);
+                statement.setString(3,urlMusic);
+                statement.setString(4,urlVocal);
+                statement.setString(5,genre);
+                statement.setString(6,duration);
+                statement.setString(7,urlPhoto);
+                statement.setString(8,urlLyric);
+                int rowsInserted = statement.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Запись успешно добавлена в базу данных.");
+                }
+
+            }
+        }catch (SQLException e){
+            e.printStackTrace();
+            System.err.println("Ошибка добавления");
+        }
+    }
+    }
+
+
 
