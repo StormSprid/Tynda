@@ -333,7 +333,7 @@ private TilePane ExampleTilePAne;
         AddSongPage.setVisible(false);
         // добавить для других панелей
     }
-
+    SetupTopSongs setup = new SetupTopSongs();
     @FXML
     private void showTopSongs() {
        HomePage.setVisible(false);
@@ -342,6 +342,7 @@ private TilePane ExampleTilePAne;
         MySongsScrollPane.setVisible(false);
         PressButton(TopSongsBtn);
         AddSongPage.setVisible(false);
+        top5(TopSongsTilePane );
 
         // добавить для других панелей
     }
@@ -386,6 +387,7 @@ private TilePane ExampleTilePAne;
 
 
 
+
   @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -410,6 +412,7 @@ private TilePane ExampleTilePAne;
         initializeTimeline();
        playlistinitializer. initializePlaylist();
         showMySongs();
+
 
     }
 
@@ -727,7 +730,7 @@ public void playSongPl(int songId, int playlistId) {
                 MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
                 currentIndex = resultSet.getInt("order_number");
                 currentPlaylistId = playlistId; // Сохраняем идентификатор текущего плейлиста
-                song.addCounter();
+                song.addCounter(song.getSongId());
 
             } else {
                 pause();
@@ -829,7 +832,7 @@ public void nextSong() {
 
         try {
             // Запрос на получение плейлистов с user_id = 1
-            String query = "SELECT * FROM playlists WHERE user_id = ?";
+            String query = "SELECT * FROM playlists WHERE user_id = ? AND playlist_id <> 7";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, 1); // Пользователь с user_id = 1
 
@@ -991,6 +994,86 @@ public void SetupTopSongs(){
             System.err.println("Ошибка добавления");
         }
     }
+    public void top5(TilePane pane) {
+        setup.replacePlaylistSongsWithTopSongs(7, 10); // Предполагаем, что это метод обновляет песни в плейлисте на основе их популярности
+        Connection connection = null;
+        PreparedStatement statement = null;
+        ResultSet resultSet = null;
+
+        try {
+            // Запускаем соединение с базой данных
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/Tynda", "root", "Adlet998");
+            // SQL запрос выбирает песни из определенного плейлиста (id = 7) и сортирует их по популярности (counter)
+            String sql = "SELECT s.song_id, s.title, a.name AS artist, s.urlPhoto, ps.order_number\n" +
+                    "FROM Songs s \n" +
+                    "JOIN Artists a ON s.artist_id = a.artist_id\n" +
+                    "JOIN Playlist_Songs ps ON s.song_id = ps.song_id\n" +
+                    "WHERE ps.playlist_id = 7 ORDER BY s.counter DESC LIMIT 10";
+            statement = connection.prepareStatement(sql);
+            resultSet = statement.executeQuery();
+
+            pane.getChildren().clear(); // Очищаем TilePane от предыдущих элементов
+
+            while (resultSet.next()) {
+                String songName = resultSet.getString("title");
+                String artistName = resultSet.getString("artist");
+                String urlPhoto = resultSet.getString("urlPhoto");
+                int songId = resultSet.getInt("song_id");
+                int orderNumber = resultSet.getInt("order_number");
+
+
+                HBox songBox = new HBox(10);
+                songBox.setAlignment(Pos.CENTER_LEFT);
+                songBox.setPadding(new Insets(5, 10, 5, 10));
+
+                ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(urlPhoto)));
+                imageView.setFitHeight(70);
+                imageView.setFitWidth(70);
+
+                Label orderLabel = new Label(String.valueOf(orderNumber)); // Создаем Label для order_number
+                orderLabel.setStyle("-fx-text-fill: white; -fx-font-size: 22;");
+
+
+                Label nameLabel = new Label(songName);
+                nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 22;");
+
+                Label artistLabel = new Label(artistName);
+                artistLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 19;");
+
+                VBox textVBox = new VBox(nameLabel, artistLabel);
+                textVBox.setAlignment(Pos.CENTER_LEFT);
+
+                songBox.getChildren().addAll(orderLabel,imageView, textVBox);
+
+                VBox container = new VBox(songBox);
+                Line separator = new Line(0, 0, 790, 0);
+                separator.setStrokeWidth(0.5);
+                separator.setStroke(Color.GRAY);
+                VBox.setMargin(separator, new Insets(10, 0, 2, 0));
+                container.getChildren().add(separator);
+
+                Button songButton = new Button();
+                songButton.setGraphic(container);
+                songButton.setOnMouseEntered(e -> songBox.setStyle("-fx-background-color: rgba(204, 204, 204, 0.5);"));
+                songButton.setOnMouseExited(e -> songBox.setStyle("-fx-background-color: transparent;"));
+                songButton.setStyle("-fx-background-color: transparent;");
+                songButton.setOnAction(event -> playSongPl(songId, 7));  // Adjust playSongPl method to handle songName or songId
+
+                pane.getChildren().add(songButton);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (resultSet != null) resultSet.close();
+                if (statement != null) statement.close();
+                if (connection != null) connection.close();
+            } catch (SQLException ex) {
+                ex.printStackTrace();
+            }
+        }
+    }
+
     }
 
 
