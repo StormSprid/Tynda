@@ -21,7 +21,7 @@ public class DBUtils {
                 FXMLLoader loader = new FXMLLoader(DBUtils.class.getResource(fxmFile));
                 root = loader.load();
                 Controller Controller = loader.getController();
-                Controller.setUserInformation(username);
+
             } catch (IOException e){
                 e.printStackTrace();
             }
@@ -47,7 +47,7 @@ public class DBUtils {
 
         try {
 
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/example", "root", "admin");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tynda", "root", "admin");
             psCheckUserExsits = connection.prepareStatement("SELECT * FROM users WHERE username = ?");
 
             psCheckUserExsits.setString(1, username);
@@ -106,7 +106,7 @@ public class DBUtils {
         ResultSet resultSet = null;
         try {
 
-            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/example", "root", "admin");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/tynda", "root", "admin");
             preparedStatement = connection.prepareStatement("SELECT password FROM users WHERE username = ?");
 
             preparedStatement.setString(1, username);

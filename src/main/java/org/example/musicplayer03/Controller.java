@@ -1,6 +1,9 @@
 package org.example.musicplayer03;
 
-import javafx.animation.*;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -15,7 +18,6 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextFlow;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
 
 import java.io.BufferedReader;
@@ -24,16 +26,13 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
 
     String[]  badWords = {"сука","Сука","бля","Бля","ебанной","ебанный","ёбаных","Жопа","жопа"};
 
-    @FXML
-    private Label label_welcome;
+
     @FXML
     private Button button_logout;
     @FXML
@@ -146,7 +145,7 @@ public class Controller implements Initializable {
 
     // Метод для установления соединения с базой данных
     public void connectToDatabase() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/example";
+        String url = "jdbc:mysql://localhost:3306/tynda";
         String username = "root";
         String password = "admin";
         connection = DriverManager.getConnection(url, username, password);
@@ -418,9 +417,7 @@ public class Controller implements Initializable {
 
     }
 
-    public void setUserInformation(String username) {
-        label_welcome.setText("Welcome " + username + "!");
-    }
+
 
 
 
