@@ -336,6 +336,7 @@ public class Controller implements Initializable {
         HomePage.setVisible(true);
         MySongsScrollPane.setVisible(false);
         SetupHome();
+        AddSongPage.setVisible(false);
         // добавить для других панелей
     }
 
