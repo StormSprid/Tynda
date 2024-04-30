@@ -704,19 +704,25 @@ public boolean isChildModeActive = false;
 
     public void playSongPl(int songId, int playlistId) {
         try {
-            String sql = "SELECT s.*, a.name AS artist, ps.order_number\n" +
+            String sql = "SELECT s.*, a.name AS artist,ps.order_number\n" +
                     "FROM Songs s\n" +
                     "JOIN Artists a ON s.artist_id = a.artist_id\n" +
                     "JOIN playlist_songs ps ON s.song_id = ps.song_id\n" +
                     "WHERE s.song_id = ? AND ps.playlist_id = ?";
 
-
-
+            if (playlistId == 0) {
+                // Если playlistId равен 0, изменяем SQL-запрос
+                sql = "SELECT s.*, a.name AS artist\n" +
+                        "FROM Songs s\n" +
+                        "JOIN Artists a ON s.artist_id = a.artist_id\n" +
+                        "WHERE s.song_id = ?";
+            }
 
             PreparedStatement statement = connection.prepareStatement(sql);
             statement.setInt(1, songId);
             if (playlistId != 0) {
                 statement.setInt(2, playlistId);
+
             }
 
             ResultSet resultSet = statement.executeQuery();
@@ -737,10 +743,16 @@ public boolean isChildModeActive = false;
                 // Здесь продолжайте ваш код воспроизведения песни с использованием объекта song
                 timeline.play();
                 if (!isPlaying) {
+
                     MusicLib.stopDouble();
                     isPlaying = true;
                     MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
-//                    currentIndex = resultSet.getInt("order_number");
+
+                    if(playlistId!=0) {
+
+
+                        currentIndex = resultSet.getInt("order_number");
+                    }
                     currentPlaylistId = playlistId; // Сохраняем идентификатор текущего плейлиста
                     song.addCounter(song.getSongId());
 
@@ -773,7 +785,8 @@ public boolean isChildModeActive = false;
     }
 
 
-public void nextSong() {
+
+    public void nextSong() {
     if (currentPlaylistId >0 && currentIndex < getMaxIndex(currentPlaylistId)) {
         currentIndex++;
         Animations.rotateImage(UpperSongPhOpened, 360);
@@ -1079,6 +1092,7 @@ public void SetupTopSongs(){
                 String artistName = resultSet.getString("artist");
                 String urlPhoto = resultSet.getString("urlPhoto");
                 int songId = resultSet.getInt("song_id");
+
                 int orderNumber = resultSet.getInt("order_number");
 
 
