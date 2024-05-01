@@ -7,6 +7,8 @@ import javafx.scene.control.TextArea;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -23,7 +25,7 @@ public class Settings {
         String dir = currentLyrics;
         boolean foundValidLines = false; // Флаг для отслеживания найденных корректных строк
         if (dir != null) {
-            try (BufferedReader br = new BufferedReader(new FileReader(dir))) {
+            try (BufferedReader br = new BufferedReader(new FileReader(dir, StandardCharsets.UTF_8))) {
                 String line;
                 while ((line = br.readLine()) != null) {
                     // Проверяем наличие нулевого байта в строке
