@@ -102,4 +102,25 @@ public class Settings {
             e.printStackTrace();
         }
     }
+
+    public  void loadText(String path) {
+        if (path!= null) {
+            try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
+                StringBuilder content = new StringBuilder();
+                String line;
+
+                // Читаем файл построчно
+                while ((line = reader.readLine()) != null) {
+                    content.append(line).append("\n");
+                }
+
+
+            } catch (IOException e) {
+                // Обработка ошибок чтения файла
+                System.err.println("Error reading file: " + e.getMessage());
+            }
+        }
+
+
+    }
 }

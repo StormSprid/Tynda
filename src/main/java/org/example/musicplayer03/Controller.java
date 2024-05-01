@@ -436,12 +436,12 @@ public boolean isChildModeActive = false;
 
     @FXML
     public void RotateShtorka() {
-        animateSize(); // Запуск анимации изменения размеров
-        animateImage(); // Запуск анимации изображения
-        animateTextArea();
+       isShtorkaOpen = animations.animateSize(isShtorkaOpen,Shtorka); // Запуск анимации изменения размеров
+        animations.animateImage(isShtorkaOpen,UpperSongPhOpened,UpperSongPh); // Запуск анимации изображения
+        animations.animateTextArea(isShtorkaOpen,SongTextArea,currentLyrics);
         animations.animateArtistSongName(isShtorkaOpen,ArtistSongNameText,UpperArtistName,UpperSongName);
         animations.animateSlider(isShtorkaOpen,OpenedSliderHBox,trackSlider);
-        animateButtons();
+        animations.animateButtons(isShtorkaOpen,OpenedButtonsHBox,UpperButtonsHBox,volumeSlider,volumeLabel);
         if(isShtorkaOpen){
             CloseShtorka.setVisible(true);
         }
@@ -450,125 +450,13 @@ public boolean isChildModeActive = false;
         }
     }
 
-    private void animateSize() {
-        Timeline timelineAnimation = new Timeline();
-
-        KeyValue kvWidth;
-        KeyValue kvHeight;
-
-        if (!isShtorkaOpen) {
-            kvWidth = new KeyValue(Shtorka.prefWidthProperty(), 898);
-            kvHeight = new KeyValue(Shtorka.prefHeightProperty(), 760);
-            isShtorkaOpen = true;
-        } else {
-            kvWidth = new KeyValue(Shtorka.prefWidthProperty(), 898);
-            kvHeight = new KeyValue(Shtorka.prefHeightProperty(), 82);
-            isShtorkaOpen = false;
-        }
-
-        KeyFrame kfSize = new KeyFrame(Duration.seconds(0.6), kvWidth, kvHeight);
-        timelineAnimation.getKeyFrames().add(kfSize);
-        timelineAnimation.play(); // Запуск анимации изменения размеров
-    }
-
-    private void animateImage() {
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), UpperSongPhOpened);
-
-        if (isShtorkaOpen) {
-            UpperSongPhOpened.setVisible(true);
-            UpperSongPhOpened.setOpacity(0.0);
-            fadeTransition.setFromValue(0.0);
-            fadeTransition.setToValue(1.0);
-            fadeTransition.setDelay(Duration.seconds(0.5));
-            UpperSongPh.setVisible(false);// Задержка перед началом fade-in
-        } else {
-            UpperSongPh.setVisible(true);
-            fadeTransition.setFromValue(1.0);
-            fadeTransition.setToValue(0.0);
-            fadeTransition.setDelay(Duration.seconds(0.0)); // Без задержки
-
-            // Установка действия по завершении fade-out
-            fadeTransition.setOnFinished(event -> UpperSongPhOpened.setVisible(false));
-        }
-
-        fadeTransition.play(); // Запуск анимации fade
-    }
-    private void animateTextArea() {
-        // Создаём объект FadeTransition с указанием длительности анимации и объекта TextArea
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), SongTextArea);
-
-        if (isShtorkaOpen) {
-            // Устанавливаем видимость TextArea и начальное значение прозрачности
-            SongTextArea.setVisible(true);
-            SongTextArea.setOpacity(0.0);
-            // Устанавливаем значения начальной и конечной прозрачности
-            fadeTransition.setFromValue(0.0);
-            fadeTransition.setToValue(1.0);
-            // Задержка перед началом fade-in
-            fadeTransition.setDelay(Duration.seconds(0.5));
-            loadText(currentLyrics);
-        } else {
-            // Устанавливаем значения начальной и конечной прозрачности
-            fadeTransition.setFromValue(1.0);
-            fadeTransition.setToValue(0.0);
-            // Установка видимости TextArea на false после завершения fade-out анимации
-            fadeTransition.setOnFinished(event -> SongTextArea.setVisible(false));
-        }
-
-        // Запуск анимации fade
-        fadeTransition.play();
-    }
 
 
 
-    public void animateButtons() {
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), OpenedButtonsHBox);
-        if (isShtorkaOpen) {
-            OpenedButtonsHBox.setOpacity(0.0);
-            OpenedButtonsHBox.setVisible(true);
-            fadeTransition.setFromValue(0.0);
-            fadeTransition.setToValue(1.0);
-            fadeTransition.setDelay(Duration.seconds(0.5));
-            volumeSlider.setVisible(false);
-            volumeLabel.setVisible(false);
-            UpperButtonsHBox.setVisible(false);
-
-        } else {
-            fadeTransition.setFromValue(1.0);
-            fadeTransition.setToValue(0.0);
-            fadeTransition.setOnFinished(event -> {
-                OpenedButtonsHBox.setVisible(false);
-            });
-            volumeSlider.setVisible(true);
-            volumeLabel.setVisible(true);
-            UpperButtonsHBox.setVisible(true);
-        }
-        fadeTransition.play();
-    }
 
 
-    // Чтение текста из файла и установка его в TextArea
-    @FXML
-    public void loadText(String path ) {
-        if (path!= null) {
-            try (BufferedReader reader = new BufferedReader(new FileReader(path))) {
-                StringBuilder content = new StringBuilder();
-                String line;
-
-                // Читаем файл построчно
-                while ((line = reader.readLine()) != null) {
-                    content.append(line).append("\n");
-                }
 
 
-            } catch (IOException e) {
-                // Обработка ошибок чтения файла
-                System.err.println("Error reading file: " + e.getMessage());
-            }
-        }
-
-
-    }
 
     @FXML
     protected void playNextSong(){
