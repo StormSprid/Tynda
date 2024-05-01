@@ -156,6 +156,7 @@ private TilePane ExampleTilePAne;
     private int currentIndex = 0; // Индекс текущей песни
     private Playlistinitializer playlistinitializer;
     private Connection connection;
+    Animations animations = new Animations();
 
     // Метод для установления соединения с базой данных
     public void connectToDatabase() throws SQLException {
@@ -438,8 +439,8 @@ public boolean isChildModeActive = false;
         animateSize(); // Запуск анимации изменения размеров
         animateImage(); // Запуск анимации изображения
         animateTextArea();
-        animateArtistSongName();
-        animateSlider();
+        animations.animateArtistSongName(isShtorkaOpen,ArtistSongNameText,UpperArtistName,UpperSongName);
+        animations.animateSlider(isShtorkaOpen,OpenedSliderHBox,trackSlider);
         animateButtons();
         if(isShtorkaOpen){
             CloseShtorka.setVisible(true);
@@ -517,57 +518,8 @@ public boolean isChildModeActive = false;
         // Запуск анимации fade
         fadeTransition.play();
     }
-    private void animateArtistSongName() {
-        // Создаём объект FadeTransition с указанием длительности анимации и объекта TextArea
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), ArtistSongNameText);
-
-        if (isShtorkaOpen) {
-            // Устанавливаем видимость TextArea и начальное значение прозрачности
-            ArtistSongNameText.setVisible(true);
-            ArtistSongNameText.setOpacity(0.0);
-            // Устанавливаем значения начальной и конечной прозрачности
-            fadeTransition.setFromValue(0.0);
-            fadeTransition.setToValue(1.0);
-            // Задержка перед началом fade-in
-            fadeTransition.setDelay(Duration.seconds(0.5));
-            UpperArtistName.setVisible(false);
-            UpperSongName.setVisible(false);
-        } else {
-            // Устанавливаем значения начальной и конечной прозрачности
-            fadeTransition.setFromValue(1.0);
-            fadeTransition.setToValue(0.0);
-            UpperArtistName.setVisible(true);
-            UpperSongName.setVisible(true);
-            // Установка видимости TextArea на false после завершения fade-out анимации
-            fadeTransition.setOnFinished(event -> ArtistSongNameText.setVisible(false));
-        }
-
-        // Запуск анимации fade
-        fadeTransition.play();
-    }
 
 
-
-    public void animateSlider() {
-        FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), OpenedSliderHBox);
-        if (isShtorkaOpen) {
-            OpenedSliderHBox.setOpacity(0.0);
-            OpenedSliderHBox.setVisible(true);
-            fadeTransition.setFromValue(0.0);
-            fadeTransition.setToValue(1.0);
-            fadeTransition.setDelay(Duration.seconds(0.5));
-            trackSlider.setVisible(false);
-        } else {
-            fadeTransition.setFromValue(1.0);
-            fadeTransition.setToValue(0.0);
-            fadeTransition.setOnFinished(event -> {
-                OpenedSliderHBox.setVisible(false);
-
-            });
-            trackSlider.setVisible(true);
-        }
-        fadeTransition.play();
-    }
 
     public void animateButtons() {
         FadeTransition fadeTransition = new FadeTransition(Duration.seconds(0.2), OpenedButtonsHBox);
@@ -1033,7 +985,7 @@ public void SetupTopSongs(){
 
 
     @FXML
-    private void confirmButtonSendToSqlServer(ActionEvent event){
+    private void confirmButtonSendToSqlServer(ActionEvent event) {
         String songName = songNameField.getText();
         String selectedArtist = artistSelector.getValue();
         int artistId = -1;
@@ -1047,10 +999,10 @@ public void SetupTopSongs(){
         File musicFile = musicChooser.showOpenDialog(null);
         String urlMusicFull = musicFile.toURI().toString();
         String delimetr = "src";
-        int index =urlMusicFull.indexOf(delimetr);
+        int index = urlMusicFull.indexOf(delimetr);
         String urlMusic = null;
-        if (index!=-1){
-             urlMusic = urlMusicFull.substring(index);
+        if (index != -1) {
+            urlMusic = urlMusicFull.substring(index);
         }
         System.out.println(urlMusic + " saved ");
 
@@ -1058,79 +1010,90 @@ public void SetupTopSongs(){
         FileChooser vocalChooser = new FileChooser();
         vocalChooser.setTitle("Select Vocal");
         File vocalFile = vocalChooser.showOpenDialog(null);
-        String urlVocalFull = vocalFile.toURI().toString();
-        index = urlVocalFull.indexOf(delimetr);
         String urlVocal = null;
-        if (index!=-1){
-            urlVocal = urlVocalFull.substring(index);
-        }
-        if (urlVocal.isEmpty()){
-            urlVocal = null;
-        }
-        System.out.println(urlVocal + " saved");
+        if (vocalFile != null) {
 
 
-        FileChooser photoChooser = new FileChooser();
-        photoChooser.setTitle("Select Photo");
-        File photoFile = photoChooser.showOpenDialog(null);
-        String urlPhotoFull = photoFile.toURI().toString();
-        delimetr = "/icons";
-        index = urlPhotoFull.indexOf(delimetr);
-        String urlPhoto = null;
-        if (index!=-1){
-            urlPhoto = urlPhotoFull.substring(index);
-        }
-        System.out.println(urlPhoto + " saved");
+            String urlVocalFull = vocalFile.toURI().toString();
+            index = urlVocalFull.indexOf(delimetr);
 
-
-        FileChooser lyricChooser = new FileChooser();
-        lyricChooser.setTitle("Select Lyric");
-        File LyricFile = lyricChooser.showOpenDialog(null);
-        String urlLyricFull = LyricFile.toURI().toString();
-        delimetr = "src";
-        index = urlLyricFull.indexOf(delimetr);
-        String urlLyric = null;
-        if (index!=-1){
-            urlLyric = urlLyricFull.substring(index);
-        }
-        System.out.println(urlLyric + " saved");
-
-
-        String duration = durationField.getText();
-
-        try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda", "root", "admin")) {
-            // Получаем айди артиста
-            String artistIdSql = "SELECT artist_id FROM artists WHERE name = ?";
-            try (PreparedStatement artistStatement = connection.prepareStatement(artistIdSql)) {
-                artistStatement.setString(1, selectedArtist);
-                ResultSet resultSet = artistStatement.executeQuery();
-                if (resultSet.next()) {
-                    artistId = resultSet.getInt("artist_id");
-                }
+            if (index != -1) {
+                urlVocal = urlVocalFull.substring(index);
+            }
+        }else {
+                urlVocal = null;
             }
 
-            // Вставляем данные о песне в базу данных
-            String sql = "INSERT INTO songs (title, artist_id, urlMusic, urlVocal, genre, duration, urlPhoto, urlLyric, counter) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
-            try (PreparedStatement statement = connection.prepareStatement(sql)) {
-                statement.setString(1,songName);
-                statement.setInt(2,artistId);
-                statement.setString(3,urlMusic);
-                statement.setString(4,urlVocal);
-                statement.setString(5,genre);
-                statement.setString(6,duration);
-                statement.setString(7,urlPhoto);
-                statement.setString(8,urlLyric);
-                statement.setInt(9,0);
-                int rowsInserted = statement.executeUpdate();
-                if (rowsInserted > 0) {
-                    System.out.println("Запись успешно добавлена в базу данных.");
-                }
+            System.out.println(urlVocal + " saved");
+
+
+            FileChooser photoChooser = new FileChooser();
+            photoChooser.setTitle("Select Photo");
+            File photoFile = photoChooser.showOpenDialog(null);
+            String urlPhotoFull = photoFile.toURI().toString();
+            delimetr = "/icons";
+            index = urlPhotoFull.indexOf(delimetr);
+            String urlPhoto = null;
+            if (index != -1) {
+                urlPhoto = urlPhotoFull.substring(index);
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            System.err.println("Ошибка добавления");
+            System.out.println(urlPhoto + " saved");
+
+
+            FileChooser lyricChooser = new FileChooser();
+            lyricChooser.setTitle("Select Lyric");
+            File LyricFile = lyricChooser.showOpenDialog(null);
+            String urlLyric = null;
+            if (LyricFile != null) {
+                String urlLyricFull = LyricFile.toURI().toString();
+                delimetr = "src";
+                index = urlLyricFull.indexOf(delimetr);
+
+                if (index != -1) {
+                    urlLyric = urlLyricFull.substring(index);
+                }
+            } else {
+                urlLyric = null;
+            }
+            System.out.println(urlLyric + " saved");
+
+
+            String duration = durationField.getText();
+
+            try (Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda", "root", "admin")) {
+                // Получаем айди артиста
+                String artistIdSql = "SELECT artist_id FROM artists WHERE name = ?";
+                try (PreparedStatement artistStatement = connection.prepareStatement(artistIdSql)) {
+                    artistStatement.setString(1, selectedArtist);
+                    ResultSet resultSet = artistStatement.executeQuery();
+                    if (resultSet.next()) {
+                        artistId = resultSet.getInt("artist_id");
+                    }
+                }
+
+                // Вставляем данные о песне в базу данных
+                String sql = "INSERT INTO songs (title, artist_id, urlMusic, urlVocal, genre, duration, urlPhoto, urlLyric, counter) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                try (PreparedStatement statement = connection.prepareStatement(sql)) {
+                    statement.setString(1, songName);
+                    statement.setInt(2, artistId);
+                    statement.setString(3, urlMusic);
+                    statement.setString(4, urlVocal);
+                    statement.setString(5, genre);
+                    statement.setString(6, duration);
+                    statement.setString(7, urlPhoto);
+                    statement.setString(8, urlLyric);
+                    statement.setInt(9, 0);
+                    int rowsInserted = statement.executeUpdate();
+                    if (rowsInserted > 0) {
+                        System.out.println("Запись успешно добавлена в базу данных.");
+                    }
+                }
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.err.println("Ошибка добавления");
+            }
         }
-    }
+
 
 
     public void top5(TilePane pane) {
