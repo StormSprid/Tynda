@@ -1,11 +1,16 @@
 package org.example.musicplayer03;
 
 
+import javafx.scene.control.ComboBox;
 import javafx.scene.control.TextArea;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class Settings {
 
@@ -69,5 +74,30 @@ public class Settings {
             SongTextArea.setText("Упс! Текст данной песни откроется на платной версии приложения!");
         }
 
+    }
+
+
+    public static void loadArtists(ComboBox<String> comboBox) {
+        try {
+            // Установка соединения с базой данных
+            Connection connection = DriverManager.getConnection("jdbc:mysql://localhost:3306/javafx-tynda", "root", "admin");
+            Statement statement = connection.createStatement();
+
+            // Выполнение запроса к базе данных для получения списка артистов
+            ResultSet resultSet = statement.executeQuery("SELECT name FROM artists");
+
+            // Добавление артистов в ComboBox
+            while (resultSet.next()) {
+                String artistName = resultSet.getString("name");
+                comboBox.getItems().add(artistName);
+            }
+
+            // Закрытие ресурсов
+            resultSet.close();
+            statement.close();
+            connection.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

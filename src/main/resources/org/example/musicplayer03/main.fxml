@@ -2,6 +2,7 @@
 
 <?import de.jensd.fx.glyphs.fontawesome.FontAwesomeIconView?>
 <?import java.lang.String?>
+<?import javafx.geometry.Insets?>
 <?import javafx.geometry.Rectangle2D?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
@@ -171,11 +172,38 @@
       </ScrollPane>
       <AnchorPane fx:id="AddSongPage" layoutX="291.0" layoutY="127.0" prefHeight="656.0" prefWidth="898.0">
          <children>
-            <TextField fx:id="songNameField" layoutX="375.0" layoutY="35.0" promptText="Song name" />
-            <TextField fx:id="genreField" layoutX="374.0" layoutY="145.0" promptText="Genre" />
-            <Button fx:id="confirmButton" layoutX="418.0" layoutY="471.0" mnemonicParsing="false" onAction="#confirmButtonSendToSqlServer" text="Confirm" />
-            <TextField fx:id="durationField" layoutX="373.0" layoutY="413.0" promptText="duration" />
-            <ComboBox fx:id="artistSelector" layoutX="374.0" layoutY="85.0" prefWidth="150.0" promptText="Select Artist" />
+            <VBox alignment="BOTTOM_CENTER" layoutX="367.0" layoutY="52.0" prefHeight="550.0" prefWidth="164.0" spacing="45.0" AnchorPane.bottomAnchor="53.60000000000002">
+               <children>
+                  <StackPane prefHeight="47.0" prefWidth="164.0" style="-fx-background-color: #ffdcbd; -fx-background-radius: 40;">
+                     <children>
+                        <Label contentDisplay="CENTER" text="Enter Song Name:" />
+                     </children>
+                  </StackPane>
+                  <TextField fx:id="songNameField" prefHeight="26.0" prefWidth="254.0" promptText="Song name" style="-fx-background-radius: 40;" />
+                  <StackPane style="-fx-background-color: #ffdcbd; -fx-background-radius: 40;">
+                     <children>
+                        <Label text="Choose Artist:" />
+                     </children>
+                  </StackPane>
+                  <ComboBox fx:id="artistSelector" promptText="Select Artist" style="-fx-background-radius: 40;" />
+                  <StackPane style="-fx-background-color: #ffdcbd; -fx-background-radius: 40;">
+                     <children>
+                        <Label text="Enter Genre:" />
+                     </children>
+                  </StackPane>
+                  <TextField fx:id="genreField" promptText="Genre" style="-fx-background-radius: 40;" />
+                  <StackPane style="-fx-background-color: #ffdcbd; -fx-background-radius: 40;">
+                     <children>
+                        <Label text="Enter Song Duration:" />
+                     </children>
+                  </StackPane>
+                  <TextField fx:id="durationField" promptText="duration" style="-fx-background-radius: 40;" />
+                  <Button fx:id="confirmButton" mnemonicParsing="false" onAction="#confirmButtonSendToSqlServer" prefHeight="26.0" prefWidth="116.0" style="-fx-background-radius: 40;" text="Next Step" />
+               </children>
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+            </VBox>
          </children></AnchorPane>
       <Pane fx:id="Shtorka" focusTraversable="true" layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
          <children>

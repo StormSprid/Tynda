@@ -366,6 +366,7 @@ public boolean isChildModeActive = false;
         MySongsScrollPane.setVisible(false);
         PressButton(AddSongBtn);
         AddSongPage.setVisible(true);
+        Settings.loadArtists(artistSelector);
     }
 
 
@@ -1027,6 +1028,9 @@ public void SetupTopSongs(){
     javafx.scene.control.TextField urlLyricsField;
     @FXML
     javafx.scene.control.TextField durationField;
+    @FXML ComboBox<String> artistSelector;
+
+
     @FXML
     private void confirmButtonSendToSqlServer(ActionEvent event){
         String songName = songNameField.getText();
