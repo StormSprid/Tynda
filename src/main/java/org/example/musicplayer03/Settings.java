@@ -1,7 +1,9 @@
 package org.example.musicplayer03;
 
 
+import javafx.fxml.FXML;
 import javafx.scene.control.ComboBox;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 
 import java.io.BufferedReader;
@@ -17,7 +19,11 @@ import java.sql.Statement;
 public class Settings {
 
 
+
     static String[] badWords = {"сука", "Сука", "бля", "Бля", "ебанной", "ебанный", "ёбаных", "Жопа", "жопа","сук","Сук","Трахать","трахать"};
+
+    @FXML
+    RadioButton childModeActive;
 
     public static void setTextOnTextArea(String currentLyrics, TextArea SongTextArea,boolean isChildModeActive) {
 
@@ -120,7 +126,6 @@ public class Settings {
                 System.err.println("Error reading file: " + e.getMessage());
             }
         }
-
 
     }
 }

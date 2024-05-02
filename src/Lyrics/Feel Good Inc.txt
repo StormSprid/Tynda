@@ -15,7 +15,7 @@
 00:48;You got a new horizon, it's ephemeral style
 00:51;A melancholy town where we never smile
 00:54;And all I wanna hear is the message beep
-00:58.;My dreams, they got a kissing
+00:58;My dreams, they got a kissing
 00:59;'Cause I don't get sleep, no
 01:03; 
 01:05;Windmill, windmill for the land

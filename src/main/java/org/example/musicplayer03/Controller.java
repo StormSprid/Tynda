@@ -42,6 +42,7 @@ public class Controller implements Initializable {
 
 
     String[]  badWords = {"сука","Сука","бля","Бля","ебанной","ебанный","ёбаных","Жопа","жопа"};
+    @FXML RadioButton childModeActive;
 
     @FXML
     private Label label_welcome;
@@ -452,12 +453,6 @@ public boolean isChildModeActive = false;
 
 
 
-
-
-
-
-
-
     @FXML
     protected void playNextSong(){
 
@@ -473,7 +468,7 @@ public boolean isChildModeActive = false;
 
 
 
-        public void OpenPlaylist(int playlistId) {
+    public void OpenPlaylist(int playlistId) {
             PlaylistPane.getChildren().removeIf(node -> node != ClosePlbtn);
             PlaylistScrollPane.setVisible(true);
 
@@ -759,9 +754,7 @@ public boolean isChildModeActive = false;
     public void ClosePlaylist(){
     PlaylistScrollPane.setVisible(false);
 }
-public void SetupTopSongs(){
 
-}
 
 
     @FXML
@@ -1065,6 +1058,14 @@ public void SetupTopSongs(){
         }
     }
 
+    @FXML public void checkRadioButton(){
+        if (!isChildModeActive){
+            isChildModeActive = true;
+
+        }else{
+            isChildModeActive = false;
+        }
+    }
     }
 
 
