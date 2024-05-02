@@ -54,13 +54,11 @@ public class Settings {
 
 
                         if (currentSecond == (minute * 60 + seconds)) {
-                            if (isChildModeActive) {
-                                for (String badWord : badWords) {
-                                    if (text.contains(badWord) || text.contains("$")) {
-                                        MusicLib.nonVocalMod();
-                                    } else {
-                                        MusicLib.vocalMod();
-                                    }
+                            for (String badWord : badWords) {
+                                if (text.contains(badWord) || text.contains("$")) {
+                                    MusicLib.nonVocalMod();
+                                } else {
+                                    MusicLib.vocalMod();
                                 }
                             }
                             SongTextArea.appendText(text.replace("$", "") + "\n");
@@ -83,6 +81,7 @@ public class Settings {
         }
 
     }
+
 
 
     public static void loadArtists(ComboBox<String> comboBox) {
@@ -129,3 +128,4 @@ public class Settings {
 
     }
 }
+

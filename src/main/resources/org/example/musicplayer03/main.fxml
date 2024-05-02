@@ -28,7 +28,12 @@
    <children>
       <Pane layoutX="10.0" layoutY="10.0" prefHeight="780.0" prefWidth="250.0" style="-fx-background-color: #ffdcbd; -fx-background-radius: 30;">
          <children>
-            <Pane fx:id="searchPane" layoutX="12.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;">
+            <ScrollPane fx:id="searchScrollPane" layoutX="3.0" layoutY="118.0" prefHeight="580.0" prefWidth="246.0" style="-fx-background-color: #ffdcbd;" styleClass="searchBatya" stylesheets="@design.css" visible="false">
+               <content>
+                  <VBox fx:id="searchVBox" prefHeight="382.0" prefWidth="243.0" style="-fx-background-color: #ffdcbd;" />
+               </content>
+            </ScrollPane>
+            <Pane layoutX="12.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;">
                <children>
                   <TextField fx:id="searchField" layoutX="30.0" layoutY="6.0" onKeyPressed="#keyListenerSearch" prefHeight="26.0" prefWidth="164.0" promptText="Search" style="-fx-background-color: transparent;" styleClass="search" stylesheets="@design.css" />
                </children></Pane>
@@ -111,15 +116,6 @@
                   <Label fx:id="label_welcome" text="Welcome" />
                </children>
             </VBox>
-            <ScrollPane fx:id="searchScrollPane" layoutX="7.0" layoutY="124.0" prefHeight="577.0" prefWidth="239.0" style="-fx-background-color: #ffdcbd; -fx-border-color: #ffdcbd;" styleClass="searchBatya" stylesheets="@design.css" visible="false">
-              <content>
-                <AnchorPane minHeight="577.0" minWidth="0.0" prefWidth="244.0" style="-fx-background-color: #ffdcbd;" styleClass="searchPane" stylesheets="@design.css">
-                     <children>
-                        <VBox fx:id="searchVBox" prefWidth="246.0" />
-                     </children>
-                  </AnchorPane>
-              </content>
-            </ScrollPane>
             <HBox fx:id="SignInUpHbox" layoutX="7.0" layoutY="701.0" prefHeight="58.0" prefWidth="234.0">
                <children>
                   <Button fx:id="SignInBtn" mnemonicParsing="false" prefHeight="61.0" prefWidth="111.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 30;" text="Sign in" textFill="#ffdcbd">
@@ -136,7 +132,7 @@
             </HBox>
          </children>
       </Pane>
-      <ScrollPane fx:id="topSongsPage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
+      <ScrollPane fx:id="topSongsPage" layoutX="291.0" layoutY="127.0" prefHeight="670.0" prefWidth="898.0" style="-fx-background-color: #000000;" stylesheets="@design.css">
          <content>
             <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="897.0" style="-fx-background-color: #000000;">
                <children>
@@ -149,7 +145,7 @@
             <TilePane fx:id="ExampleTilePAne" prefHeight="865.0" prefWidth="880.0" />
          </content>
       </ScrollPane>
-      <ScrollPane fx:id="MySongsScrollPane" layoutX="303.0" layoutY="126.0" prefHeight="654.0" prefWidth="884.0" style="-fx-background-color: #000000;" stylesheets="@design.css" visible="false">
+      <ScrollPane fx:id="MySongsScrollPane" layoutX="303.0" layoutY="126.0" prefHeight="654.0" prefWidth="884.0" style="-fx-background-color: #000000;" stylesheets="@design.css">
          <content>
             <AnchorPane fx:id="MySongsAnchor" minHeight="0.0" minWidth="0.0" prefWidth="859.0" style="-fx-background-color: #000000;">
                <children>
@@ -171,6 +167,7 @@
                </children></AnchorPane>
          </content>
       </ScrollPane>
+
       <AnchorPane fx:id="AddSongPage" layoutX="291.0" layoutY="127.0" prefHeight="656.0" prefWidth="898.0" visible="false">
          <children>
             <VBox alignment="BOTTOM_CENTER" layoutX="367.0" layoutY="52.0" prefHeight="550.0" prefWidth="164.0" spacing="45.0" AnchorPane.bottomAnchor="53.60000000000002">
@@ -206,6 +203,7 @@
                </opaqueInsets>
             </VBox>
          </children></AnchorPane>
+
       <Pane fx:id="Shtorka" focusTraversable="true" layoutX="280.0" layoutY="24.0" prefHeight="82.0" prefWidth="898.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 50;">
          <children>
             <TextFlow fx:id="ArtistSongNameText" layoutX="-2.0" layoutY="535.0" prefHeight="65.0" prefWidth="908.0" textAlignment="CENTER" visible="false">
@@ -235,7 +233,7 @@
                   <InnerShadow />
                </effect>
             </TextArea>
-            <ImageView fx:id="UpperSongPhOpened" fitHeight="441.0" fitWidth="444.0" layoutX="19.0" layoutY="88.0" onMouseClicked="#pashalka" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="UpperSongPhOpened" fitHeight="441.0" fitWidth="444.0" layoutX="19.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../../../images/5759b69c2046c155367151e4.png" />
                </image>
@@ -288,7 +286,9 @@
                </children>
             </HBox>
 
+
             <Slider fx:id="volumeSlider" blockIncrement="0.0" layoutX="724.0" layoutY="19.0" onDragDone="#setVolume" onDragOver="#setVolume" onMouseClicked="#setVolume" onMouseDragReleased="#setVolume" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
+
             <Label fx:id="volumeLabel" layoutX="754.0" layoutY="46.0" onDragExited="#setVolume" onDragOver="#setVolume" text="100%" textFill="#ffdcbd">
                <graphic>
                   <FontAwesomeIconView fx:id="volume" fill="#ffdcbd" glyphName="VOLUME_UP" size="20" />
@@ -346,6 +346,7 @@
                               <Font size="20.0" />
                            </font>
                         </Label>
+                        <Button fx:id="addMySong" mnemonicParsing="false" onAction="#addToMySong" text="Добавить " />
                      </children>
                   </VBox>
                </children>
