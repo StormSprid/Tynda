@@ -30,7 +30,7 @@
          <children>
             <ScrollPane fx:id="searchScrollPane" layoutX="3.0" layoutY="118.0" prefHeight="580.0" prefWidth="246.0" style="-fx-background-color: #ffdcbd;" styleClass="searchBatya" stylesheets="@design.css" visible="false">
                <content>
-                  <VBox fx:id="searchVBox" prefHeight="382.0" prefWidth="243.0" style="-fx-background-color: #ffdcbd;" />
+                  <VBox fx:id="searchVBox" prefHeight="580.0" prefWidth="243.0" style="-fx-background-color: #ffdcbd;" />
                </content>
             </ScrollPane>
             <Pane layoutX="12.0" layoutY="82.0" prefHeight="39.0" prefWidth="204.0" style="-fx-background-color: #1e1c23; -fx-background-radius: 40;">
