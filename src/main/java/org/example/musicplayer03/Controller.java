@@ -1,13 +1,15 @@
 package org.example.musicplayer03;
-import javafx.animation.RotateTransition;
-import javafx.scene.transform.Rotate;
-import javafx.animation.*;
+
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.KeyValue;
+import javafx.animation.Timeline;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
-import javafx.geometry.Orientation;
 import javafx.geometry.Pos;
-import javafx.geometry.Rectangle2D;
 import javafx.scene.control.*;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
@@ -16,20 +18,14 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Line;
 import javafx.scene.text.Font;
 import javafx.scene.text.TextFlow;
-import javafx.scene.transform.Rotate;
 import javafx.util.Duration;
-import java.io.File;
-import javafx.scene.control.Label;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
+
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.sql.*;
-import java.util.ArrayList;
-import java.util.IllegalFormatCodePointException;
-import java.util.List;
 import java.util.ResourceBundle;
 public class Controller implements Initializable {
 
@@ -62,6 +58,8 @@ public class Controller implements Initializable {
     @FXML
     private Button playButton1;
 
+    @FXML
+    private Button addMySong;
 
     @FXML
     private Label volumeLabel;
@@ -147,13 +145,12 @@ public class Controller implements Initializable {
     private int currentIndex = 0; // Индекс текущей песни
     private Playlistinitializer playlistinitializer;
     private Connection connection;
-    private Object Settings;
 
     // Метод для установления соединения с базой данных
     public void connectToDatabase() throws SQLException {
-        String url = "jdbc:mysql://localhost:3306/Tynda";
+        String url = "jdbc:mysql://localhost:3306/tynda";
         String username = "root";
-        String password = "Adlet998";
+        String password = "admin";
         connection = DriverManager.getConnection(url, username, password);
     }
 
@@ -188,6 +185,7 @@ public class Controller implements Initializable {
             pause();
         }
     }
+
 
 
 
@@ -277,6 +275,7 @@ public class Controller implements Initializable {
                     }
 
 
+
                     Settings.setTextOnTextArea(currentLyrics,SongTextArea);
 
                 })
@@ -351,14 +350,22 @@ public class Controller implements Initializable {
 
         // добавить для других панелей
     }
+
+
+
+
+
+    private int userId;
+
     @FXML
     private void showMySongs(){
         HomePage.setVisible(false);
         PlaylistScrollPane.setVisible(false);
         topSongsPage.setVisible(false);
-        MySongsScrollPane.setVisible(true);
+        OpenMySongs(userId);
         AddSongPage.setVisible(false);
         PressButton(MySongsBtn);
+
     }
     @FXML
     private void showAddSong(){
@@ -397,7 +404,7 @@ public class Controller implements Initializable {
         button_logout.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
-                DBUtils.changeScene(event, "login.fxml", null);
+                DBUtils.changeScene(event, "login.fxml", null, userId);
             }
         });
 
@@ -414,13 +421,16 @@ public class Controller implements Initializable {
         initializeSliders();
         initializeTimeline();
         playlistinitializer. initializePlaylist();
-        showMySongs();
+        showHome();
 
     }
 
-    public void setUserInformation(String username) {
+    public void setUserInformation(String username, int userId) {
+        this.userId = userId;
         label_welcome.setText("Welcome " + username + "!");
     }
+
+
 
 
 
@@ -626,7 +636,10 @@ public class Controller implements Initializable {
     protected void playPreviousSong(){
         previousSong();
     }
+
     int currentPlaylistId = -1;
+    int currentUserId = -1;
+    private boolean isPlaylistMode = true;
 
 
 
@@ -691,13 +704,13 @@ public class Controller implements Initializable {
         }
     }
 
-
+    private boolean isMySongsMode = false;
 
 
 
     public void playSongPl(int songId, int playlistId) {
         try {
-
+            isMySongsMode = false;
             // Подготавливаем SQL запрос для получения информации о песне по ее идентификатору
             String sql = "SELECT s.*, a.name AS artist, ps.order_number\n" +
                     "FROM Songs s\n" +
@@ -724,6 +737,7 @@ public class Controller implements Initializable {
                         resultSet.getString("urlLyric")
                 );
 
+                currentSong = song;
                 // Здесь продолжайте ваш код воспроизведения песни с использованием объекта song
                 timeline.play();
                 if (!isPlaying) {
@@ -763,22 +777,76 @@ public class Controller implements Initializable {
     }
 
     public void nextSong() {
-        if (currentPlaylistId >0 && currentIndex < getMaxIndex(currentPlaylistId)) {
-            currentIndex++;
-            Animations.rotateImage(UpperSongPhOpened, 360);
-            int songId = getSongIdByIndex(currentIndex, currentPlaylistId); // Получаем ID песни по порядковому номеру
-            playSongPl(songId, currentPlaylistId);
+        if (isMySongsMode) {
+            if (currentIndex < getMaxMySongsIndex(userId)) {  // Для MySongs
+                currentIndex++;
+                PlayMySongs(getMySongIdByIndex(currentIndex, userId), userId);
+            }
+        } else {
+            if (currentPlaylistId > 0 && currentIndex < getMaxIndex(currentPlaylistId)) {  // Для плейлиста
+                currentIndex++;
+                playSongPl(getSongIdByIndex(currentIndex, currentPlaylistId), currentPlaylistId);
+            }
         }
     }
 
     public void previousSong() {
-        if (currentPlaylistId >0 && currentIndex > 0) {
-            currentIndex--;
-            Animations.rotateImage(UpperSongPhOpened, -360);
-            int songId = getSongIdByIndex(currentIndex, currentPlaylistId); // Получаем ID песни по порядковому номеру
-            playSongPl(songId, currentPlaylistId);
+        if (isMySongsMode) {
+            if (currentIndex > 0) {  // Для MySongs
+                currentIndex--;
+                PlayMySongs(getMySongIdByIndex(currentIndex, userId), userId);
+            }
+        } else {
+            if (currentPlaylistId > 0 && currentIndex > 0) {  // Для плейлиста
+                currentIndex--;
+                playSongPl(getSongIdByIndex(currentIndex, currentPlaylistId), currentPlaylistId);
+            }
         }
     }
+
+    private int getMaxMySongsIndex(int userId) {
+        int maxIndex = -1;
+        try {
+            String sql = "SELECT MAX(order_number) AS max_order FROM my_songs WHERE user_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                maxIndex = resultSet.getInt("max_order");
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return maxIndex;
+    }
+
+
+    private int getMySongIdByIndex(int index, int userId) {
+        int songId = -1;
+        try {
+            String sql = "SELECT song_id FROM my_songs WHERE user_id = ? AND order_number = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, userId);
+            statement.setInt(2, index);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                songId = resultSet.getInt("song_id");
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return songId;
+    }
+
+
     private int getSongIdByIndex(int index, int playlistId) {
         int songId = -1;  // Инициализируем переменную для ID песни
         try {
@@ -834,7 +902,7 @@ public class Controller implements Initializable {
 
         try {
             // Запрос на получение плейлистов с user_id = 1
-            String query = "SELECT * FROM playlists WHERE user_id = ?";
+            String query = "SELECT * FROM playlists WHERE user_id = ? AND playlist_id <> 7";
             PreparedStatement stmt = connection.prepareStatement(query);
             stmt.setInt(1, 1); // Пользователь с user_id = 1
 
@@ -888,6 +956,9 @@ public class Controller implements Initializable {
         }
     }
 
+    @FXML
+    private Pane MySongsPane;
+
 
 
     public void ClosePlaylist(){
@@ -895,6 +966,227 @@ public class Controller implements Initializable {
     }
     public void SetupTopSongs(){
 
+    }
+
+
+
+
+
+
+    public void PlayMySongs(int songId, int userId) {
+        try {
+            isMySongsMode = true;
+            // Подготавливаем SQL запрос для получения информации о песне по ее идентификатору и идентификатору пользователя
+            String sql = "SELECT s.*, a.name AS artist, ms.order_number\n" +
+                    "FROM Songs s\n" +
+                    "JOIN Artists a ON s.artist_id = a.artist_id\n" +
+                    "JOIN my_songs ms ON s.song_id = ms.song_id\n" +
+                    "WHERE s.song_id = ? AND ms.user_id = ?\n";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, songId);
+            statement.setInt(2, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                // Создаем объект песни на основе данных из базы данных
+                Songs song = new Songs(
+                        resultSet.getInt("song_id"),
+                        resultSet.getString("title"),
+                        resultSet.getString("artist"),
+                        resultSet.getString("genre"),
+                        resultSet.getString("urlMusic"),
+                        resultSet.getString("urlVocal"),
+                        resultSet.getString("urlPhoto"),
+                        resultSet.getString("urlLyric")
+                );
+
+                // Здесь продолжайте ваш код воспроизведения песни с использованием объекта song
+                timeline.play();
+                if (!isPlaying) {
+                    MusicLib.stopDouble();
+                    isPlaying = true;
+                    MusicLib.playDouble(song.getUrlMusic(), song.getUrlVocal());
+                    currentIndex = resultSet.getInt("order_number");
+                    currentUserId = userId;
+                    song.addCounter();
+
+                } else {
+                    pause();
+                    PlayMySongs(songId, userId);
+                }
+
+                Image image = new Image(new File("src/main/resources" + song.getUrlPhoto()).toURI().toString());
+                UpperSongPh.setImage(image);
+                UpperSongPhOpened.setImage(image);
+                UpperSongName.setText(song.getName());
+                UpperArtistName.setText(song.getArtist());
+                UpperArtistName1.setText(song.getName());
+                UpperSongName1.setText(song.getArtist());
+                SongTextArea.setText(" ");
+                currentLyrics = song.getUrlLyrics();
+                updateButtonVisibility();
+                durationLabel.setText(MusicLib.secondsToString(MusicLib.getTotalDuration()));
+            } else {
+                System.out.println("Песня с songId " + songId + " не найдена в базе данных.");
+            }
+
+            // Закрываем ресурсы
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void OpenMySongs(int userId) {
+        MySongsPane.getChildren().clear(); // Очистить список песен пользователя перед добавлением новых
+        MySongsScrollPane.setVisible(true); // Показать панель прокрутки списка песен
+
+        // SQL запрос для получения песен пользователя
+        String query = "SELECT s.song_id, s.title, a.name AS artist, s.urlPhoto\n" +
+                "FROM Songs s\n" +
+                "JOIN Artists a ON s.artist_id = a.artist_id\n" +
+                "JOIN my_songs ms ON s.song_id = ms.song_id\n" +
+                "WHERE ms.user_id = ?\n" +
+                "ORDER BY ms.order_number DESC";
+
+        try (PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                // Извлечение данных о песне из результирующего набора
+                int songId = rs.getInt("song_id");
+                String songName = rs.getString("title");
+                String artistName = rs.getString("artist");
+                String urlPhoto = rs.getString("urlPhoto");
+
+                // Создание элементов интерфейса для каждой песни
+                HBox songBox = new HBox(10);
+                songBox.setAlignment(Pos.CENTER_LEFT);
+                songBox.setPadding(new Insets(5, 10, 5, 10));
+
+                ImageView imageView = new ImageView(new Image(getClass().getResourceAsStream(urlPhoto)));
+                imageView.setFitHeight(70);
+                imageView.setFitWidth(70);
+
+                Label nameLabel = new Label(songName);
+                nameLabel.setStyle("-fx-text-fill: white; -fx-font-size: 22;");
+
+                Label artistLabel = new Label(artistName);
+                artistLabel.setStyle("-fx-text-fill: gray; -fx-font-size: 19;");
+
+                VBox textVBox = new VBox(nameLabel, artistLabel);
+                textVBox.setAlignment(Pos.CENTER_LEFT);
+
+                songBox.getChildren().addAll(imageView, textVBox);
+
+                VBox container = new VBox(songBox);
+                Line separator = new Line(0, 0, 790, 0);
+                separator.setStrokeWidth(0.5);
+                separator.setStroke(Color.GRAY);
+                VBox.setMargin(separator, new Insets(10, 0, 2, 0));
+                container.getChildren().add(separator);
+
+                Button songButton = new Button();
+                songButton.setGraphic(container);
+                songButton.setOnMouseEntered(e -> songBox.setStyle("-fx-background-color: rgba(204, 204, 204, 0.5);"));
+                songButton.setOnMouseExited(e -> songBox.setStyle("-fx-background-color: transparent;"));
+                songButton.setStyle("-fx-background-color: transparent;");
+
+                // Обработчик события нажатия на кнопку песни
+                songButton.setOnAction(event -> PlayMySongs(songId, userId));  // Вызов метода воспроизведения песни
+
+                MySongsPane.getChildren().add(songButton); // Добавление кнопки песни в список
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+    public void addMySong(int songId, int userId) {
+        // Проверка наличия песни в коллекции пользователя
+        if (isSongAlreadyAdded(songId, userId)) {
+            System.out.println("Песня с songId " + songId + " уже есть в вашей коллекции.");
+        } else {
+            try {
+                // Подготавливаем SQL запрос для определения следующего order_number
+                String orderNumberSql = "SELECT COALESCE(MAX(order_number), 0) + 1 AS next_order_number FROM my_songs WHERE user_id = ?";
+                PreparedStatement orderStmt = connection.prepareStatement(orderNumberSql);
+                orderStmt.setInt(1, userId);
+                ResultSet rs = orderStmt.executeQuery();
+                int nextOrderNumber = 0;
+                if (rs.next()) {
+                    nextOrderNumber = rs.getInt("next_order_number");
+                }
+                rs.close();
+                orderStmt.close();
+
+                // Подготавливаем SQL запрос для вставки новой записи в таблицу my_songs с учетом order_number
+                String sql = "INSERT INTO my_songs (song_id, user_id, order_number) VALUES (?, ?, ?)";
+                PreparedStatement statement = connection.prepareStatement(sql);
+                statement.setInt(1, songId);
+                statement.setInt(2, userId);
+                statement.setInt(3, nextOrderNumber);
+
+                // Выполняем запрос и проверяем количество вставленных строк
+                int rowsInserted = statement.executeUpdate();
+                if (rowsInserted > 0) {
+                    System.out.println("Песня с songId " + songId + " и порядковым номером " + nextOrderNumber + " успешно добавлена для пользователя с userId " + userId);
+                } else {
+                    System.out.println("Не удалось добавить песню с songId " + songId + " для пользователя с userId " + userId);
+                }
+
+                // Закрываем подготовленное выражение
+                statement.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("Ошибка при добавлении песни в my_songs: " + e.getMessage());
+            }
+        }
+    }
+
+
+    private boolean isSongAlreadyAdded(int songId, int userId) {
+        try {
+            String sql = "SELECT COUNT(*) AS count FROM my_songs WHERE song_id = ? AND user_id = ?";
+            PreparedStatement statement = connection.prepareStatement(sql);
+            statement.setInt(1, songId);
+            statement.setInt(2, userId);
+
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getInt("count") > 0;
+            }
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+    private Songs currentSong;
+
+
+
+    public int getCurrentSongId() {
+        if (currentSong != null) {
+            return currentSong.getSongId();
+        }
+        return -1; // Или другое значение, указывающее на ошибку или отсутствие выбранной песни
+    }
+
+    @FXML
+    private void addToMySong() {
+        int songId = getCurrentSongId();
+        if (songId > 0) {
+            addMySong(songId, userId);
+        } else {
+            System.out.println("Песня не выбрана");
+        }
     }
 
 

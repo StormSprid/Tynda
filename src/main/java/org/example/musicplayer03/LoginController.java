@@ -1,7 +1,5 @@
 package org.example.musicplayer03;
 
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -24,22 +22,9 @@ public class LoginController implements Initializable {
     @FXML
     private PasswordField passwordTextField;
 
-
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-
-        loginButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                DBUtils.logInUser(event, loginTextField.getText(), passwordTextField.getText());
-            }
-        });
-
-        registerButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                DBUtils.changeScene(event, "register.fxml", null);
-            }
-        });
+        loginButton.setOnAction(event -> DBUtils.logInUser(event, loginTextField.getText(), passwordTextField.getText()));
+        registerButton.setOnAction(event -> DBUtils.changeScene(event, "register.fxml", null, -1));  // Передаем -1 как userId, так как он не нужен
     }
 }

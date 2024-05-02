@@ -50,7 +50,7 @@
                         <Insets bottom="30.0" />
                      </VBox.margin>
                   </PasswordField>
-                  <PasswordField fx:id="ConfirmTextField" alignment="CENTER" promptText="Confirm Password" style="-fx-background-color: black; -fx-background-radius: 15;" styleClass="login" stylesheets="@login.css">
+                  <PasswordField fx:id="confirmTextField" alignment="CENTER" promptText="Confirm Password" style="-fx-background-color: black; -fx-background-radius: 15;" styleClass="login" stylesheets="@login.css">
                      <font>
                         <Font name="PT Sans Bold" size="20.0" />
                      </font>
