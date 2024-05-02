@@ -35,8 +35,7 @@ import java.net.URL;
 import java.sql.*;
 import java.util.*;
 
-import static javafx.scene.input.KeyCode.L;
-import static javafx.scene.input.KeyCode.S;
+import static javafx.scene.input.KeyCode.*;
 
 public class Controller implements Initializable {
 
@@ -309,15 +308,25 @@ public boolean isChildModeActive = false;
 
     @FXML
     protected void setVolume() {
-        double currentVolume = volumeSlider.getValue();
-        MusicLib.setVolume(currentVolume);
 
-        volumeLabel.setText(String.format("%.0f%%", currentVolume));
 
-        if (volumeSlider.isValueChanging()) {
-            volumeSlider.setValue(currentVolume);
-            volumeSliderShtorka.setValue(currentVolume);
-        }
+            if (volumeSlider.isValueChanging()) {
+                double currentVolume = volumeSlider.getValue();
+                MusicLib.setVolume(currentVolume);
+                volumeLabel.setText(String.format("%.0f%%", currentVolume));
+                volumeLabelShtorka.setText(String.format("%.0f%%", currentVolume));
+                volumeSlider.setValue(currentVolume);
+                volumeSliderShtorka.setValue(currentVolume);
+            }else {
+                double currentVolumeShtorka = volumeSliderShtorka.getValue();
+                MusicLib.setVolume(currentVolumeShtorka);
+                volumeLabel.setText(String.format("%.0f%%", currentVolumeShtorka));
+                volumeLabelShtorka.setText(String.format("%.0f%%", currentVolumeShtorka));
+                volumeSlider.setValue(currentVolumeShtorka);
+                volumeSliderShtorka.setValue(currentVolumeShtorka);
+            }
+
+
     }
     @FXML
     protected void setKaraokeVolume() {
@@ -538,7 +547,7 @@ public boolean isChildModeActive = false;
 @FXML VBox karaokeVbox;
 
 
-
+Image currentImage;
     public void playSongPl(int songId, int playlistId) {
         try {
             String sql = "SELECT s.*, a.name AS artist,ps.order_number\n" +
@@ -601,6 +610,7 @@ public boolean isChildModeActive = false;
                 Image image = new Image(new File("src/main/resources" + song.getUrlPhoto()).toURI().toString());
                 UpperSongPh.setImage(image);
                 UpperSongPhOpened.setImage(image);
+                currentImage = image;
                 UpperSongName.setText(song.getName());
                 UpperArtistName.setText(song.getArtist());
                 UpperArtistName1.setText(song.getName());
@@ -1066,7 +1076,43 @@ public boolean isChildModeActive = false;
             isChildModeActive = false;
         }
     }
+    boolean isPashalka = false;
+    @FXML
+    public void pashalka() {
+        // Сохраняем старое изображение
+        Image oldPhoto = currentImage;
+
+        // Создаем анимацию вращения для плавного поворота
+        RotateTransition rotateTransition = new RotateTransition(Duration.millis(500), UpperSongPhOpened);
+        rotateTransition.setAxis(Rotate.Y_AXIS);
+        rotateTransition.setByAngle(360);
+
+        if (!isPashalka) {
+            // Если это первое нажатие, устанавливаем новое изображение
+            UpperSongPhOpened.setImage(new Image(getClass().getResourceAsStream("/icons/videoplayback.gif")));
+
+            // Включаем анимацию вращения
+            rotateTransition.play();
+
+            isPashalka = true;
+        } else {
+            // Если это повторное нажатие, возвращаем старое изображение
+
+            // Остановка текущей анимации вращения
+            rotateTransition.stop();
+
+            // Устанавливаем старое изображение
+            UpperSongPhOpened.setImage(oldPhoto);
+
+            // Включаем анимацию вращения
+            rotateTransition.play();
+
+            isPashalka = false;
+        }
     }
+
+
+}
 
 
 

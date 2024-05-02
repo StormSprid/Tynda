@@ -235,7 +235,7 @@
                   <InnerShadow />
                </effect>
             </TextArea>
-            <ImageView fx:id="UpperSongPhOpened" fitHeight="441.0" fitWidth="444.0" layoutX="19.0" layoutY="88.0" pickOnBounds="true" preserveRatio="true" visible="false">
+            <ImageView fx:id="UpperSongPhOpened" fitHeight="441.0" fitWidth="444.0" layoutX="19.0" layoutY="88.0" onMouseClicked="#pashalka" pickOnBounds="true" preserveRatio="true" visible="false">
                <image>
                   <Image url="@../../../images/5759b69c2046c155367151e4.png" />
                </image>
@@ -288,7 +288,7 @@
                </children>
             </HBox>
 
-            <Slider fx:id="volumeSlider" blockIncrement="0.0" layoutX="724.0" layoutY="19.0" onDragDetected="#setVolume" onDragDone="#setVolume" onMouseClicked="#setVolume" onMouseDragReleased="#setVolume" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
+            <Slider fx:id="volumeSlider" blockIncrement="0.0" layoutX="724.0" layoutY="19.0" onDragDone="#setVolume" onDragOver="#setVolume" onMouseClicked="#setVolume" onMouseDragReleased="#setVolume" prefHeight="15.0" prefWidth="109.0" styleClass="Slider" stylesheets="@design.css" value="100.0" />
             <Label fx:id="volumeLabel" layoutX="754.0" layoutY="46.0" onDragExited="#setVolume" onDragOver="#setVolume" text="100%" textFill="#ffdcbd">
                <graphic>
                   <FontAwesomeIconView fx:id="volume" fill="#ffdcbd" glyphName="VOLUME_UP" size="20" />
